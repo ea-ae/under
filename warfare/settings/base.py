@@ -15,7 +15,7 @@ WSGI_APPLICATION = 'warfare.wsgi.application'
 
 ROOT_URLCONF = 'warfare.urls'
 
-AUTH_USER_MODEL = 'game.User'
+AUTH_USER_MODEL = 'main.User'
 
 LOGIN_REDIRECT_URL = '../'
 
@@ -23,13 +23,13 @@ LOGIN_REDIRECT_URL = '../'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # View to redirect to if ratelimited
-RATELIMIT_VIEW = 'game.views.ratelimited'
+RATELIMIT_VIEW = 'main.views.ratelimited'
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'game.apps.GameConfig',
+    'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +46,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+PASSWORD_HASHERS = [
+    'warfare.hashers.BCryptSHA256Custom',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
 
 TEMPLATES = [

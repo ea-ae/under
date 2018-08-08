@@ -5,7 +5,7 @@ import django.contrib.auth.models
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import game.models
+import main.models
 
 
 class Migration(migrations.Migration):
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 4-25 characters. Letters, digits and underscores only.', max_length=25, unique=True, validators=[game.models.AlphanumericUsernameValidator()], verbose_name='username')),
+                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 4-25 characters. Letters, digits and underscores only.', max_length=25, unique=True, validators=[main.models.AlphanumericUsernameValidator()], verbose_name='username')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
             ],

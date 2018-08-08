@@ -4,13 +4,13 @@
 {% block head %}
 <style>
     body {
-        background: white url('{% static 'game/paper2.jpg' %}');
+        background: white url('{% static 'main/paper2.jpg' %}');
     }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 <link href="{% static 'base.css' %}" rel="stylesheet">
-<link href="{% static 'game/form.css' %}" rel="stylesheet">
+<link href="{% static 'main/form.css' %}" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock head %}
 {% block body %}
@@ -18,10 +18,10 @@
 <div id="auth">
     {% if user.is_authenticated %}
     <p class="notice">You are already logged in as "{{ user.username }}". To register, first log out.</p>
-    <script>window.location.replace('{% url 'game:index' %}');</script>
+    <script>window.location.replace('{% url 'main:index' %}');</script>
     {% else %}
     <h1 class="register-title nodrag">Register</h1>
-    <form method="post" action="{% url 'game:register' %}">
+    <form method="post" action="{% url 'main:register' %}">
         {% csrf_token %}
         <div id="form">
             {% csrf_token %}
@@ -44,7 +44,7 @@
                 <label for="id_remember_me">Remember Me</label>
             </div>
             <button class="nodrag o" type="submit">Register</button>
-            <p>Already have an account? <a href="{% url 'game:login' %}">Login</a></p>
+            <p>Already have an account? <a href="{% url 'main:login' %}">Login</a></p>
         </div>
     </form>
     {% endif %}

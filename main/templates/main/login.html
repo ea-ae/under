@@ -4,13 +4,13 @@
 {% block head %}
 <style>
     body {
-        background: white url('{% static 'game/paper2.jpg' %}');
+        background: white url('{% static 'main/paper2.jpg' %}');
     }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 <link href="{% static 'base.css' %}" rel="stylesheet">
-<link href="{% static 'game/form.css' %}" rel="stylesheet">
+<link href="{% static 'main/form.css' %}" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock head %}
 {% block body %}
@@ -29,11 +29,11 @@
     {% endif %}
     {% if user.is_authenticated and not next %}
         <p class="notice">You are already logged in as {{ user.username }}!</p>
-        <script>window.location.replace('{% url 'game:index' %}');</script>
+        <script>window.location.replace('{% url 'main:index' %}');</script>
     {% else %}
         {% if form.errors %}<p class="notice">Your username and password didn't match. Please try again.</p>{% endif %}
         <div id="form">
-            <form method="post" action="{% url 'game:login' %}">
+            <form method="post" action="{% url 'main:login' %}">
                 {% csrf_token %}
                 {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
                 <label class="nodrag" for="id_username">USERNAME</label><br>
@@ -47,7 +47,7 @@
                 <button class="nodrag o" type="submit">Login</button>
             </form>
             <p>Forgot your password? <a href="#">Get a new one</a></p>
-            <p>Not registered? <a href="{% url 'game:register' %}">Create an account</a></p>
+            <p>Not registered? <a href="{% url 'main:register' %}">Create an account</a></p>
         </div>
     {% endif %}
 </div>
