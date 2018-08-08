@@ -19,6 +19,7 @@ ROOT_URLCONF = 'warfare.urls'
 # Application definition
 
 INSTALLED_APPS = [
+    'game.apps.GameConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

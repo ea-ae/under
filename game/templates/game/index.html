@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock head %}
+{% block body %}
+<h1>Cult Warfare.</h1>
+<h2>There's no homepage yet.</h2><br>
+<h2><a href="{% url 'game:main' %}">Game</a></h2><br>
+<h2><a href="{% url 'game:register' %}">Register</a></h2><br>
+<h2><a href="{% url 'game:login' %}">Login</a></h2><br>
+{% endblock body %}
