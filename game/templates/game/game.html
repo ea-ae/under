@@ -1,10 +1,232 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Cult Warfare</title>
+    <meta charset="utf-8">
+    <link href="{% static 'favicon.ico' %}" rel="shortcut icon">
+    <link href="{% static 'reset.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet">
+    <link href="{% static 'game/style.css' %}" rel="stylesheet">
+    <meta name="description" content="Cult Warfare is a text-based game about ruling a cult, while staying anonymous.">
+    <meta name="author" content="Blacklock">
+    <meta name="theme-color" content="#D14436">
+    <meta name="msapplication-navbutton-color" content="#D14436">
+    <meta name="apple-mobile-web-app-status-bar-style" content="D14436">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
-    <h1>sup</h1>
+    <div class="nav-flex">
+        <nav>
+            <div class="hamburger hamburger--collapse is-active">
+                <div class="hamburger-box">
+                    <div class="hamburger-inner"></div>
+                </div>
+            </div>
+            Cult Warfare
+        </nav>
+        <div id="game">
+            <div class="sidebar">
+                <p class="tab-title">HOME</p>
+                <ul class="tabs-list">
+                    <li id="tabs-list__home" class="active-tab">Home</li>
+                    <li id="tabs-list__contacts">Contacts</li>
+                    <li id="tabs-list__inventory">Inventory</li>
+                </ul>
+                <p class="tab-title">CULT</p>
+                <ul class="tabs-list">
+                    <li id="tabs-list__members">Members</li>
+                </ul>
+                <p class="tab-title">LOCATIONS</p>
+                <ul class="tabs-list">
+                        <li id="tabs-list__headquarters">Headquarters</li>
+                    <li id="tabs-list__marketplace">Marketplace</li>
+                    <li id="tabs-list__underworld">Underworld</li>
+                </ul>
+                <p class="tab-title">PERSONAL</p>
+                <ul class="tabs-list">
+                    <li id="tabs-list__settings">Settings</li>
+                    <li id="tabs-list__wiki">Wiki</li>
+                    <li id="tabs-list__rules">Rules</li>
+                </ul>
+            </div>
+            <div class="tabs">
+                <div class="tabs__home">
+                    <div class="stats">
+                        <h1 class="cult-name"></h1>
+                        <p class="username">Owned by <span></span></p>
+                        <div class="container-box">
+                            <div class="container-header">General</div>
+                            <div class="container-body">
+                                <p class="level">
+                                    <span class="label">Level</span>
+                                    <span class="val">0</span>
+                                </p>
+                                <p class="type">
+                                    <span class="label">Type</span>
+                                    <span class="val">unknown</span>
+                                </p>
+                                <p class="money">
+                                    <span class="label">Money</span>
+                                    <span class="val">$0</span>
+                                </p>
+                                <p class="rep">
+                                    <span class="label">Reputation</span>
+                                    <span class="val">0</span>
+                                </p>
+                                <p class="income">
+                                    <span class="label">Income</span>
+                                    <span class="val">$0</span>
+                                </p>
+                                <p class="loss">
+                                    <span class="label">Loss</span>
+                                    <span class="val">$0</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="container-box">
+                            <div class="container-header">Statistics</div>
+                            <div class="container-body">
+                                <p class="missions">
+                                    <span class="label">Missions completed</span>
+                                    <span class="val">0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-cult">
+                        <h1>Create a cult</h1>
+                        <form id="create-cult__form">
+                            <label for="cult-name">Pick a name for your cult (5 to 25 characters).</label>
+                            <input type="text" name="cult-name" id="cult-name" required maxlength="25"
+                            placeholder="Cult name" pattern="[a-zA-Z ]{5,25}">
+                            <label>Choose the type of your cult.</label>
+                            <div class="cult-type">
+                                <label class="cult-type__option">
+                                    <input type="radio" name="cult-type" value="chi" required checked>
+                                    <div>
+                                        <b>The Chi</b>
+                                        <p><i>Make them trust.</i> Cultists will be more loyal.</p>
+                                    </div>
+                                </label><br>
+                                <label class="cult-type__option">
+                                    <input type="radio" name="cult-type" value="psi" required>
+                                    <div>
+                                        <b>The Psi</b>
+                                        <p><i>Make them want.</i> Cultist recruitment will be faster.</p>
+                                    </div>
+                                </label><br>
+                                <label class="cult-type__option">
+                                    <input type="radio" name="cult-type" value="omega" required>
+                                    <div>
+                                        <b>The Omega</b>
+                                        <p><i>Make them believe.</i> Hiring cultists will be cheaper.</p>
+                                    </div>
+                                </label>
+                            </div><br><br>
+                            <input type="submit" class="b-btn" value="Create">
+                        </form>
+                    </div>
+                </div>
+                <div class="tabs__contacts">
+                    <!-- Images are 120x139 -->
+                    <div class="contacts">
+                        <div class="contact contact--detective">
+                            <div class="contact__wrapper">
+                                <img src="{% static 'game/images/avatar-detective.png' %}">
+                            </div>
+                        </div>
+                        <div class="contact contact--anonymous" data-notifications="1">
+                            <div class="contact__wrapper">
+                                <img src="{% static 'game/images/avatar-anonymous.png' %}">
+                            </div>
+                        </div>
+                        <div class="contact contact--assistant">
+                            <div class="contact__wrapper">
+                                <img src="{% static 'game/images/avatar-assistant.png' %}">
+                            </div>
+                        </div>
+                        <div class="contact contact--merchant">
+                            <div class="contact__wrapper">
+                                <img src="{% static 'game/images/avatar-merchant.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-details__top">
+                            <img src="{% static 'game/avatar-anonymous.png' %}">
+                            <h1 class="contact-details__title">Anonymous</h1>
+                            <div class="contact-details__text">
+                                <p>
+                                    So, you're looking to start a cult? I'll help you
+                                    get started. Don't worry about any payments for now,
+                                    you'll return the favor when the time comes.
+                                </p>
+                                <p>
+                                    First of all, you'll need a building for your cult to
+                                    operate in. I found you a quiet place in the corner of
+                                    the city, nobody should bother you there. Check it out
+                                    and tell me once you're ready.
+                                </p>
+                                <p>
+                                    <b>Objective:</b> Visit the headquarters using the
+                                    sidebar and then return to this tab.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="contact-details__options">
+                            <ul>
+                                <li>I'm ready, now what?</li><br>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs__inventory">
+                    Inventory<br><br>
+                    In this tab you can access all the items that you own and put
+                    them on sale.
+                </div>
+                <div class="tabs__members">
+                    Members<br><br>
+                    From here you can find all the members of your cult in a tree view.
+                    Clicking on a specific cult member will bring up more details and
+                    options about him. For example, you could teach them new skills or
+                    promote them for more loyalty.
+                </div>
+                <div class="tabs__headquarters">
+                    Headquarters<br><br>
+                    In this tab you can upgrade your HQ to protect yourself against
+                    potential intruders or gain bonuses.
+                </div>
+                <div class="tabs__marketplace">
+                    Marketplace<br><br>
+                    In this tab you can sell your items to other players and AI.
+                    You can also visit stores of other players.
+                </div>
+                <div class="tabs__underworld">
+                    Underworld<br><br>
+                    Cults can visit The Underworld to explore and find many rare items
+                    to use, research, and sell.
+                </div>
+                <div class="tabs__settings">
+                    Settings<br><br>
+                    From this page users can change their accounts settings among various
+                    other things.
+                </div>
+                <div class="tabs__wiki">
+                    Wiki<br><br>
+                    From this page the players will be able to find information about
+                    many aspects of the game.
+                </div>
+                <div class="tabs__rules">
+                    Rules<br><br>
+                    On this page the users can see the rules, TOS, privacy policy etc.<br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'game/reconnecting-websocket-min.js' %}"></script>
+    <script src="{% static 'game/warfare.js' %}"></script>
 </body>
 </html>

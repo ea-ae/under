@@ -11,6 +11,7 @@ SECRET_KEY = config['SECRET_KEY']
 
 ALLOWED_HOSTS = [config['IP_ADDRESS']]
 
+ASGI_APPLICATION = 'game.routing.application'
 WSGI_APPLICATION = 'warfare.wsgi.application'
 
 ROOT_URLCONF = 'warfare.urls'
@@ -26,9 +27,22 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 RATELIMIT_VIEW = 'main.views.ratelimited'
 
 
+# Channel layers
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(config['IP_ADDRESS'], 6379)],
+        },
+    }
+}
+
+
 # Application definition
 
 INSTALLED_APPS = [
+    'game.apps.GameConfig',
     'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
 MIDDLEWARE = [

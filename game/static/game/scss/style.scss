@@ -1,0 +1,498 @@
+@import 'hamburgers/hamburger';
+
+$white: rgb(254, 254, 254);
+$black: rgb(17, 17, 17);
+$light-black: rgb(75, 75, 75);
+
+* {
+    box-sizing: border-box;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+	background-color: rgb(253, 253, 251);
+}
+
+@mixin nodrag {
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.nodrag {
+    @include nodrag;
+}
+
+nav {
+    @include nodrag;
+    flex: 0 0 auto;
+    padding: 18px 5px;
+    -webkit-box-shadow: 0px -3px 21px 0px $black; 
+    box-shadow: 0px -3px 21px 0px $black;
+    background-color: rgb(76, 93, 104);
+    color: $white;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    overflow-x: auto;
+
+    .hamburger {
+        vertical-align: middle;
+    }
+}
+
+.nav-flex {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+#game {
+    flex: auto;
+    display: flex;
+    align-items: stretch;
+    min-height: 100%;
+}
+
+.tabs {
+    flex: 7 1 auto;
+    width: 100%;
+    padding: 30px;
+    overflow: auto;
+    // TODO: Not sure if I need this? If anything breaks this is why
+    // white-space: nowrap;
+}
+
+.sidebar {
+    @include nodrag;
+    position: relative;
+    flex: 0 0 auto;
+    min-height: 100%;
+    min-width: 20%;
+    background-color: rgb(53, 68, 78);
+    // #242124 #232B2B #36454F
+    color: $white;
+    -webkit-box-shadow: inset -13px 7px 30px -11px $black;
+    -moz-box-shadow: inset -13px 7px 30px -11px $black;
+    box-shadow: inset -13px 7px 30px -11px $black;
+    transition: margin-left 0.13s;
+}
+
+.sidebar--visible {
+    flex: 0 !important;
+}
+
+.tab-title {
+    @include nodrag;
+    padding: 17px 10px;
+    border-bottom: 1px solid rgb(113, 125, 134);
+    color: rgb(143, 153, 161);
+    font-size: 0.9rem;
+}
+
+.tabs-list {
+    list-style: none;
+}
+
+.tabs-list li {
+    display: block;
+    padding: 13px 10px;
+    border-left: 3px solid transparent;
+    text-indent: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s border-left 0.3s;
+    &:hover {
+        border-left: 3px solid rgb(133, 146, 156) !important;
+        background-color: rgb(66, 84, 97);
+    }
+}
+
+.active-tab {
+    border-left: 3px solid rgb(83, 98, 109) !important;
+    background-color: rgba(255, 255, 255, 0.025);
+}
+
+.tabs > div {
+    display: none;
+}
+
+.container-box {
+    display: inline-block;
+    width: 30%;
+    min-width: 280px;
+    margin: 0 15px 15px 0;
+    vertical-align: top;
+
+    .container-header {
+        padding: 15px 5px;
+        border: 1px solid rgb(200, 200, 200);
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom: none;
+        background-color: rgb(250, 250, 249);
+        color: $black;
+        font-size: 1.15rem;
+        text-align: center;
+    }
+
+    .mission-header {
+        padding-left: 15px;
+        text-align: left;
+    }
+
+    .container-text,
+    .container-body {
+        border: 1px solid rgb(200, 200, 200);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: $white;
+    }
+
+    .container-text {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 0;
+        background-color: $white;
+
+        div {
+            flex: 1 0 auto;
+            height: 100%;
+            padding: 12px;
+        }
+
+        div:nth-child(1) {
+            flex: 0 0 auto;
+            padding-right: 25px;
+        }
+
+        div:nth-child(2) { // Description div
+            flex: 4 1 350px;
+        }
+
+    
+    }
+
+    .container-body {
+        p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            height: 100%;
+            padding: 12px;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid rgb(200, 200, 200);
+            }
+
+            .label {
+                flex: 0;
+            }
+
+            .val {
+                flex: 0;
+            }
+        }
+
+        .type .val {
+            text-transform: capitalize;
+        }
+    }
+}
+
+.b-btn {
+    padding: 20px 70px;
+    border: none;
+    outline: none;
+    background-color: rgb(37, 37, 37);
+    color: $white;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    user-select: none;
+    cursor: pointer;
+    transition: 0.3s all;
+
+    &:hover {
+        background-color: rgb(22, 22, 22);
+        color: rgb(255, 255, 255);
+    }
+}
+
+.tabs {
+    & > div { // Selects every tab
+        margin-right: 30px;
+    }
+
+    // 'Home' tab
+    .tabs__home {
+        .stats,
+        .create-cult {
+            display: none;
+        }
+
+        .stats {
+            color: rgb(58, 58, 58);
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        h1 {
+            // font-weight: 500;
+            font-size: 2.8rem;
+            white-space: nowrap;
+        }
+
+        #create-cult__form {
+            margin-top: 2rem;
+
+            input[type="text"] {
+                min-width: 270px;
+                width: 50%;
+                margin: 10px 5px 10px 0;
+                padding: 15px;
+                outline: 0;
+                border: 1px solid #F2F2F2;
+                border-radius: 2px;
+                font-size: 1.5rem;
+            }
+
+            // Thanks, StackOverflow
+
+            .cult-type {
+                display: inline-block;
+                min-width: 50%;
+
+                .cult-type__option {
+                    display: inline-block;
+                    width: 100%;
+                    white-space: nowrap;
+    
+                    & > input { // Hide radio
+                        visibility: hidden;
+                        position: absolute;
+                    }
+                    & > input + div { // Div styling
+                        padding: 30px 15px;
+                        cursor: pointer;
+    
+                        b {
+                            display: block;
+                            margin-bottom: 8px;
+                            font-weight: 500;
+                        }
+    
+                        i {
+                            display: block;
+                            margin-bottom: 6px;
+                        }
+                    }
+                    & > input:checked + div { // Checked div styling
+                        margin-left: -4px;
+                        border-left: 4px solid rgb(78, 128, 238);
+                        background-color: rgb(249, 249, 249);
+                    }
+                }
+            }
+
+            & > label {
+                display: block;
+                min-width: 270px;
+                margin: 10px 0;
+                font-size: 1.2rem;
+            }
+        }
+
+        .username {
+            color: $light-black;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .username span {
+            color: $black;
+        }
+    }
+
+    .tabs__contacts {
+        .contacts {
+            @include nodrag;
+            min-width: 400px;
+            padding: 10px;
+            overflow-x: auto;
+            white-space: nowrap; // Force all divs to stay on same row & overflow
+
+            .contact {
+                cursor: pointer;
+                position: relative;
+                display: inline-block;
+                
+                width: 120px;
+                height: 139px;
+                margin: 3px 5px 3px 3px;
+                border: 1px solid rgba(0, 0, 0, 0.04);
+                border-radius: 2px;
+
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+
+                .contact__wrapper {
+                    overflow: hidden;
+
+                    img {
+                        pointer-events: none;
+                        width: 100%;
+                        height: 100%;
+                        padding: 7px;
+                        transition: transform 0.3s ease-in-out;
+                    }
+                }
+                &:hover,
+                &:focus {
+                    box-shadow: 0 3px 6px rgba(0,0,0,0.12), 0 2px 3px rgba(0,0,0,0.24);
+                }
+
+                &:hover img,
+                &:focus img {
+                    transform: scale(1.1);
+                }
+            }
+
+            // Taken from cssportal.com
+            .contact[data-notifications]:after {
+                content: attr(data-notifications);
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                width: 18px;
+                height: 18px;
+                padding: 5px;
+
+                background-color: rgb(23, 84, 197);
+                color: white;
+                text-align: center;
+                line-height: 18px;
+                border: 0;
+                border-radius: 50%;
+                box-shadow: 0 0 1px #333;
+            }
+        }
+
+        .contact-details {
+            display: inline-block;
+            min-width: 50%;
+            min-width: 400px;
+            margin-top: 20px;
+            padding: 15px 5px 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+            .contact-details__top {
+                display: inline-flex;
+                flex-wrap: wrap;
+                align-items: center;
+
+                img {
+                    @include nodrag;
+                    pointer-events: none;
+                    width: 120px;
+                    height: 139px;
+                    transform: scale(0.8);
+                }
+    
+                .contact-details__title {
+                    display: inline-block;
+                    margin: 0 30px 0 10px;
+                    font-size: 1.3rem;
+                }
+
+                .contact-details__text {
+                    display: inline-block;
+                    max-width: 600px;
+                    margin: 10px;
+                    font-size: 1.075rem;
+                    color: rgb(70, 70, 70);
+
+                    p {
+                        margin-bottom: 1em;
+
+                        b {
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+
+            .contact-details__options {
+                ul {
+                    li {
+                        cursor: pointer;
+                        // display: inline-block;
+                        // Instead of that, use this:
+                        display: block;
+                        float: left;
+                        clear: left;
+
+                        margin-left: 15px;
+                        padding: 5px 20px;
+                        border-radius: 4px;
+                        font-size: 1.25rem;
+                        color: rgb(80, 80, 80);
+                        transition: all 0.3s;
+
+                        &:hover {
+                            color: rgb(10, 10, 10);
+                            background-color: rgb(245, 245, 245);
+                        }
+
+                        &:before {
+                            content: '';
+                            display: block;
+                        }
+                    }
+
+                    .disabled-text {
+                        text-decoration: line-through;
+                        color: rgb(120, 120, 120);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    /*.contact-details__header p {
+        display: block;
+        max-width: auto;
+    }*/
+
+    .container-box {
+        display: block;
+    }
+}
+
+@media (min-width: 751px) and (max-width: 1200px) {
+    .sidebar {
+        min-width: 30%;
+    }
+}
+@media (max-width: 750px) {
+    .sidebar {
+        min-width: 40%;
+    }
+    .tabs-list li {
+        padding-right: 30px;
+    }
+}

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import WarfareGame, WarfarePlayer, Cult
 
-# Register your models here.
+admin.site.register(WarfareGame)
+admin.site.register(WarfarePlayer)
+admin.site.register(Cult)
