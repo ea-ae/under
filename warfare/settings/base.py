@@ -15,6 +15,13 @@ WSGI_APPLICATION = 'warfare.wsgi.application'
 
 ROOT_URLCONF = 'warfare.urls'
 
+AUTH_USER_MODEL = 'game.User'
+
+LOGIN_REDIRECT_URL = '../'
+
+# SESSION_COOKIE_AGE = 604800
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # Application definition
 

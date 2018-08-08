@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('game/', views.game, name='main'),
     path('register/', views.register, name='register'),
-    path('login/', views.login, name='login')
+    path('login/', views.custom_login, name='login')
 ]
