@@ -22,6 +22,9 @@ LOGIN_REDIRECT_URL = '../'
 # SESSION_COOKIE_AGE = 604800
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
+# View to redirect to if ratelimited
+RATELIMIT_VIEW = 'game.views.ratelimited'
+
 
 # Application definition
 

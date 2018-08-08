@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Ratelimited{% endblock title %}
+{% block head %}
+<style>
+    body {
+        background: white url('{% static 'index/paper2.jpg' %}');
+    }
+</style>
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+<link href="{% static 'index/form.css' %}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock head %}
+{% block body %}
+
+<div id="auth">
+    <h1 class="nodrag">Oops!</h1>
+    <p class="notice">You are doing that too much! Please try again in a few minutes.</p>
+    <a href="{% url 'index:login' %}"><button class="nodrag o">Login</button></a>
+    <a href="{% url 'index:home' %}"><button class="nodrag o">Home</button></a>
+</div>
+
+{% endblock body %}

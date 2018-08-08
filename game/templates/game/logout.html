@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Logout{% endblock title %}
+{% block head %}
+<script>
+    window.location.replace('{% url 'game:index' %}');
+</script>
+<style>
+    body {
+        background: white url('{% static 'game/paper2.jpg' %}');
+    }
+</style>
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+<link href="{% static 'base.css' %}" rel="stylesheet">
+<link href="{% static 'game/form.css' %}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock head %}
+{% block body %}
+
+<div id="auth">
+    <h1 class="nodrag">Logged out!</h1>
+    <p class="notice">If you are not redirected, please click the button below.</p>
+    <a href="{% url 'game:index' %}"><button class="nodrag o">Homepage</button></a>
+</div>
+
+{% endblock body %}

@@ -1,7 +1,13 @@
-from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth.forms import UserCreationForm, UsernameField, AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.forms import EmailField, EmailInput, BooleanField
 from django.utils.translation import gettext_lazy as _
+
+
+class CustomLoginForm(AuthenticationForm):
+    remember_me = BooleanField(label=_('Remember Me'),
+                               initial=False,
+                               required=False)
 
 
 class CustomUserCreationForm(UserCreationForm):

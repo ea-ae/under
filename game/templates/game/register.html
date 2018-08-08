@@ -24,28 +24,26 @@
     <form method="post" action="{% url 'game:register' %}">
         {% csrf_token %}
         <div id="form">
-            <form method="post" action="{% url 'game:login' %}">
-                {% csrf_token %}
-                {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-                <label class="nodrag" for="id_username">USERNAME</label><br>
-                {{ form.username }}
-                {{ form.username.errors }}
-                {% if user_error != '' %}<ul class="errorlist"><li>{{ user_error }}{% endif %}</li></ul><br>
-                <label class="nodrag" for="id_email">EMAIL (OPTIONAL)</label><br>
-                {{ form.email }}
-                {{ form.email.errors }}
-                <label class="nodrag" for="id_password1">PASSWORD</label><br>
-                {{ form.password1 }}
-                {{ form.password1.errors }}
-                <label class="nodrag" for="id_password2">CONFIRM PASSWORD</label><br>
-                {{ form.password2 }}
-                {{ form.password2.errors}}
-                <div class="nodrag">
-                    {{ form.remember_me }}
-                    <label for="id_remember_me">Remember Me</label>
-                </div>
-                <button class="nodrag o" type="submit">Register</button>
-            </form>
+            {% csrf_token %}
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            <label class="nodrag" for="id_username">USERNAME</label><br>
+            {{ form.username }}
+            {{ form.username.errors }}
+            {% if user_error != '' %}<ul class="errorlist"><li>{{ user_error }}{% endif %}</li></ul><br>
+            <label class="nodrag" for="id_email">EMAIL (OPTIONAL)</label><br>
+            {{ form.email }}
+            {{ form.email.errors }}
+            <label class="nodrag" for="id_password1">PASSWORD</label><br>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+            <label class="nodrag" for="id_password2">CONFIRM PASSWORD</label><br>
+            {{ form.password2 }}
+            {{ form.password2.errors}}
+            <div class="nodrag">
+                {{ form.remember_me }}
+                <label for="id_remember_me">Remember Me</label>
+            </div>
+            <button class="nodrag o" type="submit">Register</button>
             <p>Already have an account? <a href="{% url 'game:login' %}">Login</a></p>
         </div>
     </form>

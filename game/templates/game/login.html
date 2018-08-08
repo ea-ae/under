@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Login{% endblock title %}
+{% block head %}
+<style>
+    body {
+        background: white url('{% static 'game/paper2.jpg' %}');
+    }
+</style>
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+<link href="{% static 'base.css' %}" rel="stylesheet">
+<link href="{% static 'game/form.css' %}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock head %}
+{% block body %}
+
+<div id="auth">
+    <h1 class="nodrag">Login</h1>
+    {% if not user.is_authenticated %}
+        {% if next %}
+            <p class="notice">Please login to see this page.</p>
+        {% endif %}
+    {% else %}
+        {% if next %}
+            <p class="notice">Your account "{{ user.username }}" doesn't have access to this page.
+            To proceed, please login with an account that has access.</p>
+        {% endif %}
+    {% endif %}
+    {% if user.is_authenticated and not next %}
+        <p class="notice">You are already logged in as {{ user.username }}!</p>
+        <script>window.location.replace('{% url 'game:index' %}');</script>
+    {% else %}
+        {% if form.errors %}<p class="notice">Your username and password didn't match. Please try again.</p>{% endif %}
+        <div id="form">
+            <form method="post" action="{% url 'game:login' %}">
+                {% csrf_token %}
+                {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+                <label class="nodrag" for="id_username">USERNAME</label><br>
+                {{ form.username }}<br>
+                <label class="nodrag" for="id_password">PASSWORD</label><br>
+                {{ form.password }}<br>
+                <div class="nodrag">
+                    {{ form.remember_me }}
+                    <label for="id_remember_me">Remember Me</label>
+                </div>
+                <button class="nodrag o" type="submit">Login</button>
+            </form>
+            <p>Forgot your password? <a href="#">Get a new one</a></p>
+            <p>Not registered? <a href="{% url 'game:register' %}">Create an account</a></p>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock body %}
