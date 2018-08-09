@@ -6,7 +6,7 @@ gamedata = {
             'cards': {
                 # The numbering system is the following
                 # 1st number: The Chapter (contains multiple objectives & cards)
-                # 2nd number: The Mission (contains one objective & may contain multiple cads)
+                # 2nd number: The Mission (usually contains one objective sometimes multiple cards)
                 # 3rd number: Card Number (one for every card, each containing options; like dialogue)
                 '1.0.0': {
                     'options': [
@@ -28,6 +28,15 @@ gamedata = {
                         }
                     ],
                     'text': '<p>My identity is of no importance, and I would rather stay cautious for now. I got in contact with you and am ready to help you, and that is all that matters. Anyway, tell me once you are done with upgrading the headquarters.</p><p><b>Objective:</b> Visit the headquarters using the sidebar and purchase an upgrade of your choice.</p>'
+                },
+                '1.1.0': {
+                    'options': [
+                        {
+                            'text': 'Yes.',
+                            'conditional': True
+                        }
+                    ],
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person who would be happy to join and help you.</p><p>All members of your cult have different skills'
                 }
             }
         },

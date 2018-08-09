@@ -52,14 +52,14 @@ class WarfareConsumer(JsonWebsocketConsumer):
         Called when the customer sends data to us.
         """
         print('receive_json(): ' + str(content))
-        request_type = content.get('type', None)
+        request_type = content.get('type')
         if request_type == 'page_data':  # Client requests data to load a tab
-            self.page_data(content.get('page', None))  # Send the requested page over to page_data()
+            self.page_data(content.get('page'))  # Send the requested page over to page_data()
         elif request_type == 'card_choice':  # User clicked on an option in a card
-            self.process_choice({'contact': content.get('contact', None),
-                                 'choice': content.get('choice', None)})
+            self.process_choice({'contact': content.get('contact'),
+                                 'choice': content.get('choice')})
         elif request_type == 'create_cult':
-            self.create_cult(content.get('cult_data', None))
+            self.create_cult(content.get('cult_data'))
         else:
             self.user_error('Unknown message type received.')
 
@@ -93,10 +93,9 @@ class WarfareConsumer(JsonWebsocketConsumer):
                 # We can get the text and options of a text_title
                 contact = gamedata['contacts'][db_contact['id']]
                 card = contact['cards'][db_contact['card']]
-                options = []  # Generate options dictionary, with enabled/disabled keys
+                options = []
 
-                i = 0
-                for option in card['options']:
+                for i, option in enumerate(card['options']):
                     if option['conditional']:
                         options.append({
                             'text': option['text'],
@@ -107,7 +106,6 @@ class WarfareConsumer(JsonWebsocketConsumer):
                             'text': option['text'],
                             'enabled': True
                         })
-                    i += 1  # Increase choice index
 
                 contacts_data[contact['id']] = {
                     'name': contact['name'],
@@ -214,30 +212,40 @@ class WarfareConsumer(JsonWebsocketConsumer):
             return False
         cult = Cult.objects.get(owner=self.player)
         contacts = json.loads(cult.contacts)
+
         for i, contact in enumerate(contacts):
+            # Find the correct contact from the list in the database json
             if data['contact'] == contact['id']:
+                # Get the card information (like the available options) from data.py
                 card = gamedata['contacts'][data['contact']]['cards'][contact['card']]
+                # Check if chosen option number is bigger than the amount of options
                 if len(card['options']) > data['choice']:
+                    # Find what contact the choice was made for
                     if contact['id'] == 'anonymous':
+                        # Find what card the choice was made in
                         if contact['card'] == '1.0.0' or contact['card'] == '1.0.1':
                             if data['choice'] == 0:
                                 print('OPTION 0 SELECTED!')
                             elif data['choice'] == 1 and contact['card'] == '1.0.0':
                                 print('OPTION 1 SELECTED!')
-                                contacts[i]['card'] = '1.0.1'
-                                cult.contacts = json.dumps(contacts)
-                                cult.save()
-                                self.page_data('contacts')  # Send client updated contacts page data
+                                if option_check(contact['id']):  # Make sure that objective was completed
+                                    contacts[index]['card'] = '1.0.1'
+                                    cult.contacts = json.dumps(contacts)
+                                    cult.save()
+                                    self.page_data('contacts')  # Send client updated contacts page data
 
     @staticmethod
-    def option_check(contact_name, mission_name, choice_index):
+    def option_check(contact_name, card, choice_index):
         """
-        Checks whether an option should be enabled (mission completed) or disabled.
+        Checks whether an option should be enabled (mission completed) or not.
         """
         if contact_name == 'anonymous':
-            if mission_name == '1.0.0':
+            if card == '1.0.0' or card == '1.0.1':
                 if choice_index == 0:
-                    return False  # HQ is not implemented yet
+                    return True  # TEMPORARY! HQ not implemented yet.
+            elif card == '1.1.0':
+                if choice_index == 0:
+                    return True  # TEMPORARY!
 
     def user_error(self, error_message, severity='error'):
         """
