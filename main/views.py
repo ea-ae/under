@@ -34,7 +34,7 @@ def register(request):
                     request.session.set_expiry(1209600)  # 2 weeks
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
                 login(request, user)
-                return redirect('main:main')
+                return redirect('main:index')
     else:
         form = CustomUserCreationForm()
     return render(request, 'main/register.html', {'form': form, 'user_error': error_msg})

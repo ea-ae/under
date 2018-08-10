@@ -329,7 +329,7 @@ nav {
     .tabs__contacts {
         .contacts {
             @include nodrag;
-            min-width: 400px;
+            //min-width: 400px; //mobtodo
             padding: 10px;
             overflow-x: auto;
             white-space: nowrap; // Force all divs to stay on same row & overflow
@@ -392,8 +392,8 @@ nav {
 
         .contact-details {
             display: inline-block;
-            min-width: 50%;
-            min-width: 400px;
+            //min-width: 50%;
+            //min-width: 200px; //mobtodo
             margin-top: 20px;
             padding: 15px 5px 20px;
             box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -470,6 +470,169 @@ nav {
             }
         }
     }
+
+    .tabs__headquarters {
+        .headquarters__header {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+
+            img {
+                @include nodrag;
+                max-width: 30vw;
+            }
+
+            h1 {
+                margin-left: 2%;
+                color: rgb(100, 100, 100);
+                font-size: 6rem;
+            }
+        }
+
+        .headquarters__details {
+            display: inline-block;
+            min-width: 300px;
+            margin: 20px 0;
+            padding: 25px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+            h2 {
+                color: rgb(60, 60, 60);
+                font-size: 1.5rem;
+            }
+
+            .headquarters__stats {
+                display: inline-flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 25px;
+                
+                .stats__data {
+                    .cost {
+                        min-width: 150px;
+                        margin: 0 10px 10px 0;
+                        font-weight: 500;
+                        font-size: 1.3rem;
+                    }
+                }
+
+                .stats__text {
+                    font-size: 1.1rem;
+                    line-height: 1.5rem;
+                }
+            }
+        }
+
+        .headquarters__upgrades {
+            min-width: 310px;
+            max-width: 710px;
+            padding-right: 10px;
+            font-size: 0;
+
+            .upgrade {
+                position: relative;
+                display: inline-block;
+                height: 100px;
+                width: 100px;
+                margin: 0;
+                padding: 0;
+
+                img {
+                    @include nodrag;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .upgrade--selected {
+                overflow: hidden;
+                
+                img {
+                    filter: blur(5px);
+                }
+
+                button {
+                    position: absolute;
+                    height: auto;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+
+                    width: 80%;
+                    padding: 7px 0;
+                    color: $white;
+                    background-color: $light-black;
+                    border: none;
+                    font-size: 1rem;
+                    cursor: pointer;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Source: tobiasahlin.com/spinkit/
+
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    //margin: 25% auto;
+    height: 40px;
+    text-align: center;
+    font-size: 10px;
+}
+  
+.spinner > div {
+    background-color: rgb(52, 87, 213);
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+  
+.spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+  
+@-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+    20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% { 
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }  20% { 
+        transform: scaleY(1.0);
+        -webkit-transform: scaleY(1.0);
+    }
 }
 
 @media (max-width: 900px) {
@@ -488,10 +651,23 @@ nav {
         min-width: 30%;
     }
 }
+
 @media (max-width: 750px) {
+    .tabs__headquarters {
+        .headquarters__header h1 {
+            font-size: 4rem !important;
+        }
+
+        .headquarters__details .headquarters__stats {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+    }
+
     .sidebar {
         min-width: 40%;
     }
+
     .tabs-list li {
         padding-right: 30px;
     }

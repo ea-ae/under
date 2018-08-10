@@ -21,7 +21,15 @@ function setPage(data) { // Sets the data in the active tab
             messages.contacts = data.contacts;
             // TODO: localStorage to remember last selected contact
             messages.setActiveContact(messages.contacts.anonymous);
-        }
+        } else if (data.page == 'headquarters') {
+            if (firstHQVisit) {
+                firstHQVisit = false;
+                var upgrades = document.getElementsByClassName('upgrade');
+                for (var i = 0; i < upgrades.length; i++) {
+                    upgrades[i].addEventListener('click', headquarters.selectUpgrade);
+                }
+            }
+        } 
         // Show the tab's div now that all the data is set
         document.getElementsByClassName('tabs__' + data.page)[0].style.display = 'block';
     }
@@ -193,10 +201,32 @@ var messages = {
     }
 };
 
+var headquarters = {
+    selected: null,
+    selectUpgrade: function(e) {
+        if (headquarters.selected !== null) {
+            headquarters.selected.classList.remove('upgrade--selected');
+            headquarters.selected.children[1].remove();
+        }
+
+        if (headquarters.selected !== this) {
+            var btn = document.createElement('button');
+            btn.innerHTML = 'Buy';
+            this.appendChild(btn);
+
+            this.classList.add('upgrade--selected');
+            headquarters.selected = this;
+        } else {
+            headquarters.selected = null;
+        }
+    }
+}
+
 var connected = false,
     visible = true,
     animationFinished = true,
     tabSwitchFinished = true,
+    firstHQVisit = true,
     active = 'home';
 
 window.addEventListener('load', function() { // Once page loaded and parsed
@@ -226,7 +256,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
     });
 
     socket.onopen = function() {
-        console.debug('WebSocket connection established.');
+        document.getElementsByClassName('spinner')[0].remove();
         connected = true; // Allow tab switching etc.
 
         // Set 'home' as the initial tab

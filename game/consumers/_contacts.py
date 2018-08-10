@@ -15,22 +15,16 @@ def contacts_data(self):
         options = []
 
         for i, option in enumerate(data_card['options']):
-            options.append({
-                'text': option['text'],
-                'enabled': self.option_check(data_contact['name'], db_contact['card'], i)
-            })
-            '''
             if option['conditional']:
                 options.append({
                     'text': option['text'],
-                    'enabled': self.option_check(contact['name'], db_contact['card'], i)
+                    'enabled': self.option_check(data_contact['id'], db_contact['card'], i)
                 })
             else:
                 options.append({
                     'text': option['text'],
                     'enabled': True
                 })
-            '''
 
         data_contacts[data_contact['id']] = {
             'name': data_contact['name'],
@@ -59,28 +53,36 @@ def process_choice(self, data):
         self.user_error('Invalid choice process data.')
         return False
     cult = Cult.objects.get(owner=self.player)
-    contacts = json.loads(cult.contacts)
+    db_contacts = json.loads(cult.contacts)
 
-    for i, contact in enumerate(contacts):
+    for i, db_contact in enumerate(db_contacts):
         # Find the correct contact from the list in the database json
-        if data['contact'] == contact['id']:
+        if data['contact'] == db_contact['id']:
             # Get the card information (like the available options) from data.py
-            card = gamedata['contacts'][data['contact']]['cards'][contact['card']]
+            data_card = gamedata['contacts'][data['contact']]['cards'][db_contact['card']]
             # Check if chosen option number is bigger than the amount of options
-            if len(card['options']) > data['choice']:
+            if len(data_card['options']) > data['choice']:
+                # Make sure that the objective has been completed
+                if data_card['options'][data['choice']]['conditional']:
+                    if not self.option_check(db_contact['id'], db_contact['card'], data['choice']):
+                        # False returned, objective is not completed
+                        self.user_error('User chose a disabled option.')
+                        return False
                 # Find what contact the choice was made for
-                if contact['id'] == 'anonymous':
+                if db_contact['id'] == 'anonymous':
                     # Find what card the choice was made in
-                    if contact['card'] == '1.0.0' or contact['card'] == '1.0.1':
+                    if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
                         if data['choice'] == 0:
-                            print('OPTION 0 SELECTED!')
-                        elif data['choice'] == 1 and contact['card'] == '1.0.0':
-                            print('OPTION 1 SELECTED!')
-                            # if option_check(contact['id']):  # Make sure that objective was completed
-                            contacts[i]['card'] = '1.0.1'
-                            cult.contacts = json.dumps(contacts)
-                            cult.save()
-                            self.page_data('contacts')  # Send client updated contacts page data
+                            self.set_card(cult, db_contacts, i, '1.1.0')
+                        elif data['choice'] == 1:
+                            self.set_card(cult, db_contacts, i, '1.0.1')
+                    if db_contact['card'] == '1.1.0' or db_contact['card'] == '1.1.1':
+                        if data['choice'] == 0:
+                            self.set_card(cult, db_contacts, i, '1.2.0')
+                        if data['choice'] == 1:
+                            self.set_card(cult, db_contacts, i, '1.1.1')
+                    if db_contact['card'] == '1.2.0':
+                        pass
 
 
 def option_check(self, contact_name, card, choice_index):
@@ -90,7 +92,16 @@ def option_check(self, contact_name, card, choice_index):
     if contact_name == 'anonymous':
         if card == '1.0.0' or card == '1.0.1':
             if choice_index == 0:
-                return True  # TEMPORARY! HQ not implemented yet.
-        elif card == '1.1.0':
-            if choice_index == 0:
-                return True  # TEMPORARY!
+                return True
+        elif (card == '1.1.0' or card == '1.1.1') and choice_index == 0:
+            return True
+        elif card == '1.2.0':
+            return False
+    return False
+
+
+def set_card(self, cult, db_contacts, i, card_value):
+    db_contacts[i]['card'] = card_value
+    cult.contacts = json.dumps(db_contacts)
+    cult.save()
+    self.page_data('contacts')

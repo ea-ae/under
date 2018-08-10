@@ -17,6 +17,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
+    <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
     <div class="nav-flex">
         <nav>
             <div class="hamburger hamburger--collapse is-active">
@@ -155,30 +162,12 @@
                     </div>
                     <div class="contact-details">
                         <div class="contact-details__top">
-                            <img src="{% static 'game/avatar-anonymous.png' %}">
-                            <h1 class="contact-details__title">Anonymous</h1>
-                            <div class="contact-details__text">
-                                <p>
-                                    So, you're looking to start a cult? I'll help you
-                                    get started. Don't worry about any payments for now,
-                                    you'll return the favor when the time comes.
-                                </p>
-                                <p>
-                                    First of all, you'll need a building for your cult to
-                                    operate in. I found you a quiet place in the corner of
-                                    the city, nobody should bother you there. Check it out
-                                    and tell me once you're ready.
-                                </p>
-                                <p>
-                                    <b>Objective:</b> Visit the headquarters using the
-                                    sidebar and then return to this tab.
-                                </p>
-                            </div>
+                            <img src="https://via.placeholder.com/120x139/fff/fff.png">
+                            <h1 class="contact-details__title"></h1>
+                            <div class="contact-details__text"></div>
                         </div>
                         <div class="contact-details__options">
-                            <ul>
-                                <li>I'm ready, now what?</li><br>
-                            </ul>
+                            <ul></ul>
                         </div>
                     </div>
                 </div>
@@ -195,9 +184,90 @@
                     promote them for more loyalty.
                 </div>
                 <div class="tabs__headquarters">
-                    Headquarters<br><br>
-                    In this tab you can upgrade your HQ to protect yourself against
-                    potential intruders or gain bonuses.
+                    <div class="headquarters__header">
+                        <img src="{% static 'game/images/headquarters.png' %}">
+                        <h1>HQ</h1>
+                    </div>
+                    <div class="headquarters__container">
+                        <div class="headquarters__details">
+                            <h2>Select upgrade to view details</h2>
+                            <div class="headquarters__stats">
+                                <div class="stats__data">
+                                    <p class="cost">$0</p>
+                                </div>
+                                <div class="stats__text">
+                                    <p>Select an upgrade to view more information about it.</p>
+                                    <p>You can only have a limited amount of upgrades at a time.</p>
+                                    <p>Removing an upgrade costs as much as adding it.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headquarters__upgrades">
+                            <div class="upgrade upgrade--motionsensors">
+                                <img src="{% static 'game/images/motionsensors.png' %}">
+                            </div>
+                            <div class="upgrade upgrade--windowbars">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade upgrade--cctv">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                            <div class="upgrade">
+                                <img src="http://via.placeholder.com/100x100">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tabs__marketplace">
                     Marketplace<br><br>
