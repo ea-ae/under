@@ -8,6 +8,7 @@
     <link href="{% static 'favicon.ico' %}" rel="shortcut icon">
     <link href="{% static 'reset.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet">
+    <link href="{% static 'game/alerty/alerty.css' %}" rel="stylesheet">
     <link href="{% static 'game/style.css' %}" rel="stylesheet">
     <meta name="description" content="Cult Warfare is a text-based game about ruling a cult, while staying anonymous.">
     <meta name="author" content="Blacklock">
@@ -31,7 +32,9 @@
                     <div class="hamburger-inner"></div>
                 </div>
             </div>
-            Cult Warfare
+            <span class="nav__title">Cult Warfare</span>
+            <!--<span class="nav__money"></span>-->
+            <span class="nav__logout">Log out</span>
         </nav>
         <div id="game">
             <div class="sidebar">
@@ -44,6 +47,8 @@
                 <p class="tab-title">CULT</p>
                 <ul class="tabs-list">
                     <li id="tabs-list__members">Members</li>
+                    <li id="tabs-list__research">Research</li>
+                    <li id="tabs-list__societies">Societies</li>
                 </ul>
                 <p class="tab-title">LOCATIONS</p>
                 <ul class="tabs-list">
@@ -105,30 +110,30 @@
                     <div class="create-cult">
                         <h1>Create a cult</h1>
                         <form id="create-cult__form">
-                            <label for="cult-name">Pick a name for your cult (5 to 25 characters).</label>
+                            <label for="cult-name">Pick a name for your cult (4 to 25 characters).</label>
                             <input type="text" name="cult-name" id="cult-name" required maxlength="25"
-                            placeholder="Cult name" pattern="[a-zA-Z ]{5,25}">
+                            placeholder="Cult name" pattern="[a-zA-Z ]{4,25}">
                             <label>Choose the type of your cult.</label>
                             <div class="cult-type">
                                 <label class="cult-type__option">
                                     <input type="radio" name="cult-type" value="chi" required checked>
                                     <div>
-                                        <b>The Chi</b>
-                                        <p><i>Make them trust.</i> Cultists will be more loyal.</p>
+                                        <b>The Chi Χ</b>
+                                        <p><i>Wealth.</i> Profits will be bigger.</p>
                                     </div>
                                 </label><br>
                                 <label class="cult-type__option">
                                     <input type="radio" name="cult-type" value="psi" required>
                                     <div>
-                                        <b>The Psi</b>
-                                        <p><i>Make them want.</i> Cultist recruitment will be faster.</p>
+                                        <b>The Psi Ψ</b>
+                                        <p><i>Expansion.</i> Cultist recruitment will be faster.</p>
                                     </div>
                                 </label><br>
                                 <label class="cult-type__option">
                                     <input type="radio" name="cult-type" value="omega" required>
                                     <div>
-                                        <b>The Omega</b>
-                                        <p><i>Make them believe.</i> Hiring cultists will be cheaper.</p>
+                                        <b>The Omega Ω</b>
+                                        <p><i>Technology.</i> Researching will be quicker.</p>
                                     </div>
                                 </label>
                             </div><br><br>
@@ -139,12 +144,7 @@
                 <div class="tabs__contacts">
                     <!-- Images are 120x139 -->
                     <div class="contacts">
-                        <div class="contact contact--detective">
-                            <div class="contact__wrapper">
-                                <img src="{% static 'game/images/avatar-detective.png' %}">
-                            </div>
-                        </div>
-                        <div class="contact contact--anonymous" data-notifications="1">
+                        <div class="contact contact--anonymous">
                             <div class="contact__wrapper">
                                 <img src="{% static 'game/images/avatar-anonymous.png' %}">
                             </div>
@@ -157,6 +157,11 @@
                         <div class="contact contact--merchant">
                             <div class="contact__wrapper">
                                 <img src="{% static 'game/images/avatar-merchant.png' %}">
+                            </div>
+                        </div>
+                        <div class="contact contact--mafioso">
+                            <div class="contact__wrapper">
+                                <img src="{% static 'game/images/avatar-detective.png' %}">
                             </div>
                         </div>
                     </div>
@@ -183,22 +188,33 @@
                     options about him. For example, you could teach them new skills or
                     promote them for more loyalty.
                 </div>
+                <div class="tabs__research">
+                    Research<br><br>
+                    Spend research points and learn new technologies here.
+                </div>
+                <div class="tabs__societies">
+                    Societies<br><br>
+                    Join different societies and work your way up their ranks.
+                </div>
                 <div class="tabs__headquarters">
                     <div class="headquarters__header">
                         <img src="{% static 'game/images/headquarters.png' %}">
                         <h1>HQ</h1>
                     </div>
+                    <p class="money"></p>
                     <div class="headquarters__container">
-                        <div class="headquarters__details">
-                            <h2>Select upgrade to view details</h2>
-                            <div class="headquarters__stats">
-                                <div class="stats__data">
-                                    <p class="cost">$0</p>
-                                </div>
-                                <div class="stats__text">
-                                    <p>Select an upgrade to view more information about it.</p>
-                                    <p>You can only have a limited amount of upgrades at a time.</p>
-                                    <p>Removing an upgrade costs as much as adding it.</p>
+                        <div class="headquarters__details__wrapper">
+                            <div class="headquarters__details">
+                                <h2>Select an upgrade</h2>
+                                <div class="headquarters__stats">
+                                    <div class="stats__data">
+                                        <p class="cost">$0</p>
+                                    </div>
+                                    <div class="stats__text">
+                                        <p>Select an upgrade to view more information about it.</p>
+                                        <p>You can only have a limited amount of upgrades at a time.</p>
+                                        <p>If you delete an upgrade, you do not get your money back.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,64 +223,28 @@
                                 <img src="{% static 'game/images/motionsensors.png' %}">
                             </div>
                             <div class="upgrade upgrade--windowbars">
-                                <img src="http://via.placeholder.com/100x100">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
                             <div class="upgrade upgrade--cctv">
-                                <img src="http://via.placeholder.com/100x100">
+                                <img src="{% static 'game/images/cctv.png' %}">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--ups">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--insurance">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--doorsystem">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--jammers">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--fencing">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
-                            </div>
-                            <div class="upgrade">
-                                <img src="http://via.placeholder.com/100x100">
+                            <div class="upgrade upgrade--lockdownsystem">
+                                <img src="http://via.placeholder.com/100x100/fdfdfb/000">
                             </div>
                         </div>
                     </div>
@@ -287,7 +267,10 @@
                 <div class="tabs__wiki">
                     Wiki<br><br>
                     From this page the players will be able to find information about
-                    many aspects of the game.
+                    many aspects of the game.<br>
+                    <b>CSS Loading Animation</b> by Tobias Ahlin (tobiasahlin.com/spinkit)<br>
+                    <b>Custom Dialog Boxes</b> by undead25 (github.com/undead25/alerty)<br>
+                    <b>Reconnecting Websocket</b> by Joe Walnes (github.com/joewalnes/reconnecting-websocket)<br>
                 </div>
                 <div class="tabs__rules">
                     Rules<br><br>
@@ -296,7 +279,8 @@
             </div>
         </div>
     </div>
-    <script src="{% static 'game/reconnecting-websocket-min.js' %}"></script>
+    <script src="{% static 'game/reconnecting-websocket/rws.js' %}"></script>
+    <script src="{% static 'game/alerty/alerty.js' %}"></script>
     <script src="{% static 'game/warfare.js' %}"></script>
 </body>
 </html>

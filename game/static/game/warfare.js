@@ -1,43 +1,60 @@
+// Shortcut function names
+let getByClass = function(className) { return document.getElementsByClassName(className); }
+let getById = function(id) { return document.getElementById(id); }
+let getByQuery = function(query) { return document.querySelector(query); }
+
 function setPage(data) { // Sets the data in the active tab
-    if (data.page == active) { // Make sure we're sent the correct page
-        if (data.page == 'home') {
-            if ('cult' in data) { // Whether this user already has a cult
-                document.querySelector('.tabs__home .stats').style.display = 'block';
-                document.querySelector('.tabs__home .create-cult').style.display = 'none';
+    if (data.page != active) { // Make sure we're sent the correct page
+        return False;
+    } 
+    if (data.page == 'home') {
+        if ('cult' in data) { // Whether this user already has a cult
+            getByQuery('.tabs__home .stats').style.display = 'block';
+            getByQuery('.tabs__home .create-cult').style.display = 'none';
 
-                document.querySelector('.tabs__home .username span').innerHTML = data.username;
-                document.querySelector('.tabs__home .cult-name').innerHTML = data.cult.name;
+            getByQuery('.tabs__home .username span').innerHTML = data.username;
+            getByQuery('.tabs__home .cult-name').innerHTML = data.cult.name;
+            getByQuery('.tabs__home .type .val').innerHTML = data.cult.type;
+            getByQuery('.tabs__home .rep .val').innerHTML = data.cult.rep;
+            let money = currency.format(data.cult.money);
+            getByQuery('.tabs__home .money .val').innerHTML = money;
+            getByQuery('.tabs__headquarters .money').innerHTML = 'Balance: ' + money;
+            //getByQuery('.nav__money').innerHTML = currency.format(data.cult.money);
+        } else {
+            // Code to create a new cult
+            getByQuery('.tabs__home .stats').style.display = 'none';
+            getByQuery('.tabs__home .create-cult').style.display = 'block';
+        }
+    } else if (data.page == 'contacts') {
+        messages.contacts = data.contacts;
+        // TODO: localStorage to remember last selected contact
+        messages.setActiveContact(messages.selectedContact);
+    } else if (data.page == 'headquarters') {
+        if (firstHQVisit) {
+            firstHQVisit = false;
+            let upgrades = getByClass('upgrade');
+            for (let i = 0; i < upgrades.length; i++) {
+                upgrades[i].addEventListener('click', headquarters.selectUpgrade);
+            }
+        }
 
-                document.querySelector('.tabs__home .type .val').innerHTML = data.cult.type;
-                document.querySelector('.tabs__home .money .val').innerHTML = '$' + data.cult.money;
-                document.querySelector('.tabs__home .rep .val').innerHTML = data.cult.rep;
-            } else {
-                // Code to create a new cult
-                document.querySelector('.tabs__home .stats').style.display = 'none';
-                document.querySelector('.tabs__home .create-cult').style.display = 'block';
-            }
-        } else if (data.page == 'contacts') {
-            console.debug(data.contacts);
-            messages.contacts = data.contacts;
-            // TODO: localStorage to remember last selected contact
-            messages.setActiveContact(messages.contacts.anonymous);
-        } else if (data.page == 'headquarters') {
-            if (firstHQVisit) {
-                firstHQVisit = false;
-                var upgrades = document.getElementsByClassName('upgrade');
-                for (var i = 0; i < upgrades.length; i++) {
-                    upgrades[i].addEventListener('click', headquarters.selectUpgrade);
-                }
-            }
-        } 
-        // Show the tab's div now that all the data is set
-        document.getElementsByClassName('tabs__' + data.page)[0].style.display = 'block';
+        for (let i = 0; i < data.upgrades.length; i++) {
+            getByClass('upgrade--' + data.upgrades[i])[0].classList.add('upgrade--owned');
+        }
+    } 
+    // Show the tab's div now that all the data is set
+    getByClass('tabs__' + data.page)[0].style.display = 'block';
+    // Some after-display code
+    if (data.page == 'headquarters') {
+        let wrapper = getByClass('headquarters__details__wrapper')[0];
+        console.log(wrapper.offsetHeight);
+        wrapper.style.minHeight = wrapper.offsetHeight + 'px';
     }
 }
 
 function setActiveTab(event, checkIfSame=true) {
     // Get pressed element's ID and extract the part after __
-    var pid = event.target.getAttribute('id').split('__')[1];
+    let pid = event.target.getAttribute('id').split('__')[1];
     if (tabSwitchFinished && (active != pid || !checkIfSame)) {
         tabSwitchFinished = false;
 
@@ -47,9 +64,9 @@ function setActiveTab(event, checkIfSame=true) {
         }));
 
         // Remove 'active-tab' from previous active tab
-        document.getElementById('tabs-list__' + active).classList.remove('active-tab');
+        getById('tabs-list__' + active).classList.remove('active-tab');
         // Hide content from previous active tab
-        document.getElementsByClassName('tabs__' + active)[0].style.display = 'none';
+        getByClass('tabs__' + active)[0].style.display = 'none';
         // Add 'active-tab' to the clicked tab
         event.target.classList.add('active-tab');
         // Set clicked tab as the new active tab
@@ -61,15 +78,18 @@ function setActiveTab(event, checkIfSame=true) {
     }
 }
 
-var messages = {
+let messages = {
+    selectedContact: 'anonymous',
+    options: [],
     setActiveContact: function(contact) {
-        var i;
+        let i;
+        console.log(contact);
+        contact = messages.contacts[contact];
         messages.selectedContact = contact.id;
-        document.getElementsByClassName('contact-details__text')[0].innerHTML = contact.text;
-        document.getElementsByClassName('contact-details__title')[0].innerHTML = contact.name;
-        var optionsList = document.querySelector('.contact-details__options ul');
+        getByClass('contact-details__text')[0].innerHTML = contact.text;
+        getByClass('contact-details__title')[0].innerHTML = contact.name;
+        let optionsList = getByQuery('.contact-details__options ul');
         optionsList.innerHTML = '';
-
         for (i = 0; i < contact.options.length; i++) {
             optionsList.innerHTML += '<li' +
             (contact.options[i].enabled ? '' : ' class="disabled-text"') +
@@ -87,8 +107,8 @@ var messages = {
             optionsList.children[i].addEventListener('click', messages.selectOption);
         }
 
-        var img = document.getElementsByClassName('contact--' + contact.id)[0].children[0].children[0];
-        document.querySelector('.contact-details__top img').src = img.src;
+        let img = getByClass('contact--' + contact.id)[0].children[0].children[0];
+        getByQuery('.contact-details__top img').src = img.src;
     },
     selectOption: function(e) { // Click handler
         socket.send(JSON.stringify({
@@ -97,157 +117,221 @@ var messages = {
             choice: messages.options.indexOf(e.target)
         }));
     },
-    selectedContact: 'anonymous',
-    options: [],
     contacts: {
-        // THE CONTACTS BELOW ARE MERELY EXAMPLES
-        detective: {
-            name: 'The Detective',
-            id: 'detective',
-            options: [{
-                text: 'Consider it done.',
-                enabled: true
-            }, {
-                text: 'Find someone else, we have other things to do.',
-                enabled: true
-            }],
-            text: `
-            <p>
-                Hello, we have an individual that we need to get rid of. He knows that we
-                are coming, so he has barricaded himself in his apartment. We know that he
-                has a hidden camera at the front door and that he keeps a handgun with him
-                at all times.
-            </p>
-            <p>
-                His name is Jonathan Brease and he lives on the 6th floor of Gremlin Street 38,
-                in apartment 72. I don't care how dirty you do the job, just do it fast. Are you in?
-            </p>
-            <p>
-                <b>Objective:</b> Assassinate Jonathan Brease.
-            </p>
-            `
-        },
         anonymous: {
             name: 'Anonymous',
             id: 'anonymous',
             options: [{
-                text: 'I\'m ready, now what?',
+                text: 'Loading...',
                 enabled: false
-            }, {
-                text: 'Tell me more.',
-                enabled: true
             }],
-            text: `
-            <p>
-                So, you're looking to start a cult? I'll help you
-                get started. Don't worry about any payments for now,
-                you'll return the favor when the time comes.
-            </p>
-            <p>
-                First of all, you'll need a building for your cult to
-                operate in. I found you a quiet place in the corner of
-                the city, nobody should bother you there. Check it out
-                and tell me once you're ready.
-            </p>
-            <p>
-                <b>Objective:</b> Visit the headquarters using the
-                sidebar and then return to this tab.
-            </p>
-            `
+            text: '<p>Loading...</p>'
         },
-        assistant: {
-            name: 'The Assistant',
-            id: 'assistant',
-            options: [{
-                text: 'Let\'s do it then - better safe than sorry (pay $9500).',
-                enabled: true
-            }, {
-                text: 'Thanks for the suggestion, but that is not a priority right now.',
-                enabled: true
-            }],
-            text: `
-            <p>
-                The police visited our headquarters today, due to several neighbor's complaints
-                about the loud noises that are constantly being heard on our property. From
-                the descriptions of the noise, it is quite clear that they were hearing us
-                opening the portal to The Underworld.
-            </p>
-            <p>
-                We should probably invest in a soundproof room for our Underworld portal to
-                avoid further attention from the neighbors and police.
-            </p>
-            `
-        },
-        merchant: {
-            name: 'The Merchant',
-            id: 'merchant',
-            options: [{
-                text: 'I got you one.',
-                enabled: false
-            }, {
-                text: 'Maybe another time.',
-                enabled: true
-            }],
-            text: `
-            <p>
-                I have a customer who is in need of a hostile demon. He didn't tell me
-                why, but knowing him, it's probably nothing good.
-            </p>
-            <p>
-                <b>Objective:</b> Find a hostile 'Demon in a Bottle'.
-            </p>
-            `
-        }
     }
 };
 
-var headquarters = {
+let headquarters = {
     selected: null,
+    btn: null,
     selectUpgrade: function(e) {
         if (headquarters.selected !== null) {
+            headquarters.btn.removeEventListener('click', headquarters.buyUpgrade);
             headquarters.selected.classList.remove('upgrade--selected');
             headquarters.selected.children[1].remove();
         }
 
         if (headquarters.selected !== this) {
-            var btn = document.createElement('button');
-            btn.innerHTML = 'Buy';
+            let btn = document.createElement('button');
+
+            if (this.classList.contains('upgrade--owned')) {
+                btn.innerHTML = 'Delete';
+            } else {
+                btn.innerHTML = 'Buy';
+            }
+
+            btn.addEventListener('click', headquarters.manageUpgrade);
             this.appendChild(btn);
+            headquarters.btn = btn;
 
             this.classList.add('upgrade--selected');
             headquarters.selected = this;
+            headquarters.setData(headquarters.upgrades[this.classList[1].split('--')[1]]);
         } else {
             headquarters.selected = null;
+            headquarters.setData({
+                name: 'Select an upgrade',
+                id: 'none',
+                cost: 0,
+                description: '<p>Select an upgrade to view more information about it.</p> \
+                <p>You can only have a limited amount of upgrades at a time.</p> \
+                <p>If you delete an upgrade, you do not get your money back.</p>'
+            });
         }
-    }
+    },
+    manageUpgrade: function(e) { // Buy or sell an upgrade
+        let upgradeDiv = this.parentElement;
+        if (this.parentElement.classList.contains('upgrade--owned')) {
+            alerty.confirm('Are you sure you want to delete this upgrade?\n \
+            You cannot revert this!', {
+                title: 'Confirmation',
+                okLabel: 'Yes',
+                cancelLabel: 'No'
+            }, function() {
+                socket.send(JSON.stringify({
+                    type: 'hq_upgrade',
+                    command: 'delete',
+                    item: upgradeDiv.classList[1].split('--')[1]
+                }));
+
+                upgradeDiv.classList.remove('upgrade--owned');
+
+                alerty.toasts('Upgrade deleted!', {
+                    bgColor: '#35444e',
+                    fontColor: '#fefefe',
+                    time: 4000
+                });
+            });
+        } else {
+            let money = getByQuery('.tabs__headquarters .money').innerHTML.substring(10);
+            money = parseInt(money.split(',').join(''));
+            let upgradeCost = 
+                headquarters.upgrades[headquarters.selected.classList[1].split('--')[1]].cost;
+
+            if (upgradeCost > money) {
+                alerty.alert('You do not have enough money!', {
+                    title: 'Oops!',
+                    okLabel: 'OK'
+                })
+
+                return false;
+            }
+
+            alerty.confirm('Are you sure you want to buy this upgrade?', {
+                title: 'Confirmation',
+                okLabel: 'Yes',
+                cancelLabel: 'No'
+            }, function() {
+                socket.send(JSON.stringify({
+                    type: 'hq_upgrade',
+                    command: 'buy',
+                    item: upgradeDiv.classList[1].split('--')[1]
+                }));
+
+                upgradeDiv.classList.add('upgrade--owned');
+
+                getByQuery('.tabs__headquarters .money').innerHTML = 
+                    'Balance: ' + currency.format(money - upgradeCost);
+
+                alerty.toasts('Upgrade bought!', {
+                    bgColor: '#35444e',
+                    fontColor: '#fefefe',
+                    time: 4000
+                });
+            });
+        }
+    },
+    setData: function(upgrade) { // Fill in the detail text spots
+        getByQuery('.headquarters__details h2').innerHTML = upgrade.name;
+        getByQuery('.stats__data .cost').innerHTML = currency.format(upgrade.cost);
+        getByQuery('.stats__text').innerHTML = '<p>' + upgrade.description + '</p>';
+    },
+    upgrades: {
+        'windowbars': {
+            'name': 'Window Security Bars',
+            'id': 'windowbars',
+            'cost': 2500,
+            'description': 'Prevent intruders from entering through the windows - unless they have a metal cutter.'
+        },
+        'motionsensors': {
+            'name': 'Motion Sensors',
+            'id': 'motionsensors',
+            'cost': 5000,
+            'description': 'Detect movement in unauthorized areas. Keep in mind that experienced thiefs have methods for getting past them.'
+        },
+        'cctv': {
+            'name': 'CCTV System',
+            'id': 'cctv',
+            'cost': 7500,
+            'description': 'Set up security cameras around the area. You will need guards to monitor the cameras, though.'
+        },
+        'ups': {
+            'name': 'Uninterruptible Power Supply',
+            'id': 'ups',
+            'cost': 10000,
+            'description': 'An emergency power supply in case the power goes out for any reason.'
+        },
+        'insurance': {
+            'name': 'Insurance',
+            'id': 'insurance',
+            'cost': 25000,
+            'description': 'In case of a successful burglary, you get back 10% of money lost.'
+        },
+        'doorsystem': {
+            'name': 'Door Access Control System',
+            'id': 'doorsystem',
+            'cost': 75000,
+            'description': 'All employees are given keycards that are used to open doors. Even though it makes a lockpicker useless, a technician could bypass it easily.'
+        },
+        'jammers': {
+            'name': 'Signal Jammers',
+            'id': 'jammers',
+            'cost': 100000,
+            'description': 'Block any incoming signals to protect against hackers.'
+        },
+        'fencing': {
+            'name': 'Perimeter Fencing',
+            'id': 'fencing',
+            'cost': 125000,
+            'description': 'Barbed wire metal fences that circle the perimeter to prevent unauthorized property access.'
+        },
+        'lockdownsystem': {
+            'name': 'Emergency Lockdown System',
+            'id': 'lockdownsystem',
+            'cost': 150000,
+            'description': 'In case of a detected intrusion, block all doors and windows from opening.'
+        }
+    },
 }
 
-var connected = false,
+let currency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+}),
+    connected = false,
     visible = true,
     animationFinished = true,
     tabSwitchFinished = true,
     firstHQVisit = true,
-    active = 'home';
+    active = 'home',
+    socket;
 
 window.addEventListener('load', function() { // Once page loaded and parsed
-    messages.setActiveContact(messages.contacts.anonymous);
+    // Shortcut function names again, cause who cares
+    let getByClass = function(className) { return document.getElementsByClassName(className); }
+    let getById = function(id) { return document.getElementById(id); }
+    let getByQuery = function(query) { return document.querySelector(query); }
 
-    document.getElementsByClassName("contact--detective")[0].addEventListener('click', function() {
-        messages.setActiveContact(messages.contacts.detective);
-    });
+    messages.setActiveContact('anonymous');
 
-    document.getElementsByClassName("contact--anonymous")[0].addEventListener('click', function() {
-        messages.setActiveContact(messages.contacts.anonymous);
-    });
-    document.getElementsByClassName("contact--assistant")[0].addEventListener('click', function() {
-        messages.setActiveContact(messages.contacts.assistant);
-    });
-    document.getElementsByClassName("contact--merchant")[0].addEventListener('click', function() {
-        messages.setActiveContact(messages.contacts.merchant);
+    getByClass("contact--mafioso")[0].addEventListener('click', function() {
+        messages.setActiveContact('mafioso');
     });
 
-    var ws_scheme = window.location.protocol == 'https:' ? 'wss' : 'ws';
-    var ws_path = ws_scheme + '://' + window.location.host + '/ws/warfare';
+    getByClass("contact--anonymous")[0].addEventListener('click', function() {
+        messages.setActiveContact('anonymous');
+    });
+    getByClass("contact--assistant")[0].addEventListener('click', function() {
+        messages.setActiveContact('assistant');
+    });
+    getByClass("contact--merchant")[0].addEventListener('click', function() {
+        messages.setActiveContact('merchant');
+    });
+
+    let ws_scheme = window.location.protocol == 'https:' ? 'wss' : 'ws',
+        ws_path = ws_scheme + '://' + window.location.host + '/ws/warfare',
+        hamburger = getByQuery('nav .hamburger');
+    
     socket = new ReconnectingWebSocket(ws_path, null, {
         debug: true,
 		reconnectInterval: 500000,
@@ -256,14 +340,15 @@ window.addEventListener('load', function() { // Once page loaded and parsed
     });
 
     socket.onopen = function() {
-        document.getElementsByClassName('spinner')[0].remove();
+        console.log(getByClass('spinner'));
+        getByClass('spinner')[0].remove();
         connected = true; // Allow tab switching etc.
 
         // Set 'home' as the initial tab
-        setActiveTab({target: document.getElementById('tabs-list__home')}, false);
+        setActiveTab({target: getById('tabs-list__home')}, false);
 
-        var tabs = document.querySelectorAll('.tabs-list li');
-        for (var i = 0; i < tabs.length; i++) {
+        let tabs = document.querySelectorAll('.tabs-list li');
+        for (let i = 0; i < tabs.length; i++) {
             tabs[i].addEventListener('click', setActiveTab);
         }
     }
@@ -277,36 +362,45 @@ window.addEventListener('load', function() { // Once page loaded and parsed
     }
 
     socket.onmessage = function(message) { // The consumer sends us a message
-        var data = JSON.parse(message.data);
+        let data = JSON.parse(message.data);
         if (data.type == 'page_data') {
             setPage(data); // We are sent data about a requested page
         } else if (data.type == 'page_redirect') { // Server wants to change the active tab
-            setActiveTab({target: document.getElementById('tabs-list__' + data.page)});
+            setActiveTab({target: getById('tabs-list__' + data.page)});
         }
     }
 
-    document.getElementById('create-cult__form').addEventListener('submit', function(e) {
+    getById('create-cult__form').addEventListener('submit', function(e) {
         e.preventDefault(); // Don't submit the form, instead send it over websockets
         socket.send(JSON.stringify({
             type: 'create_cult',
             cult_data: {
-                cult_name: document.getElementById('cult-name').value,
-                cult_type: document.querySelector('input[name="cult-type"]:checked').value
+                cult_name: getById('cult-name').value,
+                cult_type: getByQuery('input[name="cult-type"]:checked').value
             }
         }));
 
         // Redirect user to another page
 
-        setActiveTab({target: document.getElementById('tabs-list__contacts')});
+        setActiveTab({target: getById('tabs-list__contacts')});
     });
 
-    var hamburger = document.querySelector('nav .hamburger');
+    getByClass('nav__logout')[0].addEventListener('click', function() {
+        alerty.confirm('Are you sure you want to log out?', {
+            title: 'Confirmation',
+            okLabel: 'Yes',
+            cancelLabel: 'No'
+        }, function() {
+            window.location.replace('../logout');
+        });
+    });
+
     hamburger.addEventListener('click', function() { // Open/close sidebar
         if (animationFinished) {
 
             animationFinished = false;
             this.classList.toggle('is-active'); // Toggles between two hamburger icons
-            var tabs = document.querySelector('.sidebar');
+            let tabs = getByQuery('.sidebar');
             tabs.classList.toggle('sidebar--visible');
 
 
@@ -325,7 +419,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
 
     window.onresize = function() {
         if (!visible) {
-            var tabs = document.querySelector('.sidebar--visible');
+            let tabs = getByQuery('.sidebar--visible');
             tabs.style.marginLeft = '-' + (tabs.offsetWidth + 1) + 'px';
         }
     };

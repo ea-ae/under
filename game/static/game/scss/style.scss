@@ -35,6 +35,7 @@ body {
 
 nav {
     @include nodrag;
+    white-space: normal !important; // This is required due to firefox bug
     flex: 0 0 auto;
     padding: 18px 5px;
     -webkit-box-shadow: 0px -3px 21px 0px $black; 
@@ -47,6 +48,17 @@ nav {
 
     .hamburger {
         vertical-align: middle;
+    }
+
+    /*.nav__money {
+        padding-left: 20px;
+    }*/
+
+    .nav__logout {
+        cursor: pointer;
+        float: right;
+        padding-right: 25px;
+        color: rgb(230, 230, 230);
     }
 }
 
@@ -105,7 +117,7 @@ nav {
 
 .tabs-list li {
     display: block;
-    padding: 13px 10px;
+    padding: 11px 10px;
     border-left: 3px solid transparent;
     text-indent: 15px;
     font-size: 1.2rem;
@@ -229,6 +241,24 @@ nav {
         background-color: rgb(22, 22, 22);
         color: rgb(255, 255, 255);
     }
+}
+
+*[data-circle]:after {
+    content: attr(data-circle);
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 18px;
+    height: 18px;
+    padding: 5px;
+
+    background-color: rgb(23, 84, 197);
+    color: white;
+    text-align: center;
+    line-height: 18px;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 1px #333;
 }
 
 .tabs {
@@ -369,25 +399,6 @@ nav {
                     transform: scale(1.1);
                 }
             }
-
-            // Taken from cssportal.com
-            .contact[data-notifications]:after {
-                content: attr(data-notifications);
-                position: absolute;
-                top: -10px;
-                right: -10px;
-                width: 18px;
-                height: 18px;
-                padding: 5px;
-
-                background-color: rgb(23, 84, 197);
-                color: white;
-                text-align: center;
-                line-height: 18px;
-                border: 0;
-                border-radius: 50%;
-                box-shadow: 0 0 1px #333;
-            }
         }
 
         .contact-details {
@@ -472,6 +483,49 @@ nav {
     }
 
     .tabs__headquarters {
+        .money {
+            padding-top: 15px;
+            color: rgb(60, 60, 60);
+            font-size: 1.3rem;
+        }
+
+        .headquarters__details__wrapper {
+            .headquarters__details {
+                display: inline-block;
+                min-width: 300px;
+                max-width: 700px;
+                margin: 20px 0;
+                padding: 25px;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    
+                h2 {
+                    color: rgb(60, 60, 60);
+                    font-size: 1.5rem;
+                }
+    
+                .headquarters__stats {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 25px;
+                    
+                    .stats__data {
+                        .cost {
+                            min-width: 150px;
+                            margin: 0 10px 10px 0;
+                            font-weight: 500;
+                            font-size: 1.3rem;
+                        }
+                    }
+    
+                    .stats__text {
+                        font-size: 1.1rem;
+                        line-height: 1.5rem;
+                    }
+                }
+            }
+        }
+
         .headquarters__header {
             display: flex;
             flex-wrap: nowrap;
@@ -479,6 +533,7 @@ nav {
 
             img {
                 @include nodrag;
+                pointer-events: none;
                 max-width: 30vw;
             }
 
@@ -486,40 +541,6 @@ nav {
                 margin-left: 2%;
                 color: rgb(100, 100, 100);
                 font-size: 6rem;
-            }
-        }
-
-        .headquarters__details {
-            display: inline-block;
-            min-width: 300px;
-            margin: 20px 0;
-            padding: 25px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-            h2 {
-                color: rgb(60, 60, 60);
-                font-size: 1.5rem;
-            }
-
-            .headquarters__stats {
-                display: inline-flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-top: 25px;
-                
-                .stats__data {
-                    .cost {
-                        min-width: 150px;
-                        margin: 0 10px 10px 0;
-                        font-weight: 500;
-                        font-size: 1.3rem;
-                    }
-                }
-
-                .stats__text {
-                    font-size: 1.1rem;
-                    line-height: 1.5rem;
-                }
             }
         }
 
@@ -539,6 +560,7 @@ nav {
 
                 img {
                     @include nodrag;
+                    pointer-events: none;
                     height: 100%;
                     width: 100%;
                 }
@@ -548,7 +570,7 @@ nav {
                 overflow: hidden;
                 
                 img {
-                    filter: blur(5px);
+                    filter: blur(2px);
                 }
 
                 button {
@@ -560,7 +582,7 @@ nav {
                     -ms-transform: translate(-50%, -50%);
 
                     width: 80%;
-                    padding: 7px 0;
+                    padding: 6px 0;
                     color: $white;
                     background-color: $light-black;
                     border: none;
@@ -571,6 +593,23 @@ nav {
                         outline: none;
                     }
                 }
+            }
+
+            .upgrade--owned:after {
+                content: ' ';
+                z-index: 2;
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 14px;
+                height: 14px;
+
+                background-color: rgba(27, 116, 9, 0.7);
+                text-align: center;
+                line-height: 18px;
+                border: 0;
+                border-radius: 50%;
+                box-shadow: 0 0 1px #333;
             }
         }
     }

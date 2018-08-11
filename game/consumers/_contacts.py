@@ -1,10 +1,9 @@
-from game.models import Cult
 from ._data import gamedata
 import json
 
 
 def contacts_data(self):
-    db_contacts = json.loads(Cult.objects.get(owner=self.player).contacts)
+    db_contacts = json.loads(self.cult.contacts)
     data_contacts = {}
     for db_contact in db_contacts:
         # Every single db_contact contains a {id: 'contact_name', card: 'card_name_like_2.1.7'}
@@ -45,15 +44,14 @@ def process_choice(self, data):
     Called when a dialog option is selected in the contacts menu.
     """
     if (data is None
-            or not isinstance(data.get('choice', None), int)
-            or not isinstance(data.get('contact', None), str)
+            or not isinstance(data.get('choice'), int)
+            or not isinstance(data.get('contact'), str)
             or data['contact'] not in gamedata['contacts'].keys()
             or data['choice'] < 0):
         print(data)
         self.user_error('Invalid choice process data.')
         return False
-    cult = Cult.objects.get(owner=self.player)
-    db_contacts = json.loads(cult.contacts)
+    db_contacts = json.loads(self.cult.contacts)
 
     for i, db_contact in enumerate(db_contacts):
         # Find the correct contact from the list in the database json
@@ -73,16 +71,47 @@ def process_choice(self, data):
                     # Find what card the choice was made in
                     if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
                         if data['choice'] == 0:
-                            self.set_card(cult, db_contacts, i, '1.1.0')
+                            self.set_card(db_contacts, i, '1.1.0')
                         elif data['choice'] == 1:
-                            self.set_card(cult, db_contacts, i, '1.0.1')
-                    if db_contact['card'] == '1.1.0' or db_contact['card'] == '1.1.1':
+                            self.set_card(db_contacts, i, '1.0.1')
+                    elif db_contact['card'] == '1.1.0' or db_contact['card'] == '1.1.1':
                         if data['choice'] == 0:
-                            self.set_card(cult, db_contacts, i, '1.2.0')
+                            self.set_card(db_contacts, i, '1.2.0')
+                        elif data['choice'] == 1:
+                            self.set_card(db_contacts, i, '1.1.1')
+                    elif db_contact['card'] == '1.2.0':
+                        db_contacts.append({'id': 'assistant', 'card': '1.0.0'})
+                        self.cult.contacts = json.dumps(db_contacts)
+                        self.cult.save(update_fields=['contacts'])
+                        self.set_card(db_contacts, i, '1.3.0')
+                    elif db_contact['card'] == '1.3.0':
+                        self.set_card(db_contacts, i, '1.4.0')
+                    elif db_contact['card'] == '1.4.0':
+                        # Set assistant's card to '1.1.0'
+                        db_contacts[1]['card'] = '1.1.0'
+                        self.cult.contacts = json.dumps(db_contacts)
+                        self.cult.save(update_fields=['contacts'])
+                        self.set_card(db_contacts, i, '1.4.1')
+                    elif db_contact['card'] == '1.4.1':
+                        self.set_card(db_contacts, i, '1.4.2')
+
+                elif db_contact['id'] == 'assistant':
+                    if db_contact['card'] == '1.0.0':
+                        self.set_card(db_contacts, i, '1.0.1')
+                    elif db_contact['card'] == '1.1.0' or db_contact['card'] == '1.1.1':
+                        if data['choice'] == 0:
+                            db_contacts.append({'id': 'mafioso', 'card': '1.0.0'})
+                            self.cult.contacts = json.dumps(db_contacts)
+                            self.cult.save(update_fields=['contacts'])
+                            self.set_card(db_contacts, i, '1.1.2')
+                        elif data['choice'] == 1:
+                            self.set_card(db_contacts, i, '1.1.1')
+                elif db_contact['id'] == 'mafioso':
+                    if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
+                        if data['choice'] == 0:
+                            self.set_card(db_contacts, i, '1.0.2')
                         if data['choice'] == 1:
-                            self.set_card(cult, db_contacts, i, '1.1.1')
-                    if db_contact['card'] == '1.2.0':
-                        pass
+                            self.set_card(db_contacts, i, '1.0.1')
 
 
 def option_check(self, contact_name, card, choice_index):
@@ -92,16 +121,26 @@ def option_check(self, contact_name, card, choice_index):
     if contact_name == 'anonymous':
         if card == '1.0.0' or card == '1.0.1':
             if choice_index == 0:
-                return True
+                # Objective: Visit the headquarters using the sidebar and purchase an upgrade of your choice.
+                # Check if at least 1 upgrade has been bought
+                return len(json.loads(self.cult.headquarters)) >= 1
         elif (card == '1.1.0' or card == '1.1.1') and choice_index == 0:
             return True
         elif card == '1.2.0':
-            return False
+            return True
+        elif card == '1.3.0':
+            contacts = json.loads(self.cult.contacts)
+            # Check if the assistant's card is not '1.0.0'
+            return contacts[1]['card'] != '1.0.0'
+    elif contact_name == 'assistant':
+        if card == '1.0.0':
+            # Objective: Accept the recruit into the cult.
+            return True
     return False
 
 
-def set_card(self, cult, db_contacts, i, card_value):
+def set_card(self, db_contacts, i, card_value):
     db_contacts[i]['card'] = card_value
-    cult.contacts = json.dumps(db_contacts)
-    cult.save()
+    self.cult.contacts = json.dumps(db_contacts)
+    self.cult.save(update_fields=['contacts'])
     self.page_data('contacts')

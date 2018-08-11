@@ -1,4 +1,3 @@
-from game.models import Cult
 from ._data import gamedata
 import json
 
@@ -16,21 +15,23 @@ def page_data(self, page):
             'type': 'page_data',
             'page': page
         })
-    elif page == 'inventory':
-        self.send_json({
-            'type': 'page_data',
-            'page': page
-        })
     elif page == 'members':
         self.send_json({
             'type': 'page_data',
             'page': page
         })
-    elif page == 'headquarters':
+    elif page == 'research':
         self.send_json({
             'type': 'page_data',
             'page': page
         })
+    elif page == 'societies':
+        self.send_json({
+            'type': 'page_data',
+            'page': page
+        })
+    elif page == 'headquarters':
+        self.headquarters_data()
     elif page == 'marketplace':
         self.send_json({
             'type': 'page_data',

@@ -8,13 +8,14 @@ def connect(self):
     """
     self.authorized = False
     print('Connect [1/4]: Attempted join')
-    if self.scope['user'].is_authenticated:  # Check if user is logged in
+    self.user = self.scope['user']
+    if self.user.is_authenticated:  # Check if user is logged in
         print('Connect [2/4]: Is authenticated')
         try:
             self.player = WarfarePlayer.objects.get(user=self.scope['user'])
         except WarfarePlayer.DoesNotExist:  # New user
             print('Connect [3/4]: New user connected.')
-            self.player = WarfarePlayer(user=self.scope['user'],
+            self.player = WarfarePlayer(user=self.user,
                                         game=WarfareGame.objects.get(name='alpha'))
             self.player.save()
             self.cult = Cult(owner=self.player)  # Create a new cult for the new player
@@ -55,6 +56,9 @@ def receive_json(self, content, **kwargs):
     elif request_type == 'card_choice':  # User clicked on an option in a card
         self.process_choice({'contact': content.get('contact'),
                              'choice': content.get('choice')})
+    elif request_type == 'hq_upgrade':
+        self.process_upgrade({'command': content.get('command'),
+                              'item': content.get('item')})
     elif request_type == 'create_cult':
         self.create_cult(content.get('cult_data'))
     else:

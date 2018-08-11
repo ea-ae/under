@@ -5,11 +5,10 @@ from .secret import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY and IP_ADDRESS is stored in a config.yml file
 
 SECRET_KEY = config['SECRET_KEY']
 
-ALLOWED_HOSTS = [config['IP_ADDRESS']]
+ALLOWED_HOSTS = config['ALLOWED_HOSTS']
 
 ASGI_APPLICATION = 'game.routing.application'
 WSGI_APPLICATION = 'warfare.wsgi.application'
@@ -33,7 +32,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [(config['IP_ADDRESS'], 6379)],
+            'hosts': [(config['REDIS_IP'], 6379)],
         },
     }
 }
