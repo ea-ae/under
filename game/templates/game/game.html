@@ -8,7 +8,8 @@
     <link href="{% static 'favicon.ico' %}" rel="shortcut icon">
     <link href="{% static 'reset.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet">
-    <link href="{% static 'game/alerty/alerty.css' %}" rel="stylesheet">
+    <link href="{% static 'game/js/alerty/alerty.css' %}" rel="stylesheet">
+    <link href="{% static 'game/js/treant/treant.css' %}" rel="stylesheet">
     <link href="{% static 'game/style.css' %}" rel="stylesheet">
     <meta name="description" content="Cult Warfare is a text-based game about ruling a cult, while staying anonymous.">
     <meta name="author" content="Blacklock">
@@ -182,11 +183,9 @@
                     them on sale.
                 </div>
                 <div class="tabs__members">
-                    Members<br><br>
-                    From here you can find all the members of your cult in a tree view.
-                    Clicking on a specific cult member will bring up more details and
-                    options about him. For example, you could teach them new skills or
-                    promote them for more loyalty.
+                    <div class="chart-wrapper">
+                        <div class="chart dragscroll" id="members__tree"></div>
+                    </div>
                 </div>
                 <div class="tabs__research">
                     Research<br><br>
@@ -279,8 +278,11 @@
             </div>
         </div>
     </div>
-    <script src="{% static 'game/reconnecting-websocket/rws.js' %}"></script>
-    <script src="{% static 'game/alerty/alerty.js' %}"></script>
-    <script src="{% static 'game/warfare.js' %}"></script>
+    <script src="{% static 'game/js/reconnecting-websocket/rws.js' %}"></script>
+    <script src="{% static 'game/js/alerty/alerty.js' %}"></script>
+    <script src="{% static 'game/js/dragscroll/dragscroll.js' %}"></script>
+    <script src="{% static 'game/js/treant/raphael.js' %}"></script>
+    <script src="{% static 'game/js/treant/treant.js' %}"></script>
+    <script src="{% static 'game/js/warfare.js' %}"></script>
 </body>
 </html>

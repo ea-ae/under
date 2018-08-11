@@ -29,6 +29,8 @@ function setPage(data) { // Sets the data in the active tab
         messages.contacts = data.contacts;
         // TODO: localStorage to remember last selected contact
         messages.setActiveContact(messages.selectedContact);
+    } else if (data.page == 'members') {
+        
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
             firstHQVisit = false;
@@ -49,6 +51,16 @@ function setPage(data) { // Sets the data in the active tab
         let wrapper = getByClass('headquarters__details__wrapper')[0];
         console.log(wrapper.offsetHeight);
         wrapper.style.minHeight = wrapper.offsetHeight + 'px';
+    } else if (data.page == 'members') {
+        if (firstMembersVisit) {
+            firstMembersVisit = false;
+            members.drawTree();
+        }
+
+        /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
+        // todo: parent variable not needed...
+        let child = getByQuery('.tabs__members .dragscroll');
+        child.style.paddingRight = child.offsetWidth - child.clientWidth + 'px';*/
     }
 }
 
@@ -129,6 +141,64 @@ let messages = {
         },
     }
 };
+
+let members = {
+    drawTree: function() {
+        config = {
+            chart: {
+                container: '#members__tree',
+                connectors: {
+                    type: 'step',
+                    style: {
+                        'stroke': 'rgb(127, 139, 143)',
+                        'stroke-linejoin': 'round'
+                    }
+                },
+                //scrollbar: 'None',
+                levelSeparation: 20, // px between node levels
+                siblingSeparation: 10, // px between sibling nodes
+                padding: 20
+            },
+            nodeStructure: {
+                text: {name: 'James Bond', title: 'Leader'},
+                children: [
+                    {text: {name: 'Michael Wilson', title: 'Consigliere'}, children: [
+                        {text: {name: 'Phil Ferrell', title: 'Associate'}},
+                        {text: {name: 'Robert Jones', title: 'Spy'}}
+                    ]},
+                    {text: {name: 'Christopher Sand', title: 'Manager'}, children: [
+                        {text: {name: 'Vincent McCree', title: 'Drug Dealer'}},
+                        {text: {name: 'William Stoph', title: 'Drug Dealer'}, children: [
+                            {text: {name: 'Stephen Marrow', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
+                        ]}]}]}]}]}]}]}]}]}]}
+                        ]}
+                    ]},
+                    {text: {name: 'Josh Barrey', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barne', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barnee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneeee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneeeee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneeeeee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneeeeeee', title: 'Bodyguard'}},
+                    {text: {name: 'Vincent Barneeeeeeee', title: 'Bodyguard'}}
+                ]
+            }
+        }
+        
+        membersTree = new Treant(config);
+        //membersTree.tree.reload();
+    }
+}
 
 let headquarters = {
     selected: null,
@@ -236,59 +306,59 @@ let headquarters = {
         getByQuery('.stats__text').innerHTML = '<p>' + upgrade.description + '</p>';
     },
     upgrades: {
-        'windowbars': {
-            'name': 'Window Security Bars',
-            'id': 'windowbars',
-            'cost': 2500,
+        windowbars: {
+            name: 'Window Security Bars',
+            id: 'windowbars',
+            cost: 2500,
             'description': 'Prevent intruders from entering through the windows - unless they have a metal cutter.'
         },
-        'motionsensors': {
-            'name': 'Motion Sensors',
-            'id': 'motionsensors',
-            'cost': 5000,
-            'description': 'Detect movement in unauthorized areas. Keep in mind that experienced thiefs have methods for getting past them.'
+        motionsensors: {
+            name: 'Motion Sensors',
+            id: 'motionsensors',
+            cost: 5000,
+            description: 'Detect movement in unauthorized areas. Keep in mind that experienced thiefs have methods for getting past them.'
         },
-        'cctv': {
-            'name': 'CCTV System',
-            'id': 'cctv',
-            'cost': 7500,
-            'description': 'Set up security cameras around the area. You will need guards to monitor the cameras, though.'
+        cctv: {
+            name: 'CCTV System',
+            id: 'cctv',
+            cost: 7500,
+            description: 'Set up security cameras around the area. You will need guards to monitor the cameras, though.'
         },
-        'ups': {
-            'name': 'Uninterruptible Power Supply',
-            'id': 'ups',
-            'cost': 10000,
-            'description': 'An emergency power supply in case the power goes out for any reason.'
+        ups: {
+            name: 'Uninterruptible Power Supply',
+            id: 'ups',
+            cost: 10000,
+            description: 'An emergency power supply in case the power goes out for any reason.'
         },
-        'insurance': {
-            'name': 'Insurance',
-            'id': 'insurance',
-            'cost': 25000,
-            'description': 'In case of a successful burglary, you get back 10% of money lost.'
+        insurance: {
+            name: 'Insurance',
+            id: 'insurance',
+            cost: 25000,
+            description: 'In case of a successful burglary, you get back 10% of money lost.'
         },
-        'doorsystem': {
-            'name': 'Door Access Control System',
-            'id': 'doorsystem',
-            'cost': 75000,
-            'description': 'All employees are given keycards that are used to open doors. Even though it makes a lockpicker useless, a technician could bypass it easily.'
+        doorsystem: {
+            name: 'Door Access Control System',
+            id: 'doorsystem',
+            cost: 75000,
+            description: 'All employees are given keycards that are used to open doors. Even though it makes a lockpicker useless, a technician could bypass it easily.'
         },
-        'jammers': {
-            'name': 'Signal Jammers',
-            'id': 'jammers',
-            'cost': 100000,
-            'description': 'Block any incoming signals to protect against hackers.'
+        jammers: {
+            name: 'Signal Jammers',
+            id: 'jammers',
+            cost: 100000,
+            description: 'Block any incoming signals to protect against hackers.'
         },
-        'fencing': {
-            'name': 'Perimeter Fencing',
-            'id': 'fencing',
-            'cost': 125000,
-            'description': 'Barbed wire metal fences that circle the perimeter to prevent unauthorized property access.'
+        fencing: {
+            name: 'Perimeter Fencing',
+            id: 'fencing',
+            cost: 125000,
+            description: 'Barbed wire metal fences that circle the perimeter to prevent unauthorized property access.'
         },
-        'lockdownsystem': {
-            'name': 'Emergency Lockdown System',
-            'id': 'lockdownsystem',
-            'cost': 150000,
-            'description': 'In case of a detected intrusion, block all doors and windows from opening.'
+        lockdownsystem: {
+            name: 'Emergency Lockdown System',
+            id: 'lockdownsystem',
+            cost: 150000,
+            description: 'In case of a detected intrusion, block all doors and windows from opening.'
         }
     },
 }
@@ -302,6 +372,8 @@ let currency = new Intl.NumberFormat('en-US', {
     visible = true,
     animationFinished = true,
     tabSwitchFinished = true,
+    firstMembersVisit = true,
+    firstResearchVisit = true,
     firstHQVisit = true,
     active = 'home',
     socket;

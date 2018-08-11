@@ -33,6 +33,23 @@ body {
     @include nodrag;
 }
 
+.dragscroll {
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+    overflow: hidden;
+    -ms-overflow-style: none;
+
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    // overflow: hidden !important;
+    // doesn't work because mobile browsers
+}
+
 nav {
     @include nodrag;
     white-space: normal !important; // This is required due to firefox bug
@@ -477,6 +494,47 @@ nav {
                         text-decoration: line-through;
                         color: rgb(120, 120, 120);
                     }
+                }
+            }
+        }
+    }
+
+    .tabs__members {
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+
+            #members__tree {
+                display: block;
+                margin: 0 auto;
+                box-sizing: border-box;
+                box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+                background: rgb(254, 254, 254);
+                border-radius: 2px;
+
+                max-height: 400px;
+    
+                & .node {
+                    z-index: 2;
+                    padding: 6px 14px;
+                    /*border: 1px solid rgb(40, 40, 40);*/
+                    color: rgb(50, 50, 50);
+                    line-height: 1.1rem;
+                    text-align: center;
+                    white-space: nowrap;
+                
+                    box-sizing: border-box;
+                    box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+    
+                    & * {
+                        margin: 0;
+                    }
+                }
+    
+                & .node-title {
+                    color: rgb(127, 139, 143);
                 }
             }
         }
