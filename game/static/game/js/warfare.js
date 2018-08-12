@@ -90,6 +90,39 @@ function setActiveTab(event, checkIfSame=true) {
     }
 }
 
+let chat = {
+    setActiveMenuTab: function(e) {
+        let menuList = getByClass('menu__list')[0].children;
+        if (this == menuList[0]) { // Select sidebar
+            menuList[1].classList.remove('active');
+            menuList[0].classList.add('active');
+
+            getByClass('sidebar__chat')[0].style.display = 'none';
+            getByClass('sidebar__tabs')[0].style.display = 'block';
+        } else { // Select chat
+            menuList[0].classList.remove('active');
+            menuList[1].classList.add('active');
+
+            // I don't care at this point
+            // CSS, you can go to hell
+            let sidebarWidth = getByClass('sidebar')[0].offsetWidth;
+            let screenHeight = document.documentElement.clientHeight;
+
+            getByClass('sidebar__tabs')[0].style.display = 'none';
+            getByClass('sidebar__chat')[0].style.display = 'block';
+
+            let otherHeight = getByQuery('nav').offsetHeight 
+                + getByQuery('.menu__list').offsetHeight
+                + getByQuery('.chat__input').offsetHeight
+                + 40;
+
+            getByClass('sidebar__chat')[0].style.width = sidebarWidth + 'px';
+            getByClass('chat__text')[0].style.height = 
+                (screenHeight - otherHeight) + 'px';
+        }
+    }
+}
+
 let messages = {
     selectedContact: 'anonymous',
     options: [],
@@ -144,7 +177,7 @@ let messages = {
 
 let members = {
     drawTree: function() {
-        config = {
+        /*config = {
             chart: {
                 container: '#members__tree',
                 connectors: {
@@ -193,9 +226,38 @@ let members = {
                     {text: {name: 'Vincent Barneeeeeeee', title: 'Bodyguard'}}
                 ]
             }
+        }*/
+
+        config = {
+            container: '#members__tree',
+            connectors: {
+                type: 'step',
+                style: {
+                    'stroke': 'rgb(127, 139, 143)',
+                    'stroke-linejoin': 'round'
+                }
+            },
+            levelSeparation: 20, // px between node levels
+            siblingSeparation: 10, // px between sibling nodes
+            padding: 20
         }
+
+        let leader = {
+            text: {name: 'James Bond', title: 'Leader'}
+        }, bodyguard = {
+            parent: leader,
+            text: {name: 'Josh Barrey', title: 'Technician'}
+        }, bodyguard2 = {
+            parent: leader,
+            text: {name: 'Vincent Barrey', title: 'Blackmailer'}
+        }, fighter = {
+            parent: bodyguard2,
+            text: {name: 'Stephen Marrow', title: 'Interrogator'}
+        }
+
+        chart_config = [config, leader, bodyguard, bodyguard2, fighter]
         
-        membersTree = new Treant(config);
+        membersTree = new Treant(chart_config);
         //membersTree.tree.reload();
     }
 }
@@ -379,26 +441,24 @@ let currency = new Intl.NumberFormat('en-US', {
     socket;
 
 window.addEventListener('load', function() { // Once page loaded and parsed
-    // Shortcut function names again, cause who cares
-    let getByClass = function(className) { return document.getElementsByClassName(className); }
-    let getById = function(id) { return document.getElementById(id); }
-    let getByQuery = function(query) { return document.querySelector(query); }
-
     messages.setActiveContact('anonymous');
 
-    getByClass("contact--mafioso")[0].addEventListener('click', function() {
+    getByClass('contact--mafioso')[0].addEventListener('click', function() {
         messages.setActiveContact('mafioso');
     });
 
-    getByClass("contact--anonymous")[0].addEventListener('click', function() {
+    getByClass('contact--anonymous')[0].addEventListener('click', function() {
         messages.setActiveContact('anonymous');
     });
-    getByClass("contact--assistant")[0].addEventListener('click', function() {
+    getByClass('contact--assistant')[0].addEventListener('click', function() {
         messages.setActiveContact('assistant');
     });
-    getByClass("contact--merchant")[0].addEventListener('click', function() {
+    getByClass('contact--merchant')[0].addEventListener('click', function() {
         messages.setActiveContact('merchant');
     });
+
+    getByClass('menu__tabs')[0].addEventListener('click', chat.setActiveMenuTab);
+    getByClass('menu__chat')[0].addEventListener('click', chat.setActiveMenuTab);
 
     let ws_scheme = window.location.protocol == 'https:' ? 'wss' : 'ws',
         ws_path = ws_scheme + '://' + window.location.host + '/ws/warfare',
@@ -425,12 +485,13 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }
     }
 
-    socket.onclose = function() {
+    socket.onclose = function(code) {
         console.debug('WebSocket connection closed.');
+        console.log(code);
     }
 
     socket.onerror = function(err) {
-        console.error(err);
+        // console.error(err);
     }
 
     socket.onmessage = function(message) { // The consumer sends us a message
@@ -493,6 +554,18 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         if (!visible) {
             let tabs = getByQuery('.sidebar--visible');
             tabs.style.marginLeft = '-' + (tabs.offsetWidth + 1) + 'px';
+        }
+
+        if (getByClass('menu__chat')[0].classList.contains('active')) {
+            let sidebarWidth = getByClass('sidebar')[0].offsetWidth;
+            let screenHeight = document.documentElement.clientHeight;
+            let otherHeight = getByQuery('nav').offsetHeight 
+                + getByQuery('.menu__list').offsetHeight
+                + getByQuery('.chat__input').offsetHeight
+                + 40;
+
+            getByClass('chat__text')[0].style.height = 
+                (screenHeight - otherHeight) + 'px';
         }
     };
 });

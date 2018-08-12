@@ -1,6 +1,6 @@
 from django.db import models
-from main.models import User
 
+from main.models import User
 from django.contrib.auth import get_user_model
 
 

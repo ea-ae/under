@@ -9,7 +9,7 @@ class WarfareConsumer(JsonWebsocketConsumer):
     self.cult - currently selected cult
     """
 
-    from ._connection import connect, disconnect, receive_json
+    from ._connection import websocket_connect, websocket_disconnect, receive_json
     from ._page_data import page_data
     from ._home import home_data, create_cult
     from ._contacts import contacts_data, process_choice, option_check, set_card

@@ -41,10 +41,17 @@ body {
     overflow: hidden;
     -ms-overflow-style: none;
 
-    cursor: move;
     cursor: grab;
-    cursor: -moz-grab;
     cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: -o-grab;
+
+    &:active { 
+        cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+        cursor: -o-grabbing;
+    }
 
     // overflow: hidden !important;
     // doesn't work because mobile browsers
@@ -104,8 +111,9 @@ nav {
 .sidebar {
     @include nodrag;
     position: relative;
+    display: flex;
+    flex-direction: column;
     flex: 0 0 auto;
-    min-height: 100%;
     min-width: 20%;
     background-color: rgb(53, 68, 78);
     // #242124 #232B2B #36454F
@@ -114,45 +122,156 @@ nav {
     -moz-box-shadow: inset -13px 7px 30px -11px $black;
     box-shadow: inset -13px 7px 30px -11px $black;
     transition: margin-left 0.13s;
+
+    .sidebar__menu {
+        position: relative;
+        flex: none;
+
+        .menu__list {
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid rgba(100, 113, 122, 0.4);
+
+            a {
+                position: relative;
+                display: inline-block;
+                width: 50%;
+                padding: 16px 22px;
+
+                color: rgb(180, 190, 197);
+                font-size: 0.95rem;
+                font-weight: 500;
+                text-align: center;
+                text-decoration: none;
+                box-sizing: border-box;
+                cursor: pointer;
+
+                &:not(.active):hover {
+                    color: rgb(152, 165, 175);
+                }
+
+                &:active {
+                    outline: none;
+                }
+            }
+
+            .menu__bar {
+                z-index: 2;
+                position: absolute;
+                display: block;
+                left: 0;
+                bottom: 0;
+                height: 2px;
+                width: 50%;
+                background-color: rgb(120, 136, 146);
+
+                transition: left .2s ease;
+		        -webkit-transition: left .2s ease;
+            }
+
+            .menu__tabs.active ~ .menu__bar {
+                left: 0;
+            }
+
+            .menu__chat.active ~ .menu__bar {
+                left: 50%;
+            }
+        }
+    }
+
+    .sidebar__tabs {
+        flex: none;
+        .tab-title {
+            @include nodrag;
+            padding: 17px 10px;
+            border-bottom: 1px solid rgb(113, 125, 134);
+            color: rgb(143, 153, 161);
+            font-size: 0.9rem;
+        }
+        
+        .tabs-list {
+            list-style: none;
+        }
+        
+        .tabs-list li {
+            display: block;
+            padding: 11px 10px;
+            border-left: 3px solid transparent;
+            text-indent: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s border-left 0.3s;
+    
+            &:hover {
+                border-left: 3px solid rgb(133, 146, 156) !important;
+                background-color: rgb(66, 84, 97);
+            }
+        }
+        
+        .active-tab {
+            border-left: 3px solid rgb(83, 98, 109) !important;
+            background-color: rgba(255, 255, 255, 0.025);
+        }
+    }
+
+    .sidebar__chat {
+        display: none;
+        flex-direction: column;
+        flex: 1 0 auto;
+        margin: 0;
+
+        .chat__box {
+            margin: 10px;
+
+            .chat__input {
+                input {
+                    width: 100%;
+                    margin: 10px 0;
+                    padding: 8px 10px;
+                    outline: 0;
+                    border: 1px solid #F2F2F2;
+                    border-radius: 2px;
+                    font-size: 1rem;
+                }
+            }
+    
+            .chat__text {
+                padding: 5px;
+                overflow-y: auto;
+                white-space: normal;
+                word-wrap: break-word;
+            }
+        }
+
+        /*
+        .chat__text {
+            flex: 0 1 auto;
+            display: block;
+            width: 100%;
+            padding: 20px 0 10px;
+            background-color: rgba(52, 49, 68, 0.2);
+            overflow: auto;
+            white-space: normal;
+        }
+
+        .chat__input {
+            input {
+                width: 80%;
+                margin: 10px 0;
+                padding: 8px 10px;
+                outline: 0;
+                border: 1px solid #F2F2F2;
+                border-radius: 2px;
+                font-size: 1rem;
+            }
+        }
+        */
+    }
 }
 
 .sidebar--visible {
     flex: 0 !important;
-}
-
-.tab-title {
-    @include nodrag;
-    padding: 17px 10px;
-    border-bottom: 1px solid rgb(113, 125, 134);
-    color: rgb(143, 153, 161);
-    font-size: 0.9rem;
-}
-
-.tabs-list {
-    list-style: none;
-}
-
-.tabs-list li {
-    display: block;
-    padding: 11px 10px;
-    border-left: 3px solid transparent;
-    text-indent: 15px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s border-left 0.3s;
-    &:hover {
-        border-left: 3px solid rgb(133, 146, 156) !important;
-        background-color: rgb(66, 84, 97);
-    }
-}
-
-.active-tab {
-    border-left: 3px solid rgb(83, 98, 109) !important;
-    background-color: rgba(255, 255, 255, 0.025);
-}
-
-.tabs > div {
-    display: none;
 }
 
 .container-box {
@@ -209,8 +328,6 @@ nav {
         div:nth-child(2) { // Description div
             flex: 4 1 350px;
         }
-
-    
     }
 
     .container-body {
@@ -280,6 +397,7 @@ nav {
 
 .tabs {
     & > div { // Selects every tab
+        display: none;
         margin-right: 30px;
     }
 
@@ -513,7 +631,8 @@ nav {
                 box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
                 background: rgb(254, 254, 254);
                 border-radius: 2px;
-
+                
+                min-height: 250px;
                 max-height: 400px;
     
                 & .node {
@@ -527,6 +646,8 @@ nav {
                 
                     box-sizing: border-box;
                     box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+
+                    cursor: pointer;
     
                     & * {
                         margin: 0;
@@ -688,7 +809,8 @@ nav {
 }
   
 .spinner > div {
-    background-color: rgb(52, 87, 213);
+    z-index: 10;
+    background-color: rgb(70, 70, 70);
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -762,7 +884,7 @@ nav {
     }
 
     .sidebar {
-        min-width: 40%;
+        min-width: 60%;
     }
 
     .tabs-list li {

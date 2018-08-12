@@ -1,8 +1,9 @@
 from game.models import WarfareGame, WarfarePlayer, Cult
 from asgiref.sync import async_to_sync as ats
+from channels.exceptions import StopConsumer
 
 
-def connect(self):
+def websocket_connect(self, message):
     """
     Handles incoming connections.
     """
@@ -26,7 +27,7 @@ def connect(self):
                 self.cult = Cult.objects.get(owner=self.player)
             except Cult.DoesNotExist:
                 self.user_error('Cult does not exist.')
-                self.close()
+                self.close(code=404)
                 return False
         ats(self.channel_layer.group_add)('wf1_chat_general', self.channel_name)
         self.authorized = True
@@ -34,15 +35,16 @@ def connect(self):
         self.accept()
     else:
         self.user_error('User is unauthenticated.')
+        self.close(code=401)
 
 
-def disconnect(self, code):
+def websocket_disconnect(self, code):
     """
     Called when the WebSocket is closed.
     """
-    if self.authorized:
-        ats(self.channel_layer.group_discard)('wf1_chat_general', self.channel_name)
-        self.authorized = False
+    # if self.authorized:
+    #     ats(self.channel_layer.group_discard)('wf1_chat_general', self.channel_name)
+    #    self.authorized = False
 
 
 def receive_json(self, content, **kwargs):
