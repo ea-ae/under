@@ -139,16 +139,16 @@ nav {
                 width: 50%;
                 padding: 16px 22px;
 
-                color: rgb(180, 190, 197);
+                color: rgb(217, 222, 226);
                 font-size: 0.95rem;
-                font-weight: 500;
+                letter-spacing: 2px;
                 text-align: center;
                 text-decoration: none;
                 box-sizing: border-box;
                 cursor: pointer;
 
                 &:not(.active):hover {
-                    color: rgb(152, 165, 175);
+                    color: rgb(175, 187, 196);
                 }
 
                 &:active {
@@ -243,30 +243,6 @@ nav {
                 word-wrap: break-word;
             }
         }
-
-        /*
-        .chat__text {
-            flex: 0 1 auto;
-            display: block;
-            width: 100%;
-            padding: 20px 0 10px;
-            background-color: rgba(52, 49, 68, 0.2);
-            overflow: auto;
-            white-space: normal;
-        }
-
-        .chat__input {
-            input {
-                width: 80%;
-                margin: 10px 0;
-                padding: 8px 10px;
-                outline: 0;
-                border: 1px solid #F2F2F2;
-                border-radius: 2px;
-                font-size: 1rem;
-            }
-        }
-        */
     }
 }
 

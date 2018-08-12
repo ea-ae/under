@@ -500,6 +500,14 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             setPage(data); // We are sent data about a requested page
         } else if (data.type == 'page_redirect') { // Server wants to change the active tab
             setActiveTab({target: getById('tabs-list__' + data.page)});
+        } else if (data.type == 'multiple_connections') {
+            console.log('WebSocket connection closed due to another connection.');
+            socket = undefined; // Stop websocket from reconnecting
+            alerty.alert('Your account has connected to the game from somewhere \
+            else. Make sure you don\'t have the game open in another tab.', {
+                title: 'Connection closed',
+                okLabel: 'OK'
+            })
         }
     }
 

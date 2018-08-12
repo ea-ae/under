@@ -49,7 +49,7 @@ def process_choice(self, data):
             or data['contact'] not in gamedata['contacts'].keys()
             or data['choice'] < 0):
         print(data)
-        self.user_error('Invalid choice process data.')
+        self.log('Invalid choice process data.')
         return False
     db_contacts = json.loads(self.cult.contacts)
 
@@ -64,7 +64,7 @@ def process_choice(self, data):
                 if data_card['options'][data['choice']]['conditional']:
                     if not self.option_check(db_contact['id'], db_contact['card'], data['choice']):
                         # False returned, objective is not completed
-                        self.user_error('User chose a disabled option.')
+                        self.log('User chose a disabled option.', 'warning')
                         return False
                 # Find what contact the choice was made for
                 if db_contact['id'] == 'anonymous':
@@ -140,6 +140,7 @@ def option_check(self, contact_name, card, choice_index):
 
 
 def set_card(self, db_contacts, i, card_value):
+    self.log('Setting card of ' + db_contacts[i]['id'] + ' to "' + card_value + '".', 'info')
     db_contacts[i]['card'] = card_value
     self.cult.contacts = json.dumps(db_contacts)
     self.cult.save(update_fields=['contacts'])

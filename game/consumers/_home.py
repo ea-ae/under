@@ -26,7 +26,7 @@ def create_cult(self, data):
     Creates a new cult in the Home tab.
     """
     if data is None:
-        self.user_error('Cult creation data is None.')
+        self.log('Cult creation data is None.')
     if (self.cult.type == 'none'
             and isinstance(data['cult_name'], str)
             and re.match('^[a-zA-Z ]{4,25}$', data['cult_name'])
@@ -34,11 +34,12 @@ def create_cult(self, data):
         self.cult.name = ' '.join(data.get('cult_name', 'Script Kiddie Cult').split())  # Remove duplicate spaces
         self.cult.type = data['cult_type']
         self.cult.save()
+        self.log('Cult created.', 'info')
         # Redirect the new user to the missions page
         self.send_json({
             'type': 'page_redirect',
             'page': 'messages'
         })
     else:
-        self.user_error('Cult formatted incorrectly or already exists.')
+        self.log('Cult formatted incorrectly or already exists.')
     print(data)

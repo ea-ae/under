@@ -25,7 +25,7 @@ class Cult(models.Model):
     owner = models.ForeignKey(WarfarePlayer, on_delete=models.CASCADE)
     name = models.CharField(max_length=25, default='Unnamed Cult')
     type = models.CharField(max_length=5, default='none')
-    money = models.IntegerField(default=5000)
+    money = models.BigIntegerField(default=5000)
     reputation = models.IntegerField(default=0)
 
     contacts = models.TextField(default='[{"id": "anonymous", "card": "1.0.0"}]')

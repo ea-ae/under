@@ -3,6 +3,9 @@ import json
 
 
 def headquarters_data(self):
+    print('USER AUTHENTICATED?')
+    print(self.scope['user'].is_authenticated)
+
     self.send_json({
         'type': 'page_data',
         'page': 'headquarters',
@@ -14,16 +17,17 @@ def process_upgrade(self, data):
     if data['command'] == 'buy':
         db_headquarters = json.loads(self.cult.headquarters)
         if data['item'] in gamedata['headquarters']['upgrades'] and data['item'] not in db_headquarters:
-            # The wanted item is valid and we do not own it yet
+            self.cult.refresh_from_db(fields=['money'])  # Just in case something else modified the money field
             self.cult.money -= gamedata['headquarters']['upgrades'][data['item']]
             if self.cult.money < 0:
-                self.user_error('Not enough money to buy HQ upgrade.')
+                self.log('Not enough money to buy HQ upgrade.')
                 return False
             db_headquarters.append(data['item'])
             self.cult.headquarters = json.dumps(db_headquarters)
-            self.cult.save(update_fields=['headquarters'])
+            self.cult.save(update_fields=['headquarters', 'money'])
+            self.log('Bought HQ upgrade ' + data['item'] + '.', 'info')
         else:
-            self.user_error('Incorrect HQ upgrade item.')
+            self.log('Incorrect HQ upgrade item.')
     elif data['command'] == 'delete':
         db_headquarters = json.loads(self.cult.headquarters)
         if data['item'] in db_headquarters:
@@ -31,6 +35,7 @@ def process_upgrade(self, data):
             db_headquarters.remove(data['item'])
             self.cult.headquarters = json.dumps(db_headquarters)
             self.cult.save(update_fields=['headquarters'])
+            self.log('Deleted HQ upgrade ' + data['item'] + '.', 'info')
     else:
         print(data['command'])
-        self.user_error('Incorrect HQ ugprade command.')
+        self.log('Incorrect HQ ugprade command.')

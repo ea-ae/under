@@ -1,5 +1,6 @@
 from channels.generic.websocket import JsonWebsocketConsumer, WebsocketConsumer
 from asgiref.sync import async_to_sync as ats
+import logging
 
 
 class WarfareConsumer(JsonWebsocketConsumer):
@@ -9,11 +10,13 @@ class WarfareConsumer(JsonWebsocketConsumer):
     self.cult - currently selected cult
     """
 
-    from ._connection import websocket_connect, websocket_disconnect, receive_json
+    from ._connection import connect, disconnect, multiple_connections, receive_json
     from ._page_data import page_data
     from ._home import home_data, create_cult
     from ._contacts import contacts_data, process_choice, option_check, set_card
     from ._headquarters import headquarters_data, process_upgrade
+
+    logger = logging.getLogger('warfare')
 
     # General Methods
 
@@ -23,14 +26,19 @@ class WarfareConsumer(JsonWebsocketConsumer):
         # If the save() method has been called on the model, it will retrieve a new one
         pass
 
-    def user_error(self, error_message, severity='error'):
+    def log(self, message, severity='error'):
         """
         Displays an error in the console.
         """
         if severity == 'error':  # Something is wrong, this should not happen
-            print('USER_ERROR: ' + error_message + ' [' + self.scope['user'].username + ']')
+            # print('USER_ERROR: ' + message + ' (by ' + self.scope['user'].username + ')')
+            self.logger.error(message + ' (by ' + self.scope['user'].username + ')')
         elif severity == 'warning':  # Something incorrect happened
-            print('USER_WARNING: ' + error_message + ' [' + self.scope['user'].username + ']')
+            # print('USER_WARNING: ' + message + ' (by ' + self.scope['user'].username + ')')
+            self.logger.warning(message + ' (by ' + self.scope['user'].username + ')')
+        elif severity == 'info':
+            # print('USER_INFO: ' + message + ' (by ' + self.scope['user'].username + ')')
+            self.logger.info(message + ' (by ' + self.scope['user'].username + ')')
 
 
 class NotFoundConsumer(WebsocketConsumer):

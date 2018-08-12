@@ -37,6 +37,67 @@ CHANNEL_LAYERS = {
     }
 }
 
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'general': {
+            'format': '{levelname}\t{asctime}\t{module}\t{message}',
+            'style': '{'
+        }
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],  # Log SQL queries when DEBUG enabled
+            'class': 'logging.StreamHandler',
+            'formatter': 'general'
+        },
+        'userinfo_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/info.log',
+            'formatter': 'general'
+        },
+        'usererror_file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/info.log',
+            'formatter': 'general'
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/usererror.log',
+            'formatter': 'general'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True
+        },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+        'django.request': {
+            'level': 'ERROR',
+            'handlers': ['error_file'],
+        },
+        'warfare': {
+            'level': 'INFO',
+            'handlers': ['userinfo_file', 'usererror_file', 'console'],
+            'propagate': True
+        }
+    }
+}
 
 # Application definition
 

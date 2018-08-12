@@ -3,7 +3,7 @@ from asgiref.sync import async_to_sync as ats
 from channels.exceptions import StopConsumer
 
 
-def websocket_connect(self, message):
+def connect(self):
     """
     Handles incoming connections.
     """
@@ -26,25 +26,44 @@ def websocket_connect(self, message):
             try:
                 self.cult = Cult.objects.get(owner=self.player)
             except Cult.DoesNotExist:
-                self.user_error('Cult does not exist.')
-                self.close(code=404)
+                self.log('Cult does not exist.')
+                self.close()
                 return False
-        ats(self.channel_layer.group_add)('wf1_chat_general', self.channel_name)
+        # Allow only one connection per user
+        ats(self.channel_layer.group_send)('user-' + self.user.username, {
+            'type': 'multiple_connections'
+        })
+        ats(self.channel_layer.group_add)('user-' + self.user.username, self.channel_name)
+        ats(self.channel_layer.group_add)('warfare-1', self.channel_name)
+
         self.authorized = True
         print('Connect [4/4]: Connection established.')
         self.accept()
     else:
-        self.user_error('User is unauthenticated.')
-        self.close(code=401)
+        self.log('User is unauthenticated.')
 
 
-def websocket_disconnect(self, code):
+def disconnect(self, code):
     """
-    Called when the WebSocket is closed.
+    Called when the websocket is closed.
     """
-    # if self.authorized:
-    #     ats(self.channel_layer.group_discard)('wf1_chat_general', self.channel_name)
-    #    self.authorized = False
+    print('Disconnecting ' + self.user.username + '.')
+    if self.authorized:
+        ats(self.channel_layer.group_discard)('warfare-1', self.channel_name)
+        self.authorized = False
+    raise StopConsumer
+
+
+def multiple_connections(self, message):
+    """
+    Called when a new websocket connection is opened by the same user.
+    The previous one has to be closed.
+    """
+    self.log('Multiple connections, closing previous one.')
+    self.send_json({
+        'type': 'multiple_connections'
+    })
+    self.close()
 
 
 def receive_json(self, content, **kwargs):
@@ -64,4 +83,4 @@ def receive_json(self, content, **kwargs):
     elif request_type == 'create_cult':
         self.create_cult(content.get('cult_data'))
     else:
-        self.user_error('Unknown message type received.')
+        self.log('Unknown message type received.')
