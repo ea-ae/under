@@ -239,20 +239,20 @@ let members = {
             },
             levelSeparation: 20, // px between node levels
             siblingSeparation: 10, // px between sibling nodes
-            padding: 20
+            padding: 30
         }
 
         let leader = {
-            text: {name: 'James Bond', title: 'Leader'}
+            text: {name: 'James Bond', title: 'Leader', desc: 'Job: None'}
         }, bodyguard = {
             parent: leader,
-            text: {name: 'Josh Barrey', title: 'Technician'}
+            text: {name: 'Josh Barrey', title: 'Technician', desc: 'Job: Guarding'}
         }, bodyguard2 = {
             parent: leader,
-            text: {name: 'Vincent Barrey', title: 'Blackmailer'}
+            text: {name: 'Vincent Barrey', title: 'Blackmailer', desc: 'Job: Recruiting'}
         }, fighter = {
             parent: bodyguard2,
-            text: {name: 'Stephen Marrow', title: 'Interrogator'}
+            text: {name: 'Stephen Marrow', title: 'Interrogator', desc: 'Job: Guarding'}
         }
 
         chart_config = [config, leader, bodyguard, bodyguard2, fighter]

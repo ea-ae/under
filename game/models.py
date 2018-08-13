@@ -32,7 +32,35 @@ class Cult(models.Model):
     inventory = models.TextField(default='[]')
     research = models.TextField(default='[]')
     headquarters = models.TextField(default='[]')
+    marketplace = models.TextField(default='[]')
 
     def __str__(self):
         return self.name + ' [' + self.owner.user.username + ']'
+
+
+class Member(models.Model):
+    cult = models.ForeignKey(Cult, on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+
+    intelligence = models.SmallIntegerField()
+    social = models.SmallIntegerField()
+    stealth = models.SmallIntegerField()
+    strength = models.SmallIntegerField()
+
+    skills = models.TextField(
+        help_text='For example: [{name: "Lockpicker", level: 2}, {name: "Blackmailer", level: 1}]'
+    )
+    # Example : [{name: "Lockpicker", level: 2}, {name: "Blackmailer", level: 1}]
+
+    job_id = models.SmallIntegerField(
+        default=0,
+        help_text='0 = no job, 1 = recruiting, 2 = researching, 3 = guarding'
+    )
+    # 0: No job
+    # 1: Recruiting
+    # 2: Researching
+    # 3: Guarding
+
+    def __str__(self):
+        return self.name
 

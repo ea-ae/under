@@ -51,6 +51,7 @@ def disconnect(self, code):
     if self.authorized:
         ats(self.channel_layer.group_discard)('warfare-1', self.channel_name)
         self.authorized = False
+    self.close()  # Do I need this?
     raise StopConsumer
 
 
