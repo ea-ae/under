@@ -6,6 +6,9 @@ def page_data(self, page):
     """
     Sends data about the requested page back to the client.
     """
+    if not self.authorized:
+        self.log('Non-authorized user requested page data.', 'warning')
+
     if page == 'home':
         self.home_data()
     elif page == 'contacts':
@@ -16,10 +19,7 @@ def page_data(self, page):
             'page': page
         })
     elif page == 'members':
-        self.send_json({
-            'type': 'page_data',
-            'page': page
-        })
+        self.members_data()
     elif page == 'research':
         self.send_json({
             'type': 'page_data',

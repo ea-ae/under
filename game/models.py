@@ -28,10 +28,18 @@ class Cult(models.Model):
     money = models.BigIntegerField(default=5000)
     reputation = models.IntegerField(default=0)
 
-    contacts = models.TextField(default='[{"id": "anonymous", "card": "1.0.0"}]')
+    contacts = models.TextField(
+        default='[{"id": "anonymous", "card": "1.0.0"}]',
+        help_text='For example: [{"id": "anonymous", "card": "1.4.0"}, {"id": "assistant", "card": "1.0.1}]'
+    )
     inventory = models.TextField(default='[]')
     research = models.TextField(default='[]')
-    headquarters = models.TextField(default='[]')
+    # Research categories:
+    # Recruitment | Researching | Headquarters | Underworld
+    headquarters = models.TextField(
+        default='[]',
+        help_text='For example: ["windowbars", "cctv"]'
+    )
     marketplace = models.TextField(default='[]')
 
     def __str__(self):
@@ -40,26 +48,29 @@ class Cult(models.Model):
 
 class Member(models.Model):
     cult = models.ForeignKey(Cult, on_delete=models.CASCADE)
+    # supervisor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    supervisor_id = models.IntegerField(default=-1)  # Primary key of supervisor, -1 means the leader
     name = models.CharField(max_length=40)
+    loyalty = models.SmallIntegerField()
 
     intelligence = models.SmallIntegerField()
     social = models.SmallIntegerField()
     stealth = models.SmallIntegerField()
     strength = models.SmallIntegerField()
 
-    skills = models.TextField(
-        help_text='For example: [{name: "Lockpicker", level: 2}, {name: "Blackmailer", level: 1}]'
-    )
-    # Example : [{name: "Lockpicker", level: 2}, {name: "Blackmailer", level: 1}]
-
     job_id = models.SmallIntegerField(
         default=0,
-        help_text='0 = no job, 1 = recruiting, 2 = researching, 3 = guarding'
+        help_text='0 = no job, 1 = recruiting, 2 = researching, 3 = guarding.'
     )
-    # 0: No job
-    # 1: Recruiting
-    # 2: Researching
-    # 3: Guarding
+    specialization = models.CharField(
+        max_length=20,
+        help_text='Specialization name followed by a <b>/</b> and then the level, e.g. "Technician/3".'
+    )
+    skills = models.TextField(
+        default='[]',
+        help_text='For example: ["recruitmentstrategies", "silentwalking"]'
+    )
+
 
     def __str__(self):
         return self.name

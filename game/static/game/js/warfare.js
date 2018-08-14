@@ -29,8 +29,6 @@ function setPage(data) { // Sets the data in the active tab
         messages.contacts = data.contacts;
         // TODO: localStorage to remember last selected contact
         messages.setActiveContact(messages.selectedContact);
-    } else if (data.page == 'members') {
-        
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
             firstHQVisit = false;
@@ -54,7 +52,7 @@ function setPage(data) { // Sets the data in the active tab
     } else if (data.page == 'members') {
         if (firstMembersVisit) {
             firstMembersVisit = false;
-            members.drawTree();
+            members.drawTree(data.members);
         }
 
         /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
@@ -176,72 +174,10 @@ let messages = {
 };
 
 let members = {
-    drawTree: function() {
-        /*config = {
-            chart: {
-                container: '#members__tree',
-                connectors: {
-                    type: 'step',
-                    style: {
-                        'stroke': 'rgb(127, 139, 143)',
-                        'stroke-linejoin': 'round'
-                    }
-                },
-                //scrollbar: 'None',
-                levelSeparation: 20, // px between node levels
-                siblingSeparation: 10, // px between sibling nodes
-                padding: 20
-            },
-            nodeStructure: {
-                text: {name: 'James Bond', title: 'Leader'},
-                children: [
-                    {text: {name: 'Michael Wilson', title: 'Consigliere'}, children: [
-                        {text: {name: 'Phil Ferrell', title: 'Associate'}},
-                        {text: {name: 'Robert Jones', title: 'Spy'}}
-                    ]},
-                    {text: {name: 'Christopher Sand', title: 'Manager'}, children: [
-                        {text: {name: 'Vincent McCree', title: 'Drug Dealer'}},
-                        {text: {name: 'William Stoph', title: 'Drug Dealer'}, children: [
-                            {text: {name: 'Stephen Marrow', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                            {text: {name: 'Stephen Marrow Clone', title: 'Fighter'}, children: [
-                        ]}]}]}]}]}]}]}]}]}]}
-                        ]}
-                    ]},
-                    {text: {name: 'Josh Barrey', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barne', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barnee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneeee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneeeee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneeeeee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneeeeeee', title: 'Bodyguard'}},
-                    {text: {name: 'Vincent Barneeeeeeee', title: 'Bodyguard'}}
-                ]
-            }
-        }*/
-
-        config = {
-            container: '#members__tree',
-            connectors: {
-                type: 'step',
-                style: {
-                    'stroke': 'rgb(127, 139, 143)',
-                    'stroke-linejoin': 'round'
-                }
-            },
-            levelSeparation: 20, // px between node levels
-            siblingSeparation: 10, // px between sibling nodes
-            padding: 30
-        }
-
+    chartMembers: null,
+    memberList: null,
+    drawTree: function(memberList) {
+        /*
         let leader = {
             text: {name: 'James Bond', title: 'Leader', desc: 'Job: None'}
         }, bodyguard = {
@@ -255,7 +191,64 @@ let members = {
             text: {name: 'Stephen Marrow', title: 'Interrogator', desc: 'Job: Guarding'}
         }
 
-        chart_config = [config, leader, bodyguard, bodyguard2, fighter]
+        chart_config = [config, leader, bodyguard, bodyguard2, fighter]*/
+
+        let config = {
+            container: '#members__tree',
+            connectors: {
+                type: 'step',
+                style: {
+                    'stroke': 'rgb(127, 139, 143)',
+                    'stroke-linejoin': 'round'
+                }
+            },
+            levelSeparation: 20, // px between node levels
+            siblingSeparation: 10, // px between sibling nodes
+            padding: 30
+        }
+
+        members.memberList = memberList;
+        members.chartMembers = {
+            '-1': {
+                text: {
+                    name: 'You',
+                    title: 'Leader'
+                }
+            }
+        };
+
+        chart_config = [config, members.chartMembers['-1']];
+
+        // Add all members to the chartMembers array in the correct format
+
+        for (let i = 0; i < memberList.length; i++) {
+            members.chartMembers[memberList[i].id.toString()] = {
+                i: i,
+                text: {
+                    name: memberList[i].name,
+                    title: memberList[i].spec_name + ' ' + memberList[i].spec_level,
+                    desc: 'Job: ' + memberList[i].job
+                }
+            };
+        }
+
+        console.debug(members.chartMembers);
+
+        // Now add the parent keys to the members
+
+        for (let k in members.chartMembers) {
+            let member = members.chartMembers[k];
+            if (k != '-1') { // Leader does not need a parent key
+                console.log('item');
+                member.parent = members.chartMembers[memberList[member.i].supervisor];
+            }
+            
+            chart_config.push(member);
+        }
+
+        console.log('done');
+
+        console.debug(members.chartMembers);
         
         membersTree = new Treant(chart_config);
         //membersTree.tree.reload();

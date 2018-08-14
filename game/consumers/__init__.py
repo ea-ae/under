@@ -14,17 +14,10 @@ class WarfareConsumer(JsonWebsocketConsumer):
     from ._page_data import page_data
     from ._home import home_data, create_cult
     from ._contacts import contacts_data, process_choice, option_check, set_card
+    from ._members import members_data, generate_member
     from ._headquarters import headquarters_data, process_upgrade
 
     logger = logging.getLogger('warfare')
-
-    # General Methods
-
-    def get_cult_object(self):
-        # We do not need to retrieve the cult object from the database every time
-        # If no changes have been made to it, just send the latest self.cult to it
-        # If the save() method has been called on the model, it will retrieve a new one
-        pass
 
     def log(self, message, severity='error'):
         """
