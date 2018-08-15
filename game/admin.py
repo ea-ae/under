@@ -1,30 +1,41 @@
 from django.contrib import admin
 from .models import WarfareGame, WarfarePlayer, Cult, Member
-from .consumers._members import job_from_id
 
 
 class CultAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'money', 'reputation')
 
-    def owner(obj):
+    def owner(self, obj):
         return obj.owner.user.username
 
 
 class MemberAdmin(admin.ModelAdmin):
     readonly_fields = ['id']
-    list_display = ('name', 'cult', 'loyalty', 'specialization', 'job', 'supervisor')
+    list_display = ('name', 'cult', 'loyalty', 'wage', 'specialization', 'job_name', 'id', 'supervisor_name')
 
-    def supervisor(self, obj):
-        supervisor_id = obj.supervisor_id
-        if supervisor_id == -1:
+    def supervisor_name(self, obj):
+        supervisor = obj.supervisor
+        if supervisor is None:
             return 'You'
-        return Member.objects.get(id=obj.supervisor_id).name
+        return supervisor.name
+
+    def job_name(self, obj):
+        return obj.job.title()
 
     def cult(self, obj):
         return obj.owner
 
-    def job(self, obj):
-        return job_from_id(obj.job_id)
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        self.object_id = object_id
+        return self.changeform_view(request, object_id, form_url, extra_context)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'supervisor':
+            try:
+                kwargs['queryset'] = Member.objects.filter(owner__id=Member.objects.get(id=self.object_id).owner.id)
+            except:
+                pass
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(WarfareGame)
 admin.site.register(WarfarePlayer)

@@ -210,6 +210,7 @@ let members = {
         members.memberList = memberList;
         members.chartMembers = {
             '-1': {
+                HTMLclass: '-1',
                 text: {
                     name: 'You',
                     title: 'Leader'
@@ -224,15 +225,15 @@ let members = {
         for (let i = 0; i < memberList.length; i++) {
             members.chartMembers[memberList[i].id.toString()] = {
                 i: i,
+                HTMLclass: memberList[i].id,
                 text: {
                     name: memberList[i].name,
                     title: memberList[i].spec_name + ' ' + memberList[i].spec_level,
-                    desc: 'Job: ' + memberList[i].job
+                    desc: 'Job: ' + memberList[i].job.charAt(0).toUpperCase() + 
+                        memberList[i].job.slice(1)
                 }
             };
         }
-
-        console.debug(members.chartMembers);
 
         // Now add the parent keys to the members
 
@@ -245,10 +246,6 @@ let members = {
             
             chart_config.push(member);
         }
-
-        console.log('done');
-
-        console.debug(members.chartMembers);
         
         membersTree = new Treant(chart_config);
         //membersTree.tree.reload();

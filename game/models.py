@@ -47,20 +47,26 @@ class Cult(models.Model):
 
 
 class Member(models.Model):
-    cult = models.ForeignKey(Cult, on_delete=models.CASCADE)
-    # supervisor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
-    supervisor_id = models.IntegerField(default=-1)  # Primary key of supervisor, -1 means the leader
+    owner = models.ForeignKey(Cult, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
     name = models.CharField(max_length=40)
     loyalty = models.SmallIntegerField()
+    wage = models.IntegerField()
 
     intelligence = models.SmallIntegerField()
     social = models.SmallIntegerField()
     stealth = models.SmallIntegerField()
     strength = models.SmallIntegerField()
 
-    job_id = models.SmallIntegerField(
-        default=0,
-        help_text='0 = no job, 1 = recruiting, 2 = researching, 3 = guarding.'
+    job = models.CharField(
+        max_length=15,
+        default='none',
+        help_text='Options: none, recruiting, researching, guarding, pickpocketing, spying.'
     )
     specialization = models.CharField(
         max_length=20,

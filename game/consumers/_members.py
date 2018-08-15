@@ -8,12 +8,18 @@ def members_data(self):
     for db_member in db_members:
         spec_name, spec_level = db_member.specialization.split('/')
         skills = json.loads(db_member.skills)
+
+        if db_member.supervisor is None:
+            supervisor = -1
+        else:
+            supervisor = db_member.supervisor.id
+
         members.append({
             'id': db_member.id,
-            'supervisor': db_member.supervisor_id,
+            'supervisor': supervisor,
             'name': db_member.name,
             'loyalty': db_member.loyalty,
-            'job': job_from_id(db_member.job_id),
+            'job': db_member.job,
 
             'intelligence': db_member.intelligence,
             'social': db_member.social,
@@ -34,16 +40,3 @@ def members_data(self):
 
 def generate_member(self):
     pass
-
-
-def job_from_id(job_id):
-    if job_id == 0:
-        return 'None'
-    elif job_id == 1:
-        return 'Recruiting',
-    elif job_id == 2:
-        return 'Researching',
-    elif job_id == 3:
-        return 'Guarding'
-    else:
-        return 'Unknown'

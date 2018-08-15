@@ -38,8 +38,6 @@ body {
         width: 0px;
         background: transparent;
     }
-    overflow: hidden;
-    -ms-overflow-style: none;
 
     cursor: grab;
     cursor: -webkit-grab;
@@ -601,14 +599,19 @@ nav {
             margin-top: 25px;
 
             #members__tree {
-                display: block;
-                min-height: 250px;
-                max-height: 400px;
+                display: inline-block;
                 margin: 0 auto;
                 box-sizing: border-box;
                 box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
                 background: rgb(254, 254, 254);
                 border-radius: 2px;
+
+                overflow: auto !important;
+                overflow: -moz-scrollbars-none !important;
+                -ms-overflow-style: none !important;
+
+                min-height: 250px;
+                max-height: 400px;
     
                 & .node {
                     z-index: 2;
