@@ -3,9 +3,6 @@ import json
 
 
 def headquarters_data(self):
-    print('USER AUTHENTICATED?')
-    print(self.scope['user'].is_authenticated)
-
     self.send_json({
         'type': 'page_data',
         'page': 'headquarters',
@@ -14,6 +11,9 @@ def headquarters_data(self):
 
 
 def process_upgrade(self, data):
+    """
+    Called when the client wants to buy or sell an HQ upgrade.
+    """
     if data['command'] == 'buy':
         db_headquarters = json.loads(self.cult.headquarters)
         if data['item'] in gamedata['headquarters']['upgrades'] and data['item'] not in db_headquarters:

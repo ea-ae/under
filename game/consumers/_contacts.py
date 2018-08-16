@@ -140,6 +140,9 @@ def option_check(self, contact_name, card, choice_index):
 
 
 def set_card(self, db_contacts, i, card_value):
+    """
+    Sets the card for the client.
+    """
     self.log('Setting card of ' + db_contacts[i]['id'] + ' to "' + card_value + '".', 'info')
     db_contacts[i]['card'] = card_value
     self.cult.contacts = json.dumps(db_contacts)

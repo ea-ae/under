@@ -60,7 +60,6 @@ def multiple_connections(self, message):
     Called when a new websocket connection is opened by the same user.
     The previous one has to be closed.
     """
-    self.log('Multiple connections, closing previous one.')
     self.send_json({
         'type': 'multiple_connections'
     })

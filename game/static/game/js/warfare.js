@@ -1,11 +1,11 @@
 // Shortcut function names
-let getByClass = function(className) { return document.getElementsByClassName(className); }
-let getById = function(id) { return document.getElementById(id); }
-let getByQuery = function(query) { return document.querySelector(query); }
+let getByClass = function(className) { return document.getElementsByClassName(className); };
+let getById = function(id) { return document.getElementById(id); };
+let getByQuery = function(query) { return document.querySelector(query); };
 
 function setPage(data) { // Sets the data in the active tab
     if (data.page != active) { // Make sure we're sent the correct page
-        return False;
+        return false;
     } 
     if (data.page == 'home') {
         if ('cult' in data) { // Whether this user already has a cult
@@ -109,17 +109,16 @@ let chat = {
             getByClass('sidebar__tabs')[0].style.display = 'none';
             getByClass('sidebar__chat')[0].style.display = 'block';
 
-            let otherHeight = getByQuery('nav').offsetHeight 
-                + getByQuery('.menu__list').offsetHeight
-                + getByQuery('.chat__input').offsetHeight
-                + 40;
+            let otherHeight = getByQuery('nav').offsetHeight + 40 + 
+                getByQuery('.menu__list').offsetHeight +
+                getByQuery('.chat__input').offsetHeight;
 
             getByClass('sidebar__chat')[0].style.width = sidebarWidth + 'px';
             getByClass('chat__text')[0].style.height = 
                 (screenHeight - otherHeight) + 'px';
         }
     }
-}
+};
 
 let messages = {
     selectedContact: 'anonymous',
@@ -205,7 +204,7 @@ let members = {
             levelSeparation: 20, // px between node levels
             siblingSeparation: 10, // px between sibling nodes
             padding: 30
-        }
+        };
 
         members.memberList = memberList;
         members.chartMembers = {
@@ -218,7 +217,7 @@ let members = {
             }
         };
 
-        chart_config = [config, members.chartMembers['-1']];
+        let chart_config = [config, members.chartMembers['-1']];
 
         // Add all members to the chartMembers array in the correct format
 
@@ -237,20 +236,30 @@ let members = {
 
         // Now add the parent keys to the members
 
-        for (let k in members.chartMembers) {
+        Object.keys(members.chartMembers).forEach(function(k) {
             let member = members.chartMembers[k];
             if (k != '-1') { // Leader does not need a parent key
-                console.log('item');
                 member.parent = members.chartMembers[memberList[member.i].supervisor];
             }
-            
             chart_config.push(member);
-        }
+        });
+
+        /*for (let k in members.chartMembers) {
+            if (members.chartMembers.hasOwnProperty(k)) {
+                let member = members.chartMembers[k];
+                if (k != '-1') { // Leader does not need a parent key
+                    console.log('item');
+                    member.parent = members.chartMembers[memberList[member.i].supervisor];
+                }
+                
+                chart_config.push(member);
+            }
+        }*/
         
         membersTree = new Treant(chart_config);
         //membersTree.tree.reload();
     }
-}
+};
 
 let headquarters = {
     selected: null,
@@ -323,7 +332,7 @@ let headquarters = {
                 alerty.alert('You do not have enough money!', {
                     title: 'Oops!',
                     okLabel: 'OK'
-                })
+                });
 
                 return false;
             }
@@ -413,7 +422,7 @@ let headquarters = {
             description: 'In case of a detected intrusion, block all doors and windows from opening.'
         }
     },
-}
+};
 
 let currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -425,7 +434,6 @@ let currency = new Intl.NumberFormat('en-US', {
     animationFinished = true,
     tabSwitchFinished = true,
     firstMembersVisit = true,
-    firstResearchVisit = true,
     firstHQVisit = true,
     active = 'home',
     socket;
@@ -473,16 +481,16 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         for (let i = 0; i < tabs.length; i++) {
             tabs[i].addEventListener('click', setActiveTab);
         }
-    }
+    };
 
     socket.onclose = function(code) {
         console.debug('WebSocket connection closed.');
         console.log(code);
-    }
+    };
 
     socket.onerror = function(err) {
         // console.error(err);
-    }
+    };
 
     socket.onmessage = function(message) { // The consumer sends us a message
         let data = JSON.parse(message.data);
@@ -497,9 +505,9 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             else. Make sure you don\'t have the game open in another tab.', {
                 title: 'Connection closed',
                 okLabel: 'OK'
-            })
+            });
         }
-    }
+    };
 
     getById('create-cult__form').addEventListener('submit', function(e) {
         e.preventDefault(); // Don't submit the form, instead send it over websockets
@@ -555,12 +563,10 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }
 
         if (getByClass('menu__chat')[0].classList.contains('active')) {
-            let sidebarWidth = getByClass('sidebar')[0].offsetWidth;
             let screenHeight = document.documentElement.clientHeight;
-            let otherHeight = getByQuery('nav').offsetHeight 
-                + getByQuery('.menu__list').offsetHeight
-                + getByQuery('.chat__input').offsetHeight
-                + 40;
+            let otherHeight = getByQuery('nav').offsetHeight + 40 +
+                getByQuery('.menu__list').offsetHeight +
+                getByQuery('.chat__input').offsetHeight;
 
             getByClass('chat__text')[0].style.height = 
                 (screenHeight - otherHeight) + 'px';

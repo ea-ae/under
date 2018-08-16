@@ -6,7 +6,8 @@ import logging
 class WarfareConsumer(JsonWebsocketConsumer):
     """
     Handles the WebSocket connections for 'Warfare' games.
-    self.player - the player object
+    self.user - user model
+    self.player - warfare player model
     self.cult - currently selected cult
     """
 

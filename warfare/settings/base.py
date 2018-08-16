@@ -43,7 +43,7 @@ LOGGING = {
     'version': 1,
     'formatters': {
         'general': {
-            'format': '{levelname}\t{asctime}\t{module}\t{message}',
+            'format': '{levelname}\t{asctime}\t{message}',
             'style': '{'
         }
     },
@@ -79,10 +79,10 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'propagate': True
-        },
+        # 'django': {
+        #     'handlers': ['console'],
+        #     'propagate': True
+        # },
         'django.db.backends': {
             'level': 'DEBUG',
             'handlers': ['console'],

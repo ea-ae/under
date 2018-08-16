@@ -32,7 +32,8 @@ class MemberAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'supervisor':
             try:
-                kwargs['queryset'] = Member.objects.filter(owner__id=Member.objects.get(id=self.object_id).owner.id)
+                # owner.id or is owner_id fine?
+                kwargs['queryset'] = Member.objects.filter(owner__id=Member.objects.get(id=self.object_id).owner_id)
             except:
                 pass
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
