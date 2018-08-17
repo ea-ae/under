@@ -648,12 +648,40 @@ nav {
             }
         }
 
+        .recruit-notification {
+            display: none;
+            margin: 30px auto 0;
+            text-align: center;
+
+            .notification__wrapper {
+                cursor: pointer;
+                display: inline-block;
+                padding: 16px 45px;
+                border-radius: 1px;
+                background-color: rgb(96, 118, 243);
+
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: rgb(103, 126, 255);
+                }
+
+                p {
+                    display: inline;
+                    color: $white;
+    
+                    b {
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+
         .member-details {
             display: block;
             min-width: 300px;
             width: 50%;
             margin: 30px auto 0;
-            //margin: 30px 30px 0 0;
 
             border: 1px solid rgba(0, 0, 0, 0.04);
             border-radius: 2px;
@@ -705,6 +733,25 @@ nav {
 
                 & > div:not(.details__none) {
                     display: none;
+                }
+
+                .details__info {
+                    .accept-recruit, .reject-recruit {
+                        cursor: pointer;
+                        display: none;
+                        margin: 10px 5px 0 0;
+                        padding: 13px 35px;
+                        border-radius: 1px;
+                        color: $white;
+                        font-size: 1.1rem;
+                    }
+
+                    .accept-recruit {
+                        background-color: rgb(18, 97, 25);
+                    }
+                    .reject-recruit {
+                        background-color: rgb(114, 14, 14);
+                    }
                 }
 
                 h1 {

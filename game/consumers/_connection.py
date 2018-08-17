@@ -1,6 +1,7 @@
 from game.models import WarfareGame, WarfarePlayer, Cult
 from asgiref.sync import async_to_sync as ats
 from channels.exceptions import StopConsumer
+import json
 
 
 def connect(self):
@@ -37,6 +38,12 @@ def connect(self):
         ats(self.channel_layer.group_add)('warfare-1', self.channel_name)
 
         self.authorized = True
+
+        db_contacts = json.loads(self.cult.contacts)
+        ac = db_contacts[0]['card']  # Card of anonymous
+        # Protect tutorial users from doing stupid things
+        self.tutorial = ac in ('1.0.0', '1.0.1', '1.1.0', '1.1.1', '1.2.0', '1.3.0')
+
         print('Connect [4/4]: Connection established.')
         self.accept()
     else:
@@ -77,6 +84,8 @@ def receive_json(self, content, **kwargs):
     elif request_type == 'card_choice':  # User clicked on an option in a card
         self.process_choice({'contact': content.get('contact'),
                              'choice': content.get('choice')})
+    elif request_type == 'recruit':
+        self.process_recruit(content.get('choice'))
     elif request_type == 'hq_upgrade':
         self.process_upgrade({'command': content.get('command'),
                               'item': content.get('item')})

@@ -29,6 +29,10 @@ def process_upgrade(self, data):
         else:
             self.log('Incorrect HQ upgrade item.')
     elif data['command'] == 'delete':
+        if self.tutorial:
+            self.log('HQ upgrade deletion tutorial-idiot protection.', 'info')
+            return False
+
         db_headquarters = json.loads(self.cult.headquarters)
         if data['item'] in db_headquarters:
             # The wanted item is valid and we do not own it yet

@@ -19,7 +19,6 @@ function setPage(data) { // Sets the data in the active tab
             let money = currency.format(data.cult.money);
             getByQuery('.tabs__home .money .val').innerHTML = money;
             getByQuery('.tabs__headquarters .money').innerHTML = 'Balance: ' + money;
-            //getByQuery('.nav__money').innerHTML = currency.format(data.cult.money);
         } else {
             // Code to create a new cult
             getByQuery('.tabs__home .stats').style.display = 'none';
@@ -57,7 +56,7 @@ function setPage(data) { // Sets the data in the active tab
             getByClass('tabs__learn')[0].addEventListener('click', members.selectTab);
             getByClass('tabs__manage')[0].addEventListener('click', members.selectTab);
         }
-        members.drawTree(data.members);
+        members.drawTree(data.members, data.recruit);
 
         /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
         // todo: parent variable not needed...
@@ -178,10 +177,9 @@ let messages = {
 
 let members = {
     chartMembers: null,
-    memberList: null,
     memberSelected: null,
     firstTreeRender: true,
-    drawTree: function(memberList) {
+    drawTree: function(memberList, recruit) {
         if (!members.firstTreeRender) {
             members.firstTreeRender = false;
         }
@@ -219,7 +217,7 @@ let members = {
         // Add all members to the chartMembers array in the correct format
 
         for (let i = 0; i < memberList.length; i++) {
-            members.chartMembers[memberList[i].id.toString()] = {
+            members.chartMembers[memberList[i].id] = {
                 i: i,
                 HTMLclass: memberList[i].id,
                 text: {
@@ -253,6 +251,82 @@ let members = {
         membersTree = new Treant(chart_config);
         //membersTree.tree.reload();
 
+        if (recruit !== null) {
+            let notification = getByClass('recruit-notification')[0];
+            notification.style.display = 'block';
+            getByQuery('.recruit-notification .recruiter-name').innerHTML = 
+                members.chartMembers[recruit.supervisor].text.name;
+            getByQuery('.recruit-notification .recruit-name').innerHTML = recruit.name;
+
+            notification.addEventListener('click', function() {
+                members.memberSelected = null;
+                getByClass('details__none')[0].style.display = 'none';
+                getByClass('details__info')[0].style.display = 'block';
+                getByClass('details__jobs')[0].style.display = 'none';
+                getByClass('details__learn')[0].style.display = 'none';
+                getByClass('details__manage')[0].style.display = 'none';
+
+                getByQuery('.details__info h1').innerHTML = recruit.name;
+                getByQuery('.details__info h2').innerHTML = 
+                    recruit.spec_name + ' ' + recruit.spec_level;
+                getByQuery('.details__info .info__stats .int').innerHTML = recruit.stats[0];
+                getByQuery('.details__info .info__stats .soc').innerHTML = recruit.stats[1];
+                getByQuery('.details__info .info__stats .ste').innerHTML = recruit.stats[2];
+                getByQuery('.details__info .info__stats .str').innerHTML = recruit.stats[3];
+                getByQuery('.details__info .info__wage b').innerHTML = 
+                    currency.format(recruit.wage);
+                getByQuery('.details__info .info__loyalty b').innerHTML = recruit.loyalty;
+
+                getByClass('accept-recruit')[0].style.display = 'inline-block';
+                getByClass('reject-recruit')[0].style.display = 'inline-block';
+
+                getByClass('accept-recruit')[0].addEventListener('click', function() {
+                    alerty.confirm('Are you sure you want to accept this recruit?', {
+                        title: 'Confirmation',
+                        okLabel: 'Yes',
+                        cancelLabel: 'No'
+                    }, function() {
+                        socket.send(JSON.stringify({
+                            type: 'recruit',
+                            choice: 'accept'
+                        }));
+
+                        notification.style.display = 'none';
+                        getByClass('accept-recruit')[0].style.display = 'none';
+                        getByClass('reject-recruit')[0].style.display = 'none';
+
+                        alerty.toasts('Recruit rejected!', {
+                            bgColor: '#35444e',
+                            fontColor: '#fefefe',
+                            time: 2500
+                        });
+                    });
+                });
+                getByClass('reject-recruit')[0].addEventListener('click', function() {
+                    alerty.confirm('Are you sure you want to reject this recruit?', {
+                        title: 'Confirmation',
+                        okLabel: 'Yes',
+                        cancelLabel: 'No'
+                    }, function() {
+                        socket.send(JSON.stringify({
+                            type: 'recruit',
+                            choice: 'reject'
+                        }));
+
+                        notification.style.display = 'none';
+                        getByClass('accept-recruit')[0].style.display = 'none';
+                        getByClass('reject-recruit')[0].style.display = 'none';
+
+                        alerty.toasts('Recruit rejected!', {
+                            bgColor: '#35444e',
+                            fontColor: '#fefefe',
+                            time: 2500
+                        });
+                    });
+                });
+            });
+        }
+
         let chartNodes = document.querySelectorAll('.tabs__members .chart .node')
         for (let i = 0; i < chartNodes.length; i++) {
             if (chartNodes[i].classList.contains('-1')) {
@@ -268,6 +342,8 @@ let members = {
         getByClass('details__jobs')[0].style.display = 'none';
         getByClass('details__learn')[0].style.display = 'none';
         getByClass('details__manage')[0].style.display = 'none';
+        getByClass('accept-recruit')[0].style.display = 'none';
+        getByClass('reject-recruit')[0].style.display = 'none';
 
         members.memberSelected = this.classList[1];
         
@@ -306,7 +382,7 @@ let members = {
             getByQuery('.details__info .info__stats .ste').innerHTML = member.data.stats[2];
             getByQuery('.details__info .info__stats .str').innerHTML = member.data.stats[3];
             getByQuery('.details__info .info__wage b').innerHTML = 
-            currency.format(member.data.wage);
+                currency.format(member.data.wage);
             getByQuery('.details__info .info__loyalty b').innerHTML = member.data.loyalty;
         } else if (tabName == 'jobs') {
             getByClass('details__jobs')[0].style.display = 'block';

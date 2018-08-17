@@ -79,6 +79,7 @@ def process_choice(self, data):
                             member.stealth = randint(15, 25)
                             member.strength = randint(20, 35)
                             member.specialization = 'Blackmailer/1'
+                            member.accepted = True
                             member.save()
 
                             self.set_card(db_contacts, i, '1.1.0')
@@ -90,6 +91,7 @@ def process_choice(self, data):
                         elif data['choice'] == 1:
                             self.set_card(db_contacts, i, '1.1.1')
                     elif db_contact['card'] == '1.2.0':
+                        # TODO: Generate a new recruit here
                         db_contacts.append({'id': 'assistant', 'card': '1.0.0'})
                         self.cult.contacts = json.dumps(db_contacts)
                         self.cult.save(update_fields=['contacts'])
@@ -102,9 +104,9 @@ def process_choice(self, data):
                         self.cult.contacts = json.dumps(db_contacts)
                         self.cult.save(update_fields=['contacts'])
                         self.set_card(db_contacts, i, '1.4.1')
+                        self.tutorial = False
                     elif db_contact['card'] == '1.4.1':
                         self.set_card(db_contacts, i, '1.4.2')
-
                 elif db_contact['id'] == 'assistant':
                     if db_contact['card'] == '1.0.0':
                         self.set_card(db_contacts, i, '1.0.1')

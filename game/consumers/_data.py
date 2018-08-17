@@ -41,7 +41,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person who would be happy to join and help you.</p><p>You should give your new cultist a job. I would recommend making him work as a recruiter since he has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. He is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making him work as a recruiter since he has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.1.1': {
                     'options': [
@@ -96,7 +96,6 @@ gamedata = {
                         }
                     ],
                     'text': '<p>What? No, what is it? Tell me now, what is it? What? What? What? Nothing? Whatever. Is it nothing? Nothing at all? Fine. Whatever. Sure. Nothing.</p>'
-
                 },
                 '1.4.3': {
                     'options': [],
@@ -115,7 +114,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>Anyway, we have successfully recruited a new member. You can look at the details of new cult recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so you should probably just accept him.</p><p><b>Objective:</b> Accept the recruit into the cult.</p>'
+                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>Anyway, we have successfully recruited a new member. You can look at the details of new recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so you should definitely accept the recruit.</p><p><b>Objective:</b> Accept the recruit into the cult.</p>'
                 },
                 '1.0.1': {
                     'options': [],

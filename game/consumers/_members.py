@@ -7,6 +7,8 @@ def members_data(self):
     db_members = self.cult.member_set.all()
     members = []
 
+    recruit = None
+
     for db_member in db_members:
         spec_name, spec_level = db_member.specialization.split('/')
         skills = json.loads(db_member.skills)
@@ -17,28 +19,45 @@ def members_data(self):
         else:
             supervisor = db_member.supervisor_id
 
-        members.append({
-            'id': db_member.id,
-            'supervisor': supervisor,
-            'name': db_member.name,
-            'loyalty': db_member.loyalty,
-            'wage': db_member.wage,
-            'job': db_member.job,
-            'stats': [db_member.intelligence,
-                      db_member.social,
-                      db_member.stealth,
-                      db_member.strength],
-            'spec_name': spec_name,
-            'spec_level': int(spec_level),
-            'skills': skills
-        })
+        if db_member.accepted:
+            members.append({
+                'id': db_member.id,
+                'supervisor': supervisor,
+                'name': db_member.name,
+                'loyalty': db_member.loyalty,
+                'wage': db_member.wage,
+                'job': db_member.job,
+                'stats': [db_member.intelligence,
+                          db_member.social,
+                          db_member.stealth,
+                          db_member.strength],
+                'spec_name': spec_name,
+                'spec_level': int(spec_level),
+                'skills': skills
+            })
+        else:
+            recruit = {
+                'id': db_member.id,
+                'supervisor': supervisor,
+                'name': db_member.name,
+                'loyalty': db_member.loyalty,
+                'wage': db_member.wage,
+                'job': db_member.job,
+                'stats': [db_member.intelligence,
+                          db_member.social,
+                          db_member.stealth,
+                          db_member.strength],
+                'spec_name': spec_name,
+                'spec_level': int(spec_level),
+                'skills': skills
+            }
 
     # self.generate_member(self.cult, None)
 
     self.send_json({
         'type': 'page_data',
         'page': 'members',
-        'recruit_available': False,
+        'recruit': recruit,
         'members': members
     })
 
@@ -164,6 +183,28 @@ def generate_member(self, owner, supervisor, save_member=True):
         member.save()
 
     return member
+
+
+def process_recruit(self, choice):
+    if choice is None:
+        self.log('No recruit choice provided.')
+        return False
+    try:
+        recruit = Member.objects.get(owner=self.cult, accepted=False)
+    except Member.DoesNotExist:
+        self.log('Called recruit accept/delete command when there isn\'t a recruit.')
+    else:
+        if choice == 'accept':
+            recruit.accepted = True
+            recruit.save()
+            self.log('Accepted recruit.', 'info')
+            self.members_data()  # Refresh page
+        elif choice == 'reject':
+            if self.tutorial:
+                self.log('Member rejection tutorial-idiot protection.', 'info')
+                return False
+            recruit.delete()
+            self.log('Declined recruit.', 'info')
 
 
 def tier_picker(x):
