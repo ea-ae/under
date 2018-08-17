@@ -22,26 +22,28 @@ def members_data(self):
             'supervisor': supervisor,
             'name': db_member.name,
             'loyalty': db_member.loyalty,
+            'wage': db_member.wage,
             'job': db_member.job,
-
-            'intelligence': db_member.intelligence,
-            'social': db_member.social,
-            'stealth': db_member.stealth,
-            'strength': db_member.strength,
-
+            'stats': [db_member.intelligence,
+                      db_member.social,
+                      db_member.stealth,
+                      db_member.strength],
             'spec_name': spec_name,
             'spec_level': int(spec_level),
             'skills': skills
         })
 
+    # self.generate_member(self.cult, None)
+
     self.send_json({
         'type': 'page_data',
         'page': 'members',
+        'recruit_available': False,
         'members': members
     })
 
 
-def generate_member(self, owner, supervisor):
+def generate_member(self, owner, supervisor, save_member=True):
     primary_stat = max(wrand(90, 2) + 10, 38)  # Average: 55 [56]
     # 01-10  0.0%
     # 11-20  0.0%
@@ -86,10 +88,11 @@ def generate_member(self, owner, supervisor):
     # 71-80  2.2%
     # 81-90  0.8%
     # 91-100 0.1%
-    stats = [primary_stat, secondary_stat, tertiary_stat, quaternary_stat].shuffle()
+    stats = [primary_stat, secondary_stat, tertiary_stat, quaternary_stat]
+    shuffle(stats)
     index = max(range(len(stats)), key=stats.__getitem__)
 
-    loyalty = max(wrand(100, 2), 15)  # Random number between 15-100, weighted at 50
+    loyalty = max(wrand(130, 2) - 30, 10)  # Random number between 10-100, weighted at 35
     tier = tier_picker(stats[index])
 
     if randint(stats[index], 250) > 180:
@@ -101,23 +104,23 @@ def generate_member(self, owner, supervisor):
     else:
         spec_level = 1
 
-    first_name = random_line(open('first_names.txt'))
-    last_name = random_line(open('last_names.txt'))
+    first_name = random_line(open('game/consumers/first_names.txt'))
+    last_name = random_line(open('game/consumers/last_names.txt'))
 
     if index == 0:  # Intelligence
         if tier == 4:
-            spec_name = 'Forger'
+            spec_name = 'Mastermind'
         elif tier == 3:
-            spec_name = 'Technician'
-        elif tier == 2:
             spec_name = 'Hacker'
-        else:
+        elif tier == 2:
             spec_name = 'Forger'
+        else:
+            spec_name = 'Technician'
     elif index == 1:  # Social (pimp?)
         if tier == 4:
             spec_name = 'Spy'
         elif tier == 3:
-            spec_name = 'Recruiter'
+            spec_name = 'Manager'
         elif tier == 2:
             spec_name = 'Social Engineer'
         else:
@@ -141,19 +144,26 @@ def generate_member(self, owner, supervisor):
         else:
             spec_name = 'Guard'
 
+    wage = int(((sum(stats)) * 4 + loyalty * 10 + pow((tier * 10), 2) + pow((spec_level * 8), 2)) * (randint(5, 15) / 40))
+
     member = Member(
         owner=owner,
         supervisor=supervisor,
+        accepted=False,
         name=first_name + ' ' + last_name,
         loyalty=loyalty,
-        wage=0,  # TODO: Calculate with formula
+        wage=wage,
         intelligence=stats[0],
         social=stats[1],
         stealth=stats[2],
         strength=stats[3],
-        specialization=spec_name + '/' + spec_level
+        specialization=str(spec_name) + '/' + str(spec_level)
     )
-    member.save()
+
+    if save_member:
+        member.save()
+
+    return member
 
 
 def tier_picker(x):
@@ -168,7 +178,7 @@ def tier_picker(x):
         return 2
     # Tier 1 [42.38%]
     else:
-        return
+        return 1
 
 
 def wrand(maximum, weight):
@@ -187,8 +197,8 @@ def wrand(maximum, weight):
 def random_line(f):
     lines = next(f)
     for num, line in enumerate(f):
-        if random.randrange(num + 2):
+        if randrange(num + 2):
             continue
         lines = line
-    return lines
+    return lines.rstrip('\n')
 

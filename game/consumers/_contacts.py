@@ -1,5 +1,6 @@
 from ._data import gamedata
 import json
+from random import randint
 
 
 def contacts_data(self):
@@ -71,6 +72,15 @@ def process_choice(self, data):
                     # Find what card the choice was made in
                     if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
                         if data['choice'] == 0:
+                            member = self.generate_member(self.cult, None, False)
+                            member.wage = randint(400, 550)
+                            member.intelligence = randint(40, 55)
+                            member.social = randint(65, 75)
+                            member.stealth = randint(15, 25)
+                            member.strength = randint(20, 35)
+                            member.specialization = 'Blackmailer/1'
+                            member.save()
+
                             self.set_card(db_contacts, i, '1.1.0')
                         elif data['choice'] == 1:
                             self.set_card(db_contacts, i, '1.0.1')
@@ -125,6 +135,8 @@ def option_check(self, contact_name, card, choice_index):
                 # Check if at least 1 upgrade has been bought
                 return len(json.loads(self.cult.headquarters)) >= 1
         elif (card == '1.1.0' or card == '1.1.1') and choice_index == 0:
+            # Objective: Visit the 'Members' tab and make your new cult member work as a recruiter.
+            # We give the cult their first (hand-crafted) member.
             return True
         elif card == '1.2.0':
             return True

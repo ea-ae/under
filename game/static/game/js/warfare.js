@@ -52,8 +52,12 @@ function setPage(data) { // Sets the data in the active tab
     } else if (data.page == 'members') {
         if (firstMembersVisit) {
             firstMembersVisit = false;
-            members.drawTree(data.members);
+            getByClass('tabs__info')[0].addEventListener('click', members.selectTab);
+            getByClass('tabs__jobs')[0].addEventListener('click', members.selectTab);
+            getByClass('tabs__learn')[0].addEventListener('click', members.selectTab);
+            getByClass('tabs__manage')[0].addEventListener('click', members.selectTab);
         }
+        members.drawTree(data.members);
 
         /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
         // todo: parent variable not needed...
@@ -175,29 +179,23 @@ let messages = {
 let members = {
     chartMembers: null,
     memberList: null,
+    memberSelected: null,
+    firstTreeRender: true,
     drawTree: function(memberList) {
-        /*
-        let leader = {
-            text: {name: 'James Bond', title: 'Leader', desc: 'Job: None'}
-        }, bodyguard = {
-            parent: leader,
-            text: {name: 'Josh Barrey', title: 'Technician', desc: 'Job: Guarding'}
-        }, bodyguard2 = {
-            parent: leader,
-            text: {name: 'Vincent Barrey', title: 'Blackmailer', desc: 'Job: Recruiting'}
-        }, fighter = {
-            parent: bodyguard2,
-            text: {name: 'Stephen Marrow', title: 'Interrogator', desc: 'Job: Guarding'}
+        if (!members.firstTreeRender) {
+            members.firstTreeRender = false;
         }
-
-        chart_config = [config, leader, bodyguard, bodyguard2, fighter]*/
 
         let config = {
             container: '#members__tree',
             connectors: {
                 type: 'step',
                 style: {
-                    'stroke': 'rgb(127, 139, 143)',
+                    'stroke': 'rgb(143, 156, 161)', // 'rgb(127, 139, 143)',
+                    'stroke-opacity': 1,
+                    'stroke-width': 1.25,
+                    'opacity': 1,
+                    'fill-opacity': 1,
                     'stroke-linejoin': 'round'
                 }
             },
@@ -206,7 +204,6 @@ let members = {
             padding: 30
         };
 
-        members.memberList = memberList;
         members.chartMembers = {
             '-1': {
                 HTMLclass: '-1',
@@ -230,6 +227,15 @@ let members = {
                     title: memberList[i].spec_name + ' ' + memberList[i].spec_level,
                     desc: 'Job: ' + memberList[i].job.charAt(0).toUpperCase() + 
                         memberList[i].job.slice(1)
+                },
+                data: {
+                    loyalty: memberList[i].loyalty,
+                    wage: memberList[i].wage,
+                    job: memberList[i].job,
+                    stats: memberList[i].stats,
+                    spec_name: memberList[i].spec_name,
+                    spec_level: memberList[i].spec_level,
+                    skills: memberList[i].skills
                 }
             };
         }
@@ -243,21 +249,74 @@ let members = {
             }
             chart_config.push(member);
         });
-
-        /*for (let k in members.chartMembers) {
-            if (members.chartMembers.hasOwnProperty(k)) {
-                let member = members.chartMembers[k];
-                if (k != '-1') { // Leader does not need a parent key
-                    console.log('item');
-                    member.parent = members.chartMembers[memberList[member.i].supervisor];
-                }
-                
-                chart_config.push(member);
-            }
-        }*/
         
         membersTree = new Treant(chart_config);
         //membersTree.tree.reload();
+
+        let chartNodes = document.querySelectorAll('.tabs__members .chart .node')
+        for (let i = 0; i < chartNodes.length; i++) {
+            if (chartNodes[i].classList.contains('-1')) {
+                // No event listener for the leader ('You')
+                continue;
+            }
+            chartNodes[i].addEventListener('click', members.selectMember);
+        }
+    },
+    selectMember: function(e) {
+        getByClass('details__none')[0].style.display = 'none';
+        getByClass('details__info')[0].style.display = 'none';
+        getByClass('details__jobs')[0].style.display = 'none';
+        getByClass('details__learn')[0].style.display = 'none';
+        getByClass('details__manage')[0].style.display = 'none';
+
+        members.memberSelected = this.classList[1];
+        
+        members.setTabData('info');
+    },
+    selectTab: function(e) {
+        if (members.memberSelected === null) return false;
+
+        element = this;
+        getByClass('details__none')[0].style.display = 'none';
+        getByClass('details__info')[0].style.display = 'none';
+        getByClass('details__jobs')[0].style.display = 'none';
+        getByClass('details__learn')[0].style.display = 'none';
+        getByClass('details__manage')[0].style.display = 'none';
+
+        if (element.classList.contains('tabs__info'))
+            members.setTabData('info');
+        else if (element.classList.contains('tabs__jobs'))
+            members.setTabData('jobs');
+        else if (element.classList.contains('tabs__learn'))
+            members.setTabData('learn');
+        else if (element.classList.contains('tabs__manage'))
+            members.setTabData('manage');
+        else
+            console.error('Unknown member details tab clicked!');
+    },
+    setTabData: function(tabName) {
+        let member = members.chartMembers[members.memberSelected];
+        if (tabName == 'info') {
+            getByClass('details__info')[0].style.display = 'block';
+            getByQuery('.details__info h1').innerHTML = member.text.name;
+            getByQuery('.details__info h2').innerHTML = 
+                member.data.spec_name + ' ' + member.data.spec_level;
+            getByQuery('.details__info .info__stats .int').innerHTML = member.data.stats[0];
+            getByQuery('.details__info .info__stats .soc').innerHTML = member.data.stats[1];
+            getByQuery('.details__info .info__stats .ste').innerHTML = member.data.stats[2];
+            getByQuery('.details__info .info__stats .str').innerHTML = member.data.stats[3];
+            getByQuery('.details__info .info__wage b').innerHTML = 
+            currency.format(member.data.wage);
+            getByQuery('.details__info .info__loyalty b').innerHTML = member.data.loyalty;
+        } else if (tabName == 'jobs') {
+            getByClass('details__jobs')[0].style.display = 'block';
+        } else if (tabName == 'learn') {
+            getByClass('details__learn')[0].style.display = 'block';
+        } else if (tabName == 'manage') {
+            getByClass('details__manage')[0].style.display = 'block';
+        } else {
+            console.error('Unknown member tab name.');
+        }
     }
 };
 

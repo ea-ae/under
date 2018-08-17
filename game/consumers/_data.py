@@ -37,11 +37,11 @@ gamedata = {
                             'conditional': True
                         },
                         {
-                            'text': 'Tell me more about cultist stats, skills and jobs.',
+                            'text': 'Tell me more about cultist stats, specializations, skills, jobs, and loyalty.',
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person who would be happy to join and help you.</p><p>All members of your cult have different stats and skills. For example, if a cultist has a high enough intelligence stat, he might be a technician or a hacker.</p><p>You should give your new cultist a job. I would recommend making him a recruiter since he has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person who would be happy to join and help you.</p><p>You should give your new cultist a job. I would recommend making him work as a recruiter since he has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.1.1': {
                     'options': [
@@ -50,7 +50,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>There are four stats: intelligence, social, stealth, and strength. Some skills are rarer than others. For instance, it is harder to find a spy (social skill) than a lockpicker (stealth skill). Your cultists can learn new skills and become better at those that they already have, but it\'s a slow and expensive process.</p><p>You can assign cultists passive jobs, such as recruiting, stealing, or researching. You will unlock more jobs in the future as you meet new people. Cultists aren\'t free; you have to pay them daily wages whether they were assigned to a job or not.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>There are four stats: intelligence, social, stealth, and strength. A cultist\'s specialization depends on their stats. Some specializations are rarer than others. For instance, it is harder to find a spy (tier 4 social skill) than a lockpicker (tier 2 stealth skill). You can research new learnable skills and teach them to your cultists.</p><p>All cultists can be assigned passive jobs, such as recruiting, stealing, or researching. Some jobs are only available to certain specializations (such as pickpocketing), and some jobs are unlocked by research. The higher a cultist\'s loyalty, the harder he will work. You also must pay your cultists daily wages whether they were assigned to a job or not.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.2.0': {
                     'options': [
@@ -59,7 +59,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>While your cult member is searching for new members, let\'s use your research points. You slowly earn research points as time passes, but you can earn them faster by upgrading your headquarters or assigning cultists with high intelligence stats to work as researchers.</p><p>Look at your options and spend your research points on whatever you like.</p><p><b>Objective:</b> Spend your research points.</p>'
+                    'text': '<p>While your cultist is searching for new members, let\'s use your research points. You slowly earn research points as time passes, but you can earn them faster by upgrading your headquarters or assigning cultists with high intelligence stats to work as researchers.</p><p>Look at your options and spend your research points on whatever you like.</p><p><b>Objective:</b> Spend your research points.</p>'
                 },
                 '1.3.0': {
                     'options': [
@@ -82,11 +82,11 @@ gamedata = {
                 '1.4.1': {
                     'options': [
                         {
-                            'text': 'I got everything you need.',
+                            'text': 'I got you the money.',
                             'conditional': True
                         }
                     ],
-                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. You might have heard stories about different mythical creatures and demons that reside there, but it\'s much worse than in the stories.</p><p>You have to create a special portal to access it. Almost nobody knows how to build these portals, so I\'m lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and that he\'ll take care of the rest.</p><p><b>Objective:</b> Pay $50,000.</p>'
+                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. You might have heard stories about different mythical creatures and demons that reside there, but it\'s much worse than in the stories.</p><p>You have to create a special portal to access it. Almost nobody knows how to build these portals, so I\'m lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about different topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
                 },
                 '1.4.2': {
                     'options': [

@@ -11,7 +11,8 @@ class CultAdmin(admin.ModelAdmin):
 
 class MemberAdmin(admin.ModelAdmin):
     readonly_fields = ['id']
-    list_display = ('name', 'cult', 'loyalty', 'wage', 'specialization', 'job_name', 'id', 'supervisor_name')
+    list_display = ('name', 'id', 'supervisor_name', 'cult', 'loyalty', 'wage',
+                    'specialization', 'job_name', 'accepted')
 
     def supervisor_name(self, obj):
         supervisor = obj.supervisor

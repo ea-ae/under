@@ -30,12 +30,11 @@ class Cult(models.Model):
 
     contacts = models.TextField(
         default='[{"id": "anonymous", "card": "1.0.0"}]',
-        help_text='For example: [{"id": "anonymous", "card": "1.4.0"}, {"id": "assistant", "card": "1.0.1}]'
+        help_text='For example: [{"id": "anonymous", "card": "1.4.0"}, {"id": "assistant", "card": "1.0.1}]<br>\
+                  Assistant added at anonymous "1.3.0". Mafioso added at assistant "1.1.2".'
     )
     inventory = models.TextField(default='[]')
     research = models.TextField(default='[]')
-    # Research categories:
-    # Recruitment | Researching | Headquarters | Underworld
     headquarters = models.TextField(
         default='[]',
         help_text='For example: ["windowbars", "cctv"]'
@@ -54,6 +53,7 @@ class Member(models.Model):
         blank=True,
         on_delete=models.SET_NULL
     )
+    accepted = models.BooleanField()
     name = models.CharField(max_length=40)
     loyalty = models.SmallIntegerField()
     wage = models.IntegerField()
