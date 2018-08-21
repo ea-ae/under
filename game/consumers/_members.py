@@ -1,6 +1,10 @@
 from game.models import Member
+from random import randint, randrange, shuffle
+
 import json
-from random import random, randint, randrange, shuffle
+from random import random
+from datetime import timedelta
+from django.utils.timezone import now
 
 
 def members_data(self):
@@ -52,8 +56,6 @@ def members_data(self):
                 'skills': skills
             }
 
-    # self.generate_member(self.cult, None)
-
     self.send_json({
         'type': 'page_data',
         'page': 'members',
@@ -62,7 +64,10 @@ def members_data(self):
     })
 
 
-def generate_member(self, owner, supervisor, save_member=True):
+def generate_member(self, owner, supervisor):
+    """
+    Creates a new randomly-generated Member.
+    """
     primary_stat = max(wrand(90, 2) + 10, 38)  # Average: 55 [56]
     # 01-10  0.0%
     # 11-20  0.0%
@@ -179,13 +184,76 @@ def generate_member(self, owner, supervisor, save_member=True):
         specialization=str(spec_name) + '/' + str(spec_level)
     )
 
-    if save_member:
-        member.save()
-
     return member
 
 
+def process_ticks(self):
+    """
+    Processes job ticks.
+    """
+    print('Process ticks...')
+    db_members = self.cult.member_set.all()  # We are querying the db for game members every single time
+
+    member_weights = []  # Recruitment chance weights for all members
+    member_count = 0
+    recruitment_points = 0
+    research_points = 0
+
+    minutes = int((now() - self.cult.last_check).total_seconds() / 60)
+    has_recruit = False
+
+    for db_member in db_members:
+        member_count += 1
+        weight = 0
+
+        if not db_member.accepted:
+            # This means we have a recruit
+            # While there is an available recruit, no recruitment points are earned
+            has_recruit = True
+
+        if db_member.job == 'recruiting':
+            recruitment_points += db_member.social * minutes / 10
+            weight += db_member.social
+            # Check if the social stat is the largest (so the person has a social specialization)
+            if all(st >= db_member.social for st in [db_member.intelligence, db_member.stealth, db_member.strength]):
+                # Give bonus weight if that is true
+                weight += 30
+        elif db_member.job == 'researching':
+            research_points += db_member.intelligence * minutes / 10
+
+        member_weights.append(weight)
+
+    recruitment_target = int(2 ** member_count * 25)
+    recruitment_points = int(round(recruitment_points))
+    research_points = int(round(research_points))
+
+    if not has_recruit:
+        if self.cult.recruitment_points + recruitment_points >= recruitment_target:
+            # We have reached the required recruitment points that are needed to get a new recruit
+            self.cult.recruitment_points = 0
+            supervisor = db_members[weighted_choice(member_weights)] if len(member_weights) else None
+            recruit = self.generate_member(self.cult, supervisor)
+            recruit.save()
+        else:
+            self.cult.recruitment_points += recruitment_points
+
+    self.cult.research_points += research_points
+
+    self.cult.last_check += timedelta(minutes=minutes)
+    self.cult.save(update_fields=['recruitment_points', 'research_points', 'last_check'])
+    print('=========')
+    print('MINUTES PROCESSED: ' + str(minutes))
+    print('RESEARCH POINTS ADDED: ' + str(research_points))
+    print('RECRUITMENT POINTS ADDED: ' + str(recruitment_points))
+    print('RECRUITMENT COST: ' + str(recruitment_target))
+    print('time then: ' + str(self.cult.last_check))
+    print('time now, not last check: ' + str(now()))
+
+
 def process_recruit(self, choice):
+    """
+    Called when a recruit is accepted or rejected.
+    """
     if choice is None:
         self.log('No recruit choice provided.')
         return False
@@ -203,11 +271,15 @@ def process_recruit(self, choice):
             if self.tutorial:
                 self.log('Member rejection tutorial-idiot protection.', 'info')
                 return False
+            print('X_X_X_X_X DELETING RECRUIT X_X__X_X2224')
             recruit.delete()
             self.log('Declined recruit.', 'info')
 
 
 def tier_picker(x):
+    """
+    Returns a random tier from 1 to 4.
+    """
     # Tier 4 [9.56%]
     if x > 75 and randint(min(x, 130), 130) > 100:
         return 4
@@ -235,7 +307,21 @@ def wrand(maximum, weight):
     # return int(minimum + (maximum - minimum) * pow(random.random(), power))
 
 
+def weighted_choice(weights):
+    """
+    Select weighted choice.
+    """
+    rnd = random() * sum(weights)
+    for i, w in enumerate(weights):
+        rnd -= w
+        if rnd < 0:
+            return i
+
+
 def random_line(f):
+    """
+    Selects a random line from a file and strips the newline character.
+    """
     lines = next(f)
     for num, line in enumerate(f):
         if randrange(num + 2):

@@ -41,7 +41,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. He is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making him work as a recruiter since he has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. That person is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making the new cultist work as a recruiter, since that person has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.1.1': {
                     'options': [

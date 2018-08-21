@@ -9,6 +9,8 @@ def page_data(self, page):
     if not self.authorized:
         self.log('Non-authorized user requested page data.', 'warning')
 
+    self.process_ticks()
+
     if page == 'home':
         self.home_data()
     elif page == 'contacts':

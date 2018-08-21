@@ -72,7 +72,7 @@ def process_choice(self, data):
                     # Find what card the choice was made in
                     if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
                         if data['choice'] == 0:
-                            member = self.generate_member(self.cult, None, False)
+                            member = self.generate_member(self.cult, None)
                             member.wage = randint(400, 550)
                             member.intelligence = randint(40, 55)
                             member.social = randint(65, 75)
@@ -91,10 +91,13 @@ def process_choice(self, data):
                         elif data['choice'] == 1:
                             self.set_card(db_contacts, i, '1.1.1')
                     elif db_contact['card'] == '1.2.0':
-                        # TODO: Generate a new recruit here
                         db_contacts.append({'id': 'assistant', 'card': '1.0.0'})
                         self.cult.contacts = json.dumps(db_contacts)
                         self.cult.save(update_fields=['contacts'])
+
+                        member = self.generate_member(self.cult, None)
+
+
                         self.set_card(db_contacts, i, '1.3.0')
                     elif db_contact['card'] == '1.3.0':
                         self.set_card(db_contacts, i, '1.4.0')

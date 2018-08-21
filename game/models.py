@@ -1,7 +1,6 @@
 from django.db import models
-
 from main.models import User
-from django.contrib.auth import get_user_model
+from django.utils.timezone import now
 
 
 # Variables that affect the whole game world
@@ -40,6 +39,11 @@ class Cult(models.Model):
         help_text='For example: ["windowbars", "cctv"]'
     )
     marketplace = models.TextField(default='[]')
+
+    research_points = models.IntegerField(default=50)
+    recruitment_points = models.IntegerField(default=0)
+
+    last_check = models.DateTimeField(default=now)  # Last time we processed ticks
 
     def __str__(self):
         return self.name + ' [' + self.owner.user.username + ']'

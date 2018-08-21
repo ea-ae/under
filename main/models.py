@@ -36,7 +36,6 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     display = models.CharField(max_length=25, unique=True)
-    bio = models.CharField(max_length=200, default='Nothing.')
 
     def __str__(self):
         return self.display
