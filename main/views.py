@@ -1,12 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required  # Does not fit our needs all the time
-from .models import User, Profile
+from django.shortcuts import render, redirect
+from .models import User
 from .forms import CustomUserCreationForm, CustomLoginForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login
 from . import blacklist
 from ratelimit.decorators import ratelimit
-from django.urls import reverse
 
 
 def index(request):
@@ -46,7 +44,6 @@ def custom_login(request):
     if request.method == 'POST':
         if request.POST.get('remember_me'):
             request.session.set_expiry(1209600)  # 2 weeks
-    # response = auth_login(request, template_name=template_name, authentication_form=authentication_form)
     response = LoginView.as_view(template_name='main/login.html',
                                  authentication_form=CustomLoginForm)(request)
     return response
