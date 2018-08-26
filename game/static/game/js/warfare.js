@@ -322,6 +322,8 @@ let members = {
                             fontColor: '#fefefe',
                             time: 2500
                         });
+
+                        console.info('Member rejected.');
                     });
                 });
             });
@@ -605,8 +607,9 @@ window.addEventListener('load', function() { // Once page loaded and parsed
     });
 
     socket.onopen = function() {
-        console.log(getByClass('spinner'));
-        getByClass('spinner')[0].remove();
+        if (document.contains(getByClass('spinner')[0])) {
+            getByClass('spinner')[0].remove();
+        }
         connected = true; // Allow tab switching etc.
 
         // Set 'home' as the initial tab

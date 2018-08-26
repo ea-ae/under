@@ -14,3 +14,7 @@ config = {
     'DB_PASSWORD': 'hunter2'
 }
 ```
+
+## Testing
+
+Django testing is done with `python manage.py test`. To test the consumers, use `pytest --ds=warfare.settings`.

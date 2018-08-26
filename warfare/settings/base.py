@@ -20,6 +20,7 @@ AUTH_USER_MODEL = 'main.User'
 LOGIN_REDIRECT_URL = '../'
 
 # SESSION_COOKIE_AGE = 604800
+SESSION_COOKIE_NAME = 'ssid'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # View to redirect to if ratelimited

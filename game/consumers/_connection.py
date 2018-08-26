@@ -48,6 +48,7 @@ def connect(self):
         self.accept()
     else:
         self.log('User is unauthenticated.')
+        self.close()
 
 
 def disconnect(self, code):

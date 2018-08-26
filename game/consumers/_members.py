@@ -268,10 +268,6 @@ def process_recruit(self, choice):
             self.log('Accepted recruit.', 'info')
             self.members_data()  # Refresh page
         elif choice == 'reject':
-            if self.tutorial:
-                self.log('Member rejection tutorial-idiot protection.', 'info')
-                return False
-            print('X_X_X_X_X DELETING RECRUIT X_X__X_X2224')
             recruit.delete()
             self.log('Declined recruit.', 'info')
 
