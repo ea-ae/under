@@ -159,7 +159,10 @@ DATABASES = {
         'USER': 'warfare',
         'PASSWORD': config['DB_PASSWORD'],
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'django_test_warfare',
+        }
     }
 }
 

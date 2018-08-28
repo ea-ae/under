@@ -97,7 +97,6 @@ def process_choice(self, data):
 
                         member = self.generate_member(self.cult, None)
 
-
                         self.set_card(db_contacts, i, '1.3.0')
                     elif db_contact['card'] == '1.3.0':
                         self.set_card(db_contacts, i, '1.4.0')

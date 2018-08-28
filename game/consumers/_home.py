@@ -38,7 +38,7 @@ def create_cult(self, data):
         # Redirect the new user to the missions page
         self.send_json({
             'type': 'page_redirect',
-            'page': 'messages'
+            'page': 'contacts'
         })
     else:
         self.log('Cult formatted incorrectly or already exists.')

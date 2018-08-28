@@ -635,6 +635,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         if (data.type == 'page_data') {
             setPage(data); // We are sent data about a requested page
         } else if (data.type == 'page_redirect') { // Server wants to change the active tab
+            console.log(data.page);
             setActiveTab({target: getById('tabs-list__' + data.page)});
         } else if (data.type == 'multiple_connections') {
             console.log('WebSocket connection closed due to another connection.');
@@ -659,7 +660,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
 
         // Redirect user to another page
 
-        setActiveTab({target: getById('tabs-list__contacts')});
+        // setActiveTab({target: getById('tabs-list__contacts')});
     });
 
     getByClass('nav__logout')[0].addEventListener('click', function() {
