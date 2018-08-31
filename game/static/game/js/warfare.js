@@ -3,6 +3,10 @@ let getByClass = function(className) { return document.getElementsByClassName(cl
 let getById = function(id) { return document.getElementById(id); };
 let getByQuery = function(query) { return document.querySelector(query); };
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 function setPage(data) { // Sets the data in the active tab
     if (data.page != active) { // Make sure we're sent the correct page
         return false;
@@ -56,7 +60,7 @@ function setPage(data) { // Sets the data in the active tab
             getByClass('tabs__learn')[0].addEventListener('click', members.selectTab);
             getByClass('tabs__manage')[0].addEventListener('click', members.selectTab);
         }
-        members.drawTree(data.members, data.recruit);
+        members.drawTree(data.members, data.recruit, data.jobs);
 
         /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
         // todo: parent variable not needed...
@@ -179,7 +183,7 @@ let members = {
     chartMembers: null,
     memberSelected: null,
     firstTreeRender: true,
-    drawTree: function(memberList, recruit) {
+    drawTree: function(memberList, recruit, jobList) {
         if (!members.firstTreeRender) {
             members.firstTreeRender = false;
         }
@@ -223,8 +227,7 @@ let members = {
                 text: {
                     name: memberList[i].name,
                     title: memberList[i].spec_name + ' ' + memberList[i].spec_level,
-                    desc: 'Job: ' + memberList[i].job.charAt(0).toUpperCase() + 
-                        memberList[i].job.slice(1)
+                    desc: 'Job: ' + memberList[i].job.capitalize()
                 },
                 data: {
                     loyalty: memberList[i].loyalty,
@@ -337,6 +340,17 @@ let members = {
             }
             chartNodes[i].addEventListener('click', members.selectMember);
         }
+
+        // Add available jobs to dropdown menu
+
+        let jobListEl = getByQuery('.job-list');
+        jobListEl.innerHTML = '';
+
+        for (let i = 0; i < jobList.length; i++) {
+            let job = document.createElement('div');
+            job.innerHTML = jobList[i].capitalize();
+            jobListEl.appendChild(job);
+        }
     },
     selectMember: function(e) {
         getByClass('details__none')[0].style.display = 'none';
@@ -388,6 +402,8 @@ let members = {
             getByQuery('.details__info .info__loyalty b').innerHTML = member.data.loyalty;
         } else if (tabName == 'jobs') {
             getByClass('details__jobs')[0].style.display = 'block';
+            getByQuery('.details__jobs h1').innerHTML = 'Current job: ' + 
+                member.data.job.capitalize();
         } else if (tabName == 'learn') {
             getByClass('details__learn')[0].style.display = 'block';
         } else if (tabName == 'manage') {

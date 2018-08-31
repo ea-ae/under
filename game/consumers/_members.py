@@ -59,6 +59,7 @@ def members_data(self):
     self.send_json({
         'type': 'page_data',
         'page': 'members',
+        'jobs': ['none', 'recruiting', 'researching', 'guarding', 'pickpocketing'],
         'recruit': recruit,
         'members': members
     })
@@ -194,12 +195,13 @@ def process_ticks(self):
     print('Process ticks...')
     db_members = self.cult.member_set.all()  # We are querying the db for game members every single time
 
+    minutes = int((now() - self.cult.last_check).total_seconds() / 60)
+
     member_weights = []  # Recruitment chance weights for all members
     member_count = 0
-    recruitment_points = 0
+    recruitment_points = minutes  # One recruitment point earned per minute
     research_points = 0
 
-    minutes = int((now() - self.cult.last_check).total_seconds() / 60)
     has_recruit = False
 
     for db_member in db_members:
@@ -231,7 +233,10 @@ def process_ticks(self):
         if self.cult.recruitment_points + recruitment_points >= recruitment_target:
             # We have reached the required recruitment points that are needed to get a new recruit
             self.cult.recruitment_points = 0
-            supervisor = db_members[weighted_choice(member_weights)] if len(member_weights) else None
+            if randint(1, 7) == 1:
+                supervisor = None  # Sometimes you will directly recruit new members
+            else:
+                supervisor = db_members[weighted_choice(member_weights)] if len(member_weights) else None
             recruit = self.generate_member(self.cult, supervisor)
             recruit.save()
         else:
@@ -263,6 +268,7 @@ def process_recruit(self, choice):
         self.log('Called recruit accept/delete command when there isn\'t a recruit.')
     else:
         if choice == 'accept':
+            self.process_ticks()  # To prevent cheating
             recruit.accepted = True
             recruit.save()
             self.log('Accepted recruit.', 'info')
