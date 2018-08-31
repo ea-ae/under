@@ -17,20 +17,19 @@ All of your cultists have different stats, specializations, tiers, and jobs.
 
 ![Members](https://i.imgur.com/9XaKHMW.png)
 
-### Anonimity
+### Anonymity
 
-Cultists know only the identities of people they recruit and have recruited. Some of
+Cultists know only the identities of the people they recruit and have recruited. Some of
 your members might be snitches, spies, or secret informants. If a traitor finds out
-your identity, it won't end good for you.
+your identity, it won't end well for you.
 
 ![Anonimity](https://i.imgur.com/gHUIExy.png)
 
 ### Crimes
 
 A part of the game is similar to the many mafia/gang games out there. You can make
-your cultists perform crimes, but there's a risk they'll get arrested or killed.
-
-During crimes you are able to make important decisions that will change the outcome of the crime.
+your cultists perform crimes, but there's a risk they'll get arrested or killed. The choices
+you make and the specializations of your cultists play a big role in how a crime will turn out.
 
 ### The Underworld
 
