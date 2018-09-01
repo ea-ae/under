@@ -215,7 +215,6 @@ def process_ticks(self):
 
         if db_member.job == 'recruiting':
             recruitment_points += db_member.social * minutes / 10
-            weight += db_member.social
             # Check if the social stat is the largest (so the person has a social specialization)
             if all(st >= db_member.social for st in [db_member.intelligence, db_member.stealth, db_member.strength]):
                 # Give bonus weight if that is true
@@ -223,9 +222,14 @@ def process_ticks(self):
         elif db_member.job == 'researching':
             research_points += db_member.intelligence * minutes / 10
 
+        weight += db_member.social  # Add weight equal to the social stat
         member_weights.append(weight)
 
-    recruitment_target = int(2 ** member_count * 25)
+    print('VVV MEMBER WEIGHTS')
+    print(member_weights)
+    print('^^^ MEMBER WEIGHTS')
+
+    recruitment_target = int(2 ** member_count * 25)  # len(member_weights)
     recruitment_points = int(round(recruitment_points))
     research_points = int(round(research_points))
 
@@ -317,6 +321,8 @@ def weighted_choice(weights):
     for i, w in enumerate(weights):
         rnd -= w
         if rnd < 0:
+            print(i)
+            print('^^^ OUR INDEX CHOSEN!')
             return i
 
 

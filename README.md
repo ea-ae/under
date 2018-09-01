@@ -35,7 +35,7 @@ you make and the specializations of your cultists play a big role in how a crime
 
 Make your cultists explore the Underworld and find various artifacts that you can
 use or sell. Fight, hide, and capture various creatures. Explore different areas
-and venture deeper into The Underworld as you become more powerful.
+and venture deeper into the Underworld as you become more powerful.
 
 ### PVP
 
@@ -66,4 +66,4 @@ Django testing is done with `python manage.py test`. To test the consumers, use 
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0. See the LICENSE file for details.
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
