@@ -77,7 +77,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>I see you have a new cult member. Secrecy and anonymity are very important in a cult. Cultists only know the identities of the people they recruited and were recruited by.</p><p>Let\'s say that one of your cultists gets caught by the police. The lower the cult member\'s loyalty, the higher the chance that the police successfully make him talk and give out the identities of every cult member he knows.</p><p>Having a police informant in your cult isn\'t even the biggest threat. A spy from a rival cult is significantly worse. Depending on the job you give to a spy, they could steal your research points, recruit more of their spies into your cult, or worse.</p>'
+                    'text': '<p>I see you have a new recruit. Secrecy and anonymity are very important in a cult. Cultists only know the identities of the people they recruited and were recruited by.</p><p>Let\'s say that one of your cultists gets caught by the police. The lower the cult member\'s loyalty, the higher the chance that the police successfully make him talk and give out the identities of every cult member he knows.</p><p>Having a police informant in your cult isn\'t even the biggest threat. A spy from a rival cult is significantly worse. Depending on the job you give to a spy, they could steal your research points, recruit more of their spies into your cult, or worse.</p>'
                 },
                 '1.4.1': {
                     'options': [
@@ -86,7 +86,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. You might have heard stories about different mythical creatures and demons that reside there, but it\'s much worse than in the stories.</p><p>You have to create a special portal to access it. Almost nobody knows how to build these portals, so I\'m lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about different topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
+                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. You might have heard stories about different mythical creatures and demons that reside there, but it\'s much worse than in the stories.</p><p>You have to create a special portal to access it. Almost nobody knows how to build these portals, so I\'m lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about some topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
                 },
                 '1.4.2': {
                     'options': [
@@ -110,15 +110,15 @@ gamedata = {
                 '1.0.0': {
                     'options': [
                         {
-                            'text': 'Did as you suggested.',
-                            'conditional': True
+                            'text': 'Okay.',
+                            'conditional': False
                         }
                     ],
-                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>Anyway, we have successfully recruited a new member. You can look at the details of new recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so you should definitely accept the recruit.</p><p><b>Objective:</b> Accept the recruit into the cult.</p>'
+                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>Anyway, we have successfully recruited a new member. You can look at the details of new recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so I\'d recommend you accept the recruit.</p>'
                 },
                 '1.0.1': {
                     'options': [],
-                    'text': 'Okay, great. I will start working now, there are a lot of things to do. Let me know if you need anything.'
+                    'text': '<p>Anyway, I will start working now, there are a lot of things to do. Let me know if you need anything.</p>'
                 },
                 '1.1.0': {
                     'options': [

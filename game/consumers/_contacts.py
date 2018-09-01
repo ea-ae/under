@@ -93,9 +93,8 @@ def process_choice(self, data):
                     elif db_contact['card'] == '1.2.0':
                         db_contacts.append({'id': 'assistant', 'card': '1.0.0'})
                         self.cult.contacts = json.dumps(db_contacts)
-                        self.cult.save(update_fields=['contacts'])
-
-                        member = self.generate_member(self.cult, None)
+                        self.cult.recruitment_points += 50
+                        self.cult.save(update_fields=['contacts', 'recruitment_points'])
 
                         self.set_card(db_contacts, i, '1.3.0')
                     elif db_contact['card'] == '1.3.0':
@@ -149,9 +148,7 @@ def option_check(self, contact_name, card, choice_index):
             # Check if the assistant's card is not '1.0.0'
             return contacts[1]['card'] != '1.0.0'
     elif contact_name == 'assistant':
-        if card == '1.0.0':
-            # Objective: Accept the recruit into the cult.
-            return True
+        pass
     return False
 
 

@@ -209,9 +209,10 @@ def process_ticks(self):
             # This means we have a recruit
             # While there is an available recruit, no recruitment points are earned
             has_recruit = True
+            continue  # Ignore recruits?
 
         if db_member.job == 'recruiting':
-            recruitment_points += db_member.social * minutes / 10
+            recruitment_points += round(db_member.social * minutes / randint(9, 11))
             # Check if the social stat is the largest (so the person has a social specialization)
             if all(st >= db_member.social for st in [db_member.intelligence, db_member.stealth, db_member.strength]):
                 # Give bonus weight if that is true
@@ -272,11 +273,20 @@ def process_recruit(self, choice):
             self.log('Accepted recruit.', 'info')
             self.members_data()  # Refresh page
         elif choice == 'reject':
+            if self.tutorial:
+                self.log('Member rejection tutorial-idiot protection.', 'info')
+                self.send_json({
+                    'type': 'tutorial_lock'
+                })
+                return False
             recruit.delete()
             self.log('Declined recruit.', 'info')
 
 
 def change_job(self, cultist_id, job_name):
+    """
+    Called when the client wants to change a cultist's job.
+    """
     self.process_ticks()
 
     if cultist_id is None or job_name is None:
@@ -304,6 +314,9 @@ def change_job(self, cultist_id, job_name):
 
 
 def get_available_jobs():
+    """
+    Returns all jobs unlocked by the cult.
+    """
     return ['none', 'recruiting', 'researching', 'guarding', 'pickpocketing']
 
 

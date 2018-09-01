@@ -161,6 +161,7 @@
                 <div class="tabs__contacts">
                     <!-- Images are 120x139 -->
                     <div class="contacts">
+                        <!--
                         <div class="contact contact--anonymous">
                             <div class="contact__wrapper">
                                 <img src="{% static 'game/images/avatar-anonymous.png' %}">
@@ -181,6 +182,7 @@
                                 <img src="{% static 'game/images/avatar-detective.png' %}">
                             </div>
                         </div>
+                        -->
                     </div>
                     <div class="contact-details">
                         <div class="contact-details__top">
@@ -346,6 +348,10 @@
             </div>
         </div>
     </div>
+    <script>
+        IMAGES_URL = '{% static "game/images/" %}';
+        TEMP_URL = '{% static "images/avatar-anonymous.png" %}';
+    </script>
     <script src="{% static 'game/js/reconnecting-websocket/rws.js' %}"></script>
     <script src="{% static 'game/js/alerty/alerty.js' %}"></script>
     <script src="{% static 'game/js/dragscroll/dragscroll.js' %}"></script>

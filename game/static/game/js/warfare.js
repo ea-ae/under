@@ -32,9 +32,9 @@ function setPage(data) { // Sets the data in the active tab
             getByQuery('.tabs__home .create-cult').style.display = 'block';
         }
     } else if (data.page == 'contacts') {
-        messages.contacts = data.contacts;
+        contacts.contacts = data.contacts;
         // TODO: localStorage to remember last selected contact
-        messages.setActiveContact(messages.selectedContact);
+        contacts.setActiveContact(contacts.selectedContact);
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
             firstHQVisit = false;
@@ -98,6 +98,15 @@ function setActiveTab(event, checkIfSame=true) {
     }
 }
 
+function deleteOverlays() {
+    // There is a bug in Alerty that makes an overlays not delete themselves.
+    // We can delete the alerty overlays by ourselves instead.
+    let overlays = getByClass('alery-overlay');
+    for (let i = 0; i < overlays.length; i++) {
+        overlays[i].remove();
+    }
+}
+
 let chat = {
     setActiveMenuTab: function(e) {
         let menuList = getByClass('menu__list')[0].children;
@@ -130,14 +139,32 @@ let chat = {
     }
 };
 
-let messages = {
+let contacts = {
     selectedContact: 'anonymous',
     options: [],
+    displayContactList: function() {
+        getByClass('contacts')[0].innerHTML = '';
+        for (let key in contacts.contacts) {
+            let div = document.createElement('div');
+            let wrapper = document.createElement('div');
+            let img = document.createElement('img');
+            div.appendChild(wrapper);
+            wrapper.appendChild(img);
+            div.classList.add('contact');
+            div.classList.add('contact--' + key);
+            div.addEventListener('click', function() {
+                contacts.setActiveContact(key);
+            });
+            wrapper.classList.add('contact__wrapper');
+            img.setAttribute('src', IMAGES_URL + 'avatar-' + key + '.png');
+            getByClass('contacts')[0].appendChild(div);
+        }
+    },
     setActiveContact: function(contact) {
+        contacts.displayContactList();
         let i;
-        console.log(contact);
-        contact = messages.contacts[contact];
-        messages.selectedContact = contact.id;
+        contact = contacts.contacts[contact];
+        contacts.selectedContact = contact.id;
         getByClass('contact-details__text')[0].innerHTML = contact.text;
         getByClass('contact-details__title')[0].innerHTML = contact.name;
         let optionsList = getByQuery('.contact-details__options ul');
@@ -148,26 +175,27 @@ let messages = {
             '>' + contact.options[i].text + '</li>';
         }
 
-        for (i = 0; i < messages.options.length; i++) {
-            messages.options[i].removeEventListener('click', messages.selectOption);
+        for (i = 0; i < contacts.options.length; i++) {
+            contacts.options[i].removeEventListener('click', contacts.selectOption);
         }
 
-        messages.options = [];
+        contacts.options = [];
 
         for (i = 0; i < optionsList.children.length; i++) {
-            messages.options.push(optionsList.children[i]);
-            optionsList.children[i].addEventListener('click', messages.selectOption);
+            contacts.options.push(optionsList.children[i]);
+            optionsList.children[i].addEventListener('click', contacts.selectOption);
         }
-
         let img = getByClass('contact--' + contact.id)[0].children[0].children[0];
         getByQuery('.contact-details__top img').src = img.src;
     },
     selectOption: function(e) { // Click handler
-        socket.send(JSON.stringify({
-            type: 'card_choice',
-            contact: messages.selectedContact,
-            choice: messages.options.indexOf(e.target)
-        }));
+        if (!this.classList.contains('disabled-text')) {
+            socket.send(JSON.stringify({
+                type: 'card_choice',
+                contact: contacts.selectedContact,
+                choice: contacts.options.indexOf(e.target)
+            }));
+        }
     },
     contacts: {
         anonymous: {
@@ -303,12 +331,13 @@ let members = {
                         getByClass('accept-recruit')[0].style.display = 'none';
                         getByClass('reject-recruit')[0].style.display = 'none';
 
-                        alerty.toasts('Recruit rejected!', {
+                        alerty.toasts('Recruit accepted!', {
                             bgColor: '#35444e',
                             fontColor: '#fefefe',
                             time: 2500
                         });
                     });
+                    deleteOverlays();
                 });
                 getByClass('reject-recruit')[0].addEventListener('click', function() {
                     alerty.confirm('Are you sure you want to reject this recruit?', {
@@ -333,6 +362,7 @@ let members = {
 
                         console.info('Member rejected.');
                     });
+                    deleteOverlays();
                 });
             });
         }
@@ -417,9 +447,9 @@ let members = {
                     // This is the cultist's current job
                     continue;
                 }
+                // Check if cultist qualifies for job
                 if (jobList[i] == 'pickpocketing') {
                     if (member.data.spec_name != 'Pickpocketer') {
-                        // Does not qualify for pickpocketer job
                         continue;
                     }
                 }
@@ -503,6 +533,7 @@ let headquarters = {
                     time: 4000
                 });
             });
+            deleteOverlays();
         } else {
             let money = getByQuery('.tabs__headquarters .money').innerHTML.substring(10);
             money = parseInt(money.split(',').join(''));
@@ -540,6 +571,7 @@ let headquarters = {
                     time: 4000
                 });
             });
+            deleteOverlays();
         }
     },
     setData: function(upgrade) { // Fill in the detail text spots
@@ -620,21 +652,7 @@ let currency = new Intl.NumberFormat('en-US', {
     socket;
 
 window.addEventListener('load', function() { // Once page loaded and parsed
-    messages.setActiveContact('anonymous');
-
-    getByClass('contact--mafioso')[0].addEventListener('click', function() {
-        messages.setActiveContact('mafioso');
-    });
-
-    getByClass('contact--anonymous')[0].addEventListener('click', function() {
-        messages.setActiveContact('anonymous');
-    });
-    getByClass('contact--assistant')[0].addEventListener('click', function() {
-        messages.setActiveContact('assistant');
-    });
-    getByClass('contact--merchant')[0].addEventListener('click', function() {
-        messages.setActiveContact('merchant');
-    });
+    contacts.setActiveContact('anonymous');
 
     getByClass('menu__tabs')[0].addEventListener('click', chat.setActiveMenuTab);
     getByClass('menu__chat')[0].addEventListener('click', chat.setActiveMenuTab);
@@ -701,10 +719,6 @@ window.addEventListener('load', function() { // Once page loaded and parsed
                 cult_type: getByQuery('input[name="cult-type"]:checked').value
             }
         }));
-
-        // Redirect user to another page
-
-        // setActiveTab({target: getById('tabs-list__contacts')});
     });
 
     getByClass('nav__logout')[0].addEventListener('click', function() {
@@ -715,6 +729,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }, function() {
             window.location.replace('../logout');
         });
+        deleteOverlays();
     });
 
     hamburger.addEventListener('click', function() { // Open/close sidebar

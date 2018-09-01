@@ -31,6 +31,9 @@ def process_upgrade(self, data):
     elif data['command'] == 'delete':
         if self.tutorial:
             self.log('HQ upgrade deletion tutorial-idiot protection.', 'info')
+            self.send_json({
+                'type': 'tutorial_lock'
+            })
             return False
 
         db_headquarters = json.loads(self.cult.headquarters)
