@@ -14,7 +14,7 @@ class WarfareConsumer(JsonWebsocketConsumer):
     from ._page_data import page_data
     from ._home import home_data, create_cult
     from ._contacts import contacts_data, process_choice, option_check, set_card
-    from ._members import members_data, generate_member, process_ticks, process_recruit
+    from ._members import members_data, generate_member, process_ticks, process_recruit, change_job
     from ._headquarters import headquarters_data, process_upgrade
 
     logger = logging.getLogger('warfare')

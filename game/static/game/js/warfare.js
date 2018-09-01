@@ -1,3 +1,6 @@
+// I realise that this whole file is a huge mess
+// I'll rewrite it sooner or later
+
 // Shortcut function names
 let getByClass = function(className) { return document.getElementsByClassName(className); };
 let getById = function(id) { return document.getElementById(id); };
@@ -182,8 +185,10 @@ let messages = {
 let members = {
     chartMembers: null,
     memberSelected: null,
+    jobList: null,
     firstTreeRender: true,
     drawTree: function(memberList, recruit, jobList) {
+        members.jobList = jobList;
         if (!members.firstTreeRender) {
             members.firstTreeRender = false;
         }
@@ -340,17 +345,18 @@ let members = {
             }
             chartNodes[i].addEventListener('click', members.selectMember);
         }
+    },
+    selectJob: function(e) {
+        socket.send(JSON.stringify({
+            type: 'job_change',
+            cultist: members.chartMembers[members.memberSelected].HTMLclass,
+            job: this.innerHTML.toLowerCase()
+        }));
 
-        // Add available jobs to dropdown menu
-
-        let jobListEl = getByQuery('.job-list');
-        jobListEl.innerHTML = '';
-
-        for (let i = 0; i < jobList.length; i++) {
-            let job = document.createElement('div');
-            job.innerHTML = jobList[i].capitalize();
-            jobListEl.appendChild(job);
-        }
+        members.chartMembers[members.memberSelected].data.job = this.innerHTML.toLowerCase();
+        let node = getByClass( members.chartMembers[members.memberSelected].HTMLclass)[0];
+        node.children[2].innerHTML = 'Job: ' + this.innerHTML;
+        members.setTabData('jobs');
     },
     selectMember: function(e) {
         getByClass('details__none')[0].style.display = 'none';
@@ -401,9 +407,31 @@ let members = {
                 currency.format(member.data.wage);
             getByQuery('.details__info .info__loyalty b').innerHTML = member.data.loyalty;
         } else if (tabName == 'jobs') {
+            // Add available jobs to dropdown menu
+            let jobListEl = getByQuery('.job-list');
+            jobListEl.innerHTML = '';
+            let jobList = members.jobList;
+
+            for (let i = 0; i < jobList.length; i++) {
+                if (jobList[i] == member.data.job) {
+                    // This is the cultist's current job
+                    continue;
+                }
+                if (jobList[i] == 'pickpocketing') {
+                    if (member.data.spec_name != 'Pickpocketer') {
+                        // Does not qualify for pickpocketer job
+                        continue;
+                    }
+                }
+                let job = document.createElement('div');
+                job.innerHTML = jobList[i].capitalize();
+                jobListEl.appendChild(job);
+                job.addEventListener('click', members.selectJob);
+            }
+
             getByClass('details__jobs')[0].style.display = 'block';
-            getByQuery('.details__jobs h1').innerHTML = 'Current job: ' + 
-                member.data.job.capitalize();
+            let currentJob = getByQuery('.details__jobs h1');
+            currentJob.innerHTML = 'Current job: ' + member.data.job.capitalize();
         } else if (tabName == 'learn') {
             getByClass('details__learn')[0].style.display = 'block';
         } else if (tabName == 'manage') {

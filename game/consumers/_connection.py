@@ -85,6 +85,8 @@ def receive_json(self, content, **kwargs):
     elif request_type == 'card_choice':  # User clicked on an option in a card
         self.process_choice({'contact': content.get('contact'),
                              'choice': content.get('choice')})
+    elif request_type == 'job_change':
+        self.change_job(content.get('cultist'), content.get('job'))
     elif request_type == 'recruit':
         self.process_recruit(content.get('choice'))
     elif request_type == 'hq_upgrade':

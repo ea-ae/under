@@ -59,7 +59,7 @@ def members_data(self):
     self.send_json({
         'type': 'page_data',
         'page': 'members',
-        'jobs': ['none', 'recruiting', 'researching', 'guarding', 'pickpocketing'],
+        'jobs': get_available_jobs(),
         'recruit': recruit,
         'members': members
     })
@@ -198,14 +198,11 @@ def process_ticks(self):
     minutes = int((now() - self.cult.last_check).total_seconds() / 60)
 
     member_weights = []  # Recruitment chance weights for all members
-    member_count = 0
     recruitment_points = minutes  # One recruitment point earned per minute
     research_points = 0
-
     has_recruit = False
 
     for db_member in db_members:
-        member_count += 1
         weight = 0
 
         if not db_member.accepted:
@@ -225,11 +222,7 @@ def process_ticks(self):
         weight += db_member.social  # Add weight equal to the social stat
         member_weights.append(weight)
 
-    print('VVV MEMBER WEIGHTS')
-    print(member_weights)
-    print('^^^ MEMBER WEIGHTS')
-
-    recruitment_target = int(2 ** member_count * 25)  # len(member_weights)
+    recruitment_target = int(2 ** len(member_weights) * 25)
     recruitment_points = int(round(recruitment_points))
     research_points = int(round(research_points))
 
@@ -257,6 +250,7 @@ def process_ticks(self):
     print('RECRUITMENT COST: ' + str(recruitment_target))
     print('time then: ' + str(self.cult.last_check))
     print('time now, not last check: ' + str(now()))
+    print('=========')
 
 
 def process_recruit(self, choice):
@@ -271,8 +265,8 @@ def process_recruit(self, choice):
     except Member.DoesNotExist:
         self.log('Called recruit accept/delete command when there isn\'t a recruit.')
     else:
+        self.process_ticks()
         if choice == 'accept':
-            self.process_ticks()  # To prevent cheating
             recruit.accepted = True
             recruit.save()
             self.log('Accepted recruit.', 'info')
@@ -280,6 +274,37 @@ def process_recruit(self, choice):
         elif choice == 'reject':
             recruit.delete()
             self.log('Declined recruit.', 'info')
+
+
+def change_job(self, cultist_id, job_name):
+    self.process_ticks()
+
+    if cultist_id is None or job_name is None:
+        self.log('Cultist ID or job name is missing.')
+        return False
+    try:
+        cultist = Member.objects.get(owner=self.cult, id=cultist_id)
+    except Member.DoesNotExist:
+        self.log('Invalid cultist ID.')
+    else:
+        if job_name not in get_available_jobs():
+            self.log('Incorrect job name given.')
+            return False
+        if job_name == 'pickpocketing':
+            if not cultist.specialization.startswith('Pickpocketer'):
+                self.log('Invaild specialization for pickpocketing job.')
+                return False
+
+        if cultist.job == job_name:
+            self.log('Current job same as selected one.')
+            return False
+
+        cultist.job = job_name
+        cultist.save(update_fields=['job'])
+
+
+def get_available_jobs():
+    return ['none', 'recruiting', 'researching', 'guarding', 'pickpocketing']
 
 
 def tier_picker(x):
