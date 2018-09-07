@@ -212,4 +212,4 @@ pip-selfcheck.json
 ### Custom Rules ###
 
 # Secret variables
-warfare/settings/secret.py
+warfare/settings/config.py

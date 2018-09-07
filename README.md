@@ -50,16 +50,19 @@ raise in the ranks.
 ## Setup
 
 Install the packages in `requirements.txt` by typing `pip install -r requirements.txt`. 
-You only need `psycopg2` if you're using PostgreSQL. The package `pypiwin32` should only be installed if you're using Windows.
-Create the file `secret.py` in the `warfare/settings` directory and make it look something like this:
+You only need `psycopg2` if you're using PostgreSQL and `pypiwin32` if you're using Windows.
+Create a file named `config.py` in the `warfare/settings` directory and make it look something like this:
 ```python
 config = {
     'SECRET_KEY': 'abcdef123456abcdef123456abcdef123456',
     'ALLOWED_HOSTS': ['1.2.3.4'],
     'REDIS_IP': '1.2.3.4',
+	'DB_NAME': 'game_db',
+    'DB_USER': 'user',
     'DB_PASSWORD': 'hunter2'
 }
 ```
+
 
 ## Testing
 
