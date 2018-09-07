@@ -49,7 +49,8 @@ raise in the ranks.
 
 ## Setup
 
-You will need to install and run Redis. Once that's done, install the packages `django`, `django-channels`, `channels-redis`, `bcrypt`, `django-ratelimit`, and `psycopg2` (if you're using PostgreSQL).
+Install the packages in `requirements.txt` by typing `pip install -r requirements.txt`. 
+You only need `psycopg2` if you're using PostgreSQL. The package `pypiwin32` should only be installed if you're using Windows.
 Create the file `secret.py` in the `warfare/settings` directory and make it look something like this:
 ```python
 config = {
