@@ -1,31 +1,52 @@
 import os
 from .config import config
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+# Settings
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
 SECRET_KEY = config['SECRET_KEY']
-
 ALLOWED_HOSTS = config['ALLOWED_HOSTS']
+
+# Application
 
 ASGI_APPLICATION = 'game.routing.application'
 WSGI_APPLICATION = 'warfare.wsgi.application'
 
-ROOT_URLCONF = 'warfare.urls'
+# Authentication, URLs and views
 
 AUTH_USER_MODEL = 'main.User'
 
+ROOT_URLCONF = 'warfare.urls'
 LOGIN_REDIRECT_URL = '../'
+RATELIMIT_VIEW = 'main.views.ratelimited'  # The view to redirect to if ratelimited
 
-# SESSION_COOKIE_AGE = 604800
+# Cookies
+
 SESSION_COOKIE_NAME = 'ssid'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# View to redirect to if ratelimited
-RATELIMIT_VIEW = 'main.views.ratelimited'
+# Security headers
 
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Static files
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')  # Collected static fields directory
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Global static files
+]
+
+# Internationalization
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = False
 
 # Channel layers
 
@@ -35,6 +56,22 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [(config['REDIS_IP'], 6379)],
         },
+    }
+}
+
+# Databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config['DB_NAME'],
+        'USER': config['DB_USER'],
+        'PASSWORD': config['DB_PASSWORD'],
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'django_test_' + config['DB_NAME'],
+        }
     }
 }
 
@@ -62,13 +99,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-PASSWORD_HASHERS = [
-    'warfare.hashers.BCryptSHA256Custom',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
-]
+# Templates
 
 TEMPLATES = [
     {
@@ -86,27 +117,15 @@ TEMPLATES = [
     },
 ]
 
+# Password validation and hashing
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config['DB_NAME'],
-        'USER': config['DB_USER'],
-        'PASSWORD': config['DB_PASSWORD'],
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'TEST': {
-            'NAME': 'django_test_' + config['DB_NAME'],
-        }
-    }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
+PASSWORD_HASHERS = [
+    'warfare.hashers.BCryptSHA256Custom',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -121,24 +140,4 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = False
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')  # Collected static fields directory
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Global static files
 ]
