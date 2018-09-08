@@ -169,7 +169,7 @@ def generate_member(self, owner, supervisor):
         else:
             spec_name = 'Guard'
 
-    wage = int(((sum(stats)) * 4 + loyalty * 10 + pow((tier * 10), 2) + pow((spec_level * 8), 2)) * (randint(5, 15) / 40))
+    wage = int(((sum(stats)) * 4 + loyalty * 10 + pow((tier * 10), 2) + pow((spec_level * 8), 2)) * (randint(5, 15) / 50))
 
     member = Member(
         owner=owner,
@@ -192,7 +192,6 @@ def process_ticks(self):
     """
     Processes job ticks.
     """
-    print('Process ticks...')
     db_members = self.cult.member_set.all()  # We are querying the db for game members every single time
 
     minutes = int((now() - self.cult.last_check).total_seconds() / 60)
@@ -212,13 +211,13 @@ def process_ticks(self):
             continue  # Ignore recruits?
 
         if db_member.job == 'recruiting':
-            recruitment_points += round(db_member.social * minutes / randint(9, 11))
+            recruitment_points += round(db_member.social) * minutes / randint(9, 11)
             # Check if the social stat is the largest (so the person has a social specialization)
             if all(st >= db_member.social for st in [db_member.intelligence, db_member.stealth, db_member.strength]):
                 # Give bonus weight if that is true
                 weight += 30
         elif db_member.job == 'researching':
-            research_points += db_member.intelligence * minutes / 10
+            research_points += round(db_member.intelligence) * minutes / 10
 
         weight += db_member.social  # Add weight equal to the social stat
         member_weights.append(weight)
@@ -244,14 +243,6 @@ def process_ticks(self):
 
     self.cult.last_check += timedelta(minutes=minutes)
     self.cult.save(update_fields=['recruitment_points', 'research_points', 'last_check'])
-    print('=========')
-    print('MINUTES PROCESSED: ' + str(minutes))
-    print('RESEARCH POINTS ADDED: ' + str(research_points))
-    print('RECRUITMENT POINTS ADDED: ' + str(recruitment_points))
-    print('RECRUITMENT COST: ' + str(recruitment_target))
-    print('time then: ' + str(self.cult.last_check))
-    print('time now, not last check: ' + str(now()))
-    print('=========')
 
 
 def process_recruit(self, choice):
@@ -359,8 +350,6 @@ def weighted_choice(weights):
     for i, w in enumerate(weights):
         rnd -= w
         if rnd < 0:
-            print(i)
-            print('^^^ OUR INDEX CHOSEN!')
             return i
 
 

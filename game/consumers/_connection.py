@@ -2,6 +2,7 @@ from game.models import WarfareGame, WarfarePlayer, Cult
 from asgiref.sync import async_to_sync as ats
 from channels.exceptions import StopConsumer
 import json
+from warfare.settings.config import config
 
 
 def connect(self):
@@ -9,21 +10,17 @@ def connect(self):
     Handles incoming connections.
     """
     self.authorized = False
-    print('Connect [1/4]: Attempted join')
     self.user = self.scope['user']
     if self.user.is_authenticated:  # Check if user is logged in
-        print('Connect [2/4]: Is authenticated')
         try:
             self.player = WarfarePlayer.objects.get(user=self.scope['user'])
         except WarfarePlayer.DoesNotExist:  # New user
-            print('Connect [3/4]: New user connected.')
             self.player = WarfarePlayer(user=self.user,
                                         game=WarfareGame.objects.get(name='alpha'))
             self.player.save()
             self.cult = Cult(owner=self.player)  # Create a new cult for the new player
             self.cult.save()
         else:  # Returning user
-            print('Connect [3/4]: Returning user connected.')
             try:
                 self.cult = Cult.objects.get(owner=self.player)
             except Cult.DoesNotExist:
@@ -44,7 +41,6 @@ def connect(self):
         # Protect tutorial users from doing stupid things
         self.tutorial = ac in ('1.0.0', '1.0.1', '1.1.0', '1.1.1', '1.2.0', '1.3.0')
 
-        print('Connect [4/4]: Connection established.')
         self.accept()
     else:
         self.log('User is unauthenticated.')
@@ -55,7 +51,6 @@ def disconnect(self, code):
     """
     Called when the websocket is closed.
     """
-    print('Disconnecting ' + self.user.username + '.')
     if self.authorized:
         ats(self.channel_layer.group_discard)('warfare-1', self.channel_name)
         self.authorized = False
@@ -78,7 +73,7 @@ def receive_json(self, content, **kwargs):
     """
     Called when the customer sends data to us.
     """
-    print('receive_json(): ' + str(content))
+    self.log('receive_json(): ' + str(content), 'DEBUG')
     request_type = content.get('type')
     if request_type == 'page_data':  # Client requests data to load a tab
         self.page_data(content.get('page'))  # Send the requested page over to page_data()

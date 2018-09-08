@@ -1,5 +1,13 @@
 from .base import *
-try:  # There will be no .local on the production server
-    from .local import *
-except ImportError:
-    from .production import *
+from .config import config
+
+if config['DEBUG'] is True:
+    try:
+        from .local import *
+    except ImportError:
+        pass
+else:
+    try:
+        from .production import *
+    except ImportError:
+        pass

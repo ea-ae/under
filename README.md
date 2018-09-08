@@ -51,14 +51,21 @@ raise in the ranks.
 
 Install the packages in `requirements.txt` by typing `pip install -r requirements.txt`. 
 You only need `psycopg2` if you're using PostgreSQL and `pypiwin32` if you're using Windows.
+Now go into the `python manage.py shell` and create a new game model with the name 'alpha':
+```python
+from game.models import WarfareGame
+game = WarfareGame(name='alpha')
+game.save()
+```
 Create a file named `config.py` in the `warfare/settings` directory and make it look something like this:
 ```python
 config = {
+    'DEBUG': False,  # Set to True in production
     'SECRET_KEY': 'abcdef123456abcdef123456abcdef123456',
     'ALLOWED_HOSTS': ['1.2.3.4'],
     'REDIS_IP': '1.2.3.4',
-	'DB_NAME': 'game_db',
-    'DB_USER': 'user',
+    'DB_NAME': 'game_db',
+    'DB_USER': 'django',
     'DB_PASSWORD': 'hunter2'
 }
 ```
