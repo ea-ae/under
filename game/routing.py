@@ -13,5 +13,8 @@ application = ProtocolTypeRouter({
             path('ws/warfare', WarfareConsumer),
             url(r'^', NotFoundConsumer),
         ])
-    )
+    ),
+    # 'channel': ChannelNameRouter({
+    #
+    # })
 })

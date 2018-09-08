@@ -61,6 +61,7 @@ Create a file named `config.py` in the `warfare/settings` directory and make it 
 ```python
 config = {
     'DEBUG': True,  # Set to False in production
+    'HTTPS': True,
     'SECRET_KEY': 'abcdef123456abcdef123456abcdef123456',
     'ALLOWED_HOSTS': ['1.2.3.4'],
     'REDIS_IP': '127.0.0.1',

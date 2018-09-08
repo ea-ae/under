@@ -32,6 +32,17 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
+# HTTPS-related settings
+
+if config['HTTPS']:
+    SECURE_HSTS_SECONDS = 3600  # One hour; this should be increased to ~6 months sometime later
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_SSL_REDIRECT = True
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+
 # Static files
 
 STATIC_URL = '/static/'

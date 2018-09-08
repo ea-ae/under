@@ -35,7 +35,7 @@ LOGGING = {
             'filename': 'logs/usererrors.log',
             'formatter': 'general'
         },
-        'errors': {  # Server errors
+        'djangoerrors': {  # Server errors
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'logs/errors.log',
@@ -49,7 +49,7 @@ LOGGING = {
         },
         'django.request': {
             'level': 'ERROR',
-            'handlers': ['errors'],
+            'handlers': ['djangoerrors'],
         },
         'warfare': {
             'level': 'INFO',
