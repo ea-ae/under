@@ -34,14 +34,14 @@ gamedata = {
                     'options': [
                         {
                             'text': 'Okay I\'m done, what now?',
-                            'conditional': True
+                            'conditional': False
                         },
                         {
                             'text': 'Tell me more about cultist stats, specializations, skills, jobs, and loyalty.',
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. That person is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making the new cultist work as a recruiter, since that person has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. That person is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making the new cultist work as a recruiter, since that person has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p>'
                 },
                 '1.1.1': {
                     'options': [
@@ -86,7 +86,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. You might have heard stories about different mythical creatures and demons that reside there, but it\'s much worse than in the stories.</p><p>You have to create a special portal to access it. Almost nobody knows how to build these portals, so I\'m lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about some topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
+                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. Believe me, it\'s much worse than whatever you\'ve heard about it.</p><p>You have to create a special portal to access it. The problem is that almost nobody knows how to build these portals - so I\'m quite lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about some topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
                 },
                 '1.4.2': {
                     'options': [
@@ -95,7 +95,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>What? No, what is it? Tell me now, what is it? What? What? What? Nothing? Whatever. Is it nothing? Nothing at all? Fine. Whatever. Sure. Nothing.</p>'
+                    'text': '<p>This part is not done yet. You are not supposed to get here.</p>'
                 },
                 '1.4.3': {
                     'options': [],
@@ -114,7 +114,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>Anyway, we have successfully recruited a new member. You can look at the details of new recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so I\'d recommend you accept the recruit.</p>'
+                    'text': '<p>Hello, I am grateful to have the opportunity to work for you. I will make sure that everything will operate as it should in this ... organization.</p><p>We have successfully recruited a new member. You can look at the details of new recruits and either accept or reject them. Right now we can\'t really afford the luxury of being picky and refusing people, so I\'d recommend you accept the recruit.</p>'
                 },
                 '1.0.1': {
                     'options': [],
@@ -140,7 +140,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>There are other ways to earn money, but they aren\'t good enough, at least yet. You could for example invest in stocks or currencies, but it\'s a risky and unstable way to make income. You could also trade in the marketplace, but we don\'t have enough money and resources for it to be feasible yet.</p>'
+                    'text': '<p>There are other ways to earn money, but they aren\'t good enough, at least not yet. You could for example invest in stocks or currencies, but it\'s a risky and unstable way to make income. You could also trade in the marketplace, but we don\'t have enough money and resources for it to be feasible yet.</p>'
                 },
                 '1.1.2': {
                     'options': [],
@@ -155,7 +155,7 @@ gamedata = {
                 '1.0.0': {
                     'options': [
                         {
-                            'text': 'Alright, I am ready.',
+                            'text': 'I am ready, give me the task.',
                             'conditional': False
                         },
                         {
@@ -163,12 +163,12 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>So, you\'re looking for a contract? I can offer you one contract every hour, whether you will accept or decline it is your own decision.</p>'
+                    'text': '<p>So, you\'re looking for a contract? I can offer you one contract every day; whether you will accept or decline it is your own decision. But before I give you a proper task, I need to make sure you are actually capable of doing this and won\'t let me down.</p>'
                 },
                 '1.0.1': {
                     'options': [
                         {
-                            'text': 'Alright, I am ready.',
+                            'text': 'I am ready, give me the task.',
                             'conditional': False
                         }
                     ],
@@ -176,7 +176,7 @@ gamedata = {
                 },
                 '1.0.2': {
                     'options': [],
-                    'text': '<p>Here is your first task...</p>'
+                    'text': '<p>Here is your first mission. A person named Jonathan Harrison stole one very important thing from us. We found out where he was hiding, but he killed himself before we could capture and interrogate him.</p><p>He didn\'t have the item with him when we found him, but we found out that he has recently rented a storage unit from a nearby self-storage facility.</p><p>The company didn\'t tell us which storage unit is his, saying it was confidential information. Find the container, break into it, and bring us the item.</p>'
                 }
             }
         },

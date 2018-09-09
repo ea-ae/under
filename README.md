@@ -6,8 +6,7 @@ Under is a text-based browser game about leading a cult.
 
 ### Missions
 
-Dialogue options, objectives, important choices. Talk to various people who will
-give you contracts, ask for help, or guide you in the right path.
+Dialogue options, objectives, important choices. Talk to various people who will trade, ask for help, or give out contracts.
 
 ![Missions](https://i.imgur.com/XG8y2LQ.png)
 
@@ -23,7 +22,7 @@ Cultists know only the identities of the people they recruit and have recruited.
 your members might be snitches, spies, or secret informants. If a traitor finds out
 your identity, it won't end well for you.
 
-![Anonimity](https://i.imgur.com/gHUIExy.png)
+![Anonymity](https://i.imgur.com/gHUIExy.png)
 
 ### Crimes
 
@@ -49,9 +48,15 @@ raise in the ranks.
 
 ## Setup
 
+### Packages and Requirements
+
 Install the packages in `requirements.txt` by typing `pip install -r requirements.txt`. 
 You only need `psycopg2` if you're using PostgreSQL and `pypiwin32` if you're using Windows.
-Now go into the `python manage.py shell` and create a new game model with the name 'alpha':
+You will also need to run a Redis server.
+
+### Configuration
+
+Go into the `python manage.py shell` and create a new game model with the name 'alpha':
 ```python
 from game.models import WarfareGame
 game = WarfareGame(name='alpha')
@@ -61,7 +66,7 @@ Create a file named `config.py` in the `warfare/settings` directory and make it 
 ```python
 config = {
     'DEBUG': True,  # Set to False in production
-    'HTTPS': True,
+    'HTTPS': True,  # Set to True only if you're using https
     'SECRET_KEY': 'abcdef123456abcdef123456abcdef123456',
     'ALLOWED_HOSTS': ['1.2.3.4'],
     'REDIS_IP': '127.0.0.1',
@@ -71,7 +76,6 @@ config = {
 }
 ```
 
-
-## Testing
+### Testing
 
 Django testing is done with `python manage.py test`. To test the consumers, use `pytest --ds=warfare.settings`.

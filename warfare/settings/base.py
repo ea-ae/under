@@ -27,6 +27,8 @@ RATELIMIT_VIEW = 'main.views.ratelimited'  # The view to redirect to if ratelimi
 SESSION_COOKIE_NAME = 'ssid'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
+CSRF_COOKIE_HTTPONLY = True
+
 # Security headers
 
 SECURE_BROWSER_XSS_FILTER = True
@@ -37,7 +39,8 @@ X_FRAME_OPTIONS = 'DENY'
 if config['HTTPS']:
     SECURE_HSTS_SECONDS = 3600  # One hour; this should be increased to ~6 months sometime later
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True

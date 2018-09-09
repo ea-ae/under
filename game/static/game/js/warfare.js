@@ -1,6 +1,3 @@
-// I realise that this whole file is a huge mess
-// I'll rewrite it sooner or later
-
 // Shortcut function names
 let getByClass = function(className) { return document.getElementsByClassName(className); };
 let getById = function(id) { return document.getElementById(id); };
@@ -101,7 +98,7 @@ function setActiveTab(event, checkIfSame=true) {
 function deleteOverlays() {
     // There is a bug in Alerty that makes an overlays not delete themselves.
     // We can delete the alerty overlays by ourselves instead.
-    let overlays = getByClass('alery-overlay');
+    let overlays = getByClass('alerty-overlay');
     for (let i = 0; i < overlays.length; i++) {
         overlays[i].remove();
     }
@@ -701,10 +698,16 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             setActiveTab({target: getById('tabs-list__' + data.page)});
         } else if (data.type == 'multiple_connections') {
             console.log('WebSocket connection closed due to another connection.');
-            socket = undefined; // Stop websocket from reconnecting
+            socket.close();
+            socket = undefined;
             alerty.alert('Your account has connected to the game from somewhere \
             else. Make sure you don\'t have the game open in another tab.', {
                 title: 'Connection closed',
+                okLabel: 'OK'
+            });
+        } else if (data.type == 'tutorial_lock') {
+            alerty.alert('You are not permitted to do these kinds of actions during the tutorial!', {
+                title: 'Tutorial Lock',
                 okLabel: 'OK'
             });
         }
@@ -771,3 +774,6 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }
     };
 });
+
+// I realise that this whole file is a huge mess
+// I'll rewrite it sooner or later (by that I mean never)
