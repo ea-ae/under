@@ -59,6 +59,9 @@ function setPage(data) { // Sets the data in the active tab
             getByClass('tabs__jobs')[0].addEventListener('click', members.selectTab);
             getByClass('tabs__learn')[0].addEventListener('click', members.selectTab);
             getByClass('tabs__manage')[0].addEventListener('click', members.selectTab);
+            
+            getByClass('promote-recruit')[0].addEventListener('click', members.promoteMember);
+            getByClass('kick-recruit')[0].addEventListener('click', members.kickMember);
         }
         members.drawTree(data.members, data.recruit, data.jobs);
 
@@ -466,6 +469,28 @@ let members = {
         } else {
             console.error('Unknown member tab name.');
         }
+    },
+    promoteMember: function(e) {
+        alerty.alert('This feature is not complete yet.', {
+            title: 'Oops!',
+            okLabel: 'OK'
+        });
+    },
+    kickMember: function(e) {
+        alerty.confirm('Are you sure you want to kick ' + 
+            members.chartMembers[members.memberSelected].text.name + 
+            ' out of the cult? This action is not reversable!', {
+            title: 'Confirmation',
+            okLabel: 'Yes',
+            cancelLabel: 'No'
+        }, function() {
+            socket.send(JSON.Stringify({
+                type: 'manage_recruit',
+                command: 'kick',
+                id: members.chartMembers[members.memberSelected].HTMLclass
+            }));
+        });
+        deleteOverlays();
     }
 };
 
@@ -706,7 +731,7 @@ window.addEventListener('load', function() { // Once page loaded and parsed
                 okLabel: 'OK'
             });
         } else if (data.type == 'tutorial_lock') {
-            alerty.alert('You are not permitted to do these kinds of actions during the tutorial!', {
+            alerty.alert('You are not permitted to do this kind of action during the tutorial!', {
                 title: 'Tutorial Lock',
                 okLabel: 'OK'
             });

@@ -736,34 +736,35 @@ nav {
                     display: none;
                 }
 
-                .details__info {
-                    .accept-recruit, .reject-recruit {
-                        cursor: pointer;
-                        display: none;
-                        margin: 10px 5px 0 0;
-                        padding: 13px 35px;
-                        border-radius: 1px;
-                        color: $white;
-                        font-size: 1.1rem;
-                    }
+                .recruit-btn {
+                    cursor: pointer;
+                    display: none;
+                    margin: 10px 5px 0 0;
+                    padding: 13px 35px;
+                    border-radius: 1px;
+                    color: $white;
+                    font-size: 1.1rem;
+                }
 
-                    .accept-recruit {
-                        background-color: rgb(18, 97, 25);
-                    }
-                    .reject-recruit {
-                        background-color: rgb(114, 14, 14);
-                    }
+                .accept-recruit {
+                    background-color: rgb(18, 97, 25);
+                }
+                .reject-recruit {
+                    background-color: rgb(114, 14, 14);
+                }
+                .promote-recruit {
+                    display: inline-block;
+                    background-color: rgb(92, 163, 0);
+                }
+                .kick-recruit {
+                    display: inline-block;
+                    background-color: rgb(179, 8, 8);
                 }
 
                 .details__jobs {
                     h1 {
                         margin-top: 10px;
                         font-size: 1.5rem;
-                    }
-
-                    p {
-                        margin-bottom: 10px;
-                        font-size: 1rem;
                     }
 
                     .job-list {
@@ -787,6 +788,11 @@ nav {
                             }
                         }
                     }
+                }
+
+                p {
+                    margin-bottom: 10px;
+                    font-size: 1.05rem;
                 }
 
                 h1 {

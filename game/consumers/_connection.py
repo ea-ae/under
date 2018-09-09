@@ -39,7 +39,7 @@ def connect(self):
         db_contacts = json.loads(self.cult.contacts)
         ac = db_contacts[0]['card']  # Card of anonymous
         # Protect tutorial users from doing stupid things
-        self.tutorial = ac in ('1.0.0', '1.0.1', '1.1.0', '1.1.1', '1.2.0', '1.3.0')
+        self.tutorial = ac in ('1.0.0', '1.0.1', '1.1.0', '1.1.1', '1.2.0', '1.3.0', '1.4.0')
 
         self.accept()
     else:
