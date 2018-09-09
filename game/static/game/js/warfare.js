@@ -336,8 +336,11 @@ let members = {
                             fontColor: '#fefefe',
                             time: 2500
                         });
+
+                        deleteOverlays();
+                    }, function() {
+                        deleteOverlays();
                     });
-                    deleteOverlays();
                 });
                 getByClass('reject-recruit')[0].addEventListener('click', function() {
                     alerty.confirm('Are you sure you want to reject this recruit?', {
@@ -360,9 +363,10 @@ let members = {
                             time: 2500
                         });
 
-                        console.info('Member rejected.');
+                        deleteOverlays();
+                    }, function() {
+                        deleteOverlays();
                     });
-                    deleteOverlays();
                 });
             });
         }
@@ -489,8 +493,17 @@ let members = {
                 command: 'kick',
                 id: members.chartMembers[members.memberSelected].HTMLclass
             }));
+            
+            alerty.toasts('Cultist kicked out!', {
+                bgColor: '#35444e',
+                fontColor: '#fefefe',
+                time: 2500
+            });
+
+            deleteOverlays();
+        }, function () {
+            deleteOverlays();
         });
-        deleteOverlays();
     }
 };
 
@@ -554,8 +567,11 @@ let headquarters = {
                     fontColor: '#fefefe',
                     time: 4000
                 });
+
+                deleteOverlays();
+            }, function() {
+                deleteOverlays();
             });
-            deleteOverlays();
         } else {
             let money = getByQuery('.tabs__headquarters .money').innerHTML.substring(10);
             money = parseInt(money.split(',').join(''));
@@ -592,8 +608,11 @@ let headquarters = {
                     fontColor: '#fefefe',
                     time: 4000
                 });
+
+                deleteOverlays();
+            }, function() {
+                deleteOverlays();
             });
-            deleteOverlays();
         }
     },
     setData: function(upgrade) { // Fill in the detail text spots
@@ -756,8 +775,10 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             cancelLabel: 'No'
         }, function() {
             window.location.replace('../logout');
+            deleteOverlays();
+        }, function() {
+            deleteOverlays();
         });
-        deleteOverlays();
     });
 
     hamburger.addEventListener('click', function() { // Open/close sidebar
