@@ -64,11 +64,6 @@ function setPage(data) { // Sets the data in the active tab
             getByClass('kick-recruit')[0].addEventListener('click', members.kickMember);
         }
         members.drawTree(data.members, data.recruit, data.jobs);
-
-        /*let parent = getByQuery('.tabs__members .dragscroll-wrapper');
-        // todo: parent variable not needed...
-        let child = getByQuery('.tabs__members .dragscroll');
-        child.style.paddingRight = child.offsetWidth - child.clientWidth + 'px';*/
     }
 }
 
@@ -631,7 +626,7 @@ let headquarters = {
             name: 'Motion Sensors',
             id: 'motionsensors',
             cost: 5000,
-            description: 'Detect movement in unauthorized areas. Keep in mind that experienced thiefs have methods for getting past them.'
+            description: 'Detect movement in unauthorized areas. Keep in mind that experienced thieves have methods for getting past them.'
         },
         cctv: {
             name: 'CCTV System',

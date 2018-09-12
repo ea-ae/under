@@ -148,9 +148,9 @@ gamedata = {
                 }
             }
         },
-        'mafioso': {
+        'vincent': {
             'name': 'Vincent Polizzi',
-            'id': 'mafioso',
+            'id': 'vincent',
             'cards': {
                 '1.0.0': {
                     'options': [

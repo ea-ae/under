@@ -113,13 +113,13 @@ def process_choice(self, data):
                         self.set_card(db_contacts, i, '1.0.1')
                     elif db_contact['card'] == '1.1.0' or db_contact['card'] == '1.1.1':
                         if data['choice'] == 0:
-                            db_contacts.append({'id': 'mafioso', 'card': '1.0.0'})
+                            db_contacts.append({'id': 'vincent', 'card': '1.0.0'})
                             self.cult.contacts = json.dumps(db_contacts)
                             self.cult.save(update_fields=['contacts'])
                             self.set_card(db_contacts, i, '1.1.2')
                         elif data['choice'] == 1:
                             self.set_card(db_contacts, i, '1.1.1')
-                elif db_contact['id'] == 'mafioso':
+                elif db_contact['id'] == 'vincent':
                     if db_contact['card'] == '1.0.0' or db_contact['card'] == '1.0.1':
                         if data['choice'] == 0:
                             self.set_card(db_contacts, i, '1.0.2')
