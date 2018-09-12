@@ -33,12 +33,21 @@ body {
     @include nodrag;
 }
 
-.dragscroll {
-    &::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-    }
+.chart svg {
+    cursor: grab !important;
+    cursor: -webkit-grab !important;
+    cursor: -moz-grab !important;
+    cursor: -o-grab !important;
 
+    &:active { 
+        cursor: grabbing !important;
+        cursor: -moz-grabbing !important;
+        cursor: -webkit-grabbing !important;
+        cursor: -o-grabbing !important;
+    }
+}
+
+.chart-wrapper {
     cursor: grab;
     cursor: -webkit-grab;
     cursor: -moz-grab;
@@ -50,9 +59,10 @@ body {
         cursor: -webkit-grabbing;
         cursor: -o-grabbing;
     }
+}
 
-    // overflow: hidden !important;
-    // doesn't work because mobile browsers
+#members__tree {
+    overflow: hidden !important; // breaks mobiles
 }
 
 nav {
@@ -607,9 +617,8 @@ nav {
                 background: rgb(254, 254, 254);
                 border-radius: 2px;
 
-                overflow: auto !important;
-                overflow: -moz-scrollbars-none !important;
-                -ms-overflow-style: none !important;
+                /*overflow: -moz-scrollbars-none !important;
+                -ms-overflow-style: none !important;*/
 
                 min-height: 250px;
                 max-height: 400px;

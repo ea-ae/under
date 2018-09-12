@@ -798,6 +798,15 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }
     });
 
+    let clickHn = function(el, fn) { return el.addEventListener('click', function(e) {
+        fn.apply(elem, [e]);
+    }, false); };
+
+    new VanillaKinetic(getByClass('dragscroll')[0], {
+        cursor: 'grab',
+        slowdown: 0.1
+    });
+
     window.onresize = function() {
         if (!visible) {
             let tabs = getByQuery('.sidebar--visible');
