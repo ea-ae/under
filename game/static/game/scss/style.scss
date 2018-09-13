@@ -33,11 +33,15 @@ body {
     @include nodrag;
 }
 
-.chart svg {
+#members__tree {
     cursor: grab !important;
     cursor: -webkit-grab !important;
     cursor: -moz-grab !important;
     cursor: -o-grab !important;
+    overflow: hidden !important;
+    // This took a painful lot of time to figure out
+    // Removes the strange overflow in graph
+    font-size: 0 !important;
 
     &:active { 
         cursor: grabbing !important;
@@ -59,10 +63,6 @@ body {
         cursor: -webkit-grabbing;
         cursor: -o-grabbing;
     }
-}
-
-#members__tree {
-    overflow: hidden !important; // breaks mobiles
 }
 
 nav {
@@ -611,7 +611,7 @@ nav {
 
             #members__tree {
                 display: inline-block;
-                margin: 0 auto;
+                // margin: 0 auto; // Bring this back if it breaks
                 box-sizing: border-box;
                 box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
                 background: rgb(254, 254, 254);
