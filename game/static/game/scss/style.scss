@@ -33,38 +33,6 @@ body {
     @include nodrag;
 }
 
-#members__tree {
-    cursor: grab !important;
-    cursor: -webkit-grab !important;
-    cursor: -moz-grab !important;
-    cursor: -o-grab !important;
-    overflow: hidden !important;
-    // This took a painful lot of time to figure out
-    // Removes the strange overflow in graph
-    font-size: 0 !important;
-
-    &:active { 
-        cursor: grabbing !important;
-        cursor: -moz-grabbing !important;
-        cursor: -webkit-grabbing !important;
-        cursor: -o-grabbing !important;
-    }
-}
-
-.chart-wrapper {
-    cursor: grab;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-    cursor: -o-grab;
-
-    &:active { 
-        cursor: grabbing;
-        cursor: -moz-grabbing;
-        cursor: -webkit-grabbing;
-        cursor: -o-grabbing;
-    }
-}
-
 nav {
     @include nodrag;
     white-space: normal !important; // This is required due to firefox bug
@@ -603,25 +571,45 @@ nav {
 
     .tabs__members {
         .chart-wrapper {
+            cursor: grab;
+            cursor: -webkit-grab;
+            cursor: -moz-grab;
+            cursor: -o-grab;
+
+            min-width: 190px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 25px;
-            min-width: 190px;
+
+            &:active { 
+                cursor: grabbing;
+                cursor: -moz-grabbing;
+                cursor: -webkit-grabbing;
+                cursor: -o-grabbing;
+            }
 
             #members__tree {
+                cursor: grab !important;
+                cursor: -webkit-grab !important;
+                cursor: -moz-grab !important;
+                cursor: -o-grab !important;
+                min-height: 250px;
+                max-height: 400px;
                 display: inline-block;
-                // margin: 0 auto; // Bring this back if it breaks
+
+                &:active { 
+                    cursor: grabbing !important;
+                    cursor: -moz-grabbing !important;
+                    cursor: -webkit-grabbing !important;
+                    cursor: -o-grabbing !important;
+                }
+                
                 box-sizing: border-box;
                 box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
                 background: rgb(254, 254, 254);
                 border-radius: 2px;
-
-                /*overflow: -moz-scrollbars-none !important;
-                -ms-overflow-style: none !important;*/
-
-                min-height: 250px;
-                max-height: 400px;
+                font-size: 0 !important; // Removes the strange overflow in graph
+                // Should an 'overflow: hidden !important' be added here?
     
                 & .node {
                     z-index: 2;
