@@ -1,8 +1,8 @@
 from game.models import Member
-from random import randint, randrange, shuffle
+
 
 import json
-from random import random
+from random import random, randint, randrange, shuffle
 from datetime import timedelta
 from django.utils.timezone import now
 
@@ -134,7 +134,10 @@ def generate_member(self, owner, supervisor):
 
     if index == 0:  # Intelligence
         if tier == 4:
-            spec_name = 'Mastermind'
+            if randint(0, 1):
+                spec_name = 'Alchemist'
+            else:
+                spec_name = 'Mastermind'
         elif tier == 3:
             spec_name = 'Hacker'
         elif tier == 2:
@@ -143,7 +146,10 @@ def generate_member(self, owner, supervisor):
             spec_name = 'Technician'
     elif index == 1:  # Social (pimp?)
         if tier == 4:
-            spec_name = 'Spy'
+            if randint(0, 1):
+                spec_name = 'Exorcist'
+            else:
+                spec_name = 'Spy'
         elif tier == 3:
             spec_name = 'Manager'
         elif tier == 2:
@@ -152,7 +158,10 @@ def generate_member(self, owner, supervisor):
             spec_name = 'Blackmailer'
     elif index == 2:  # Stealth
         if tier == 4:
-            spec_name = 'Investigator'
+            if randint(0, 1):
+                spec_name = 'Scavenger'
+            else:
+                spec_name = 'Investigator'
         elif tier == 3:
             spec_name = 'Disguiser'
         elif tier == 2:
@@ -161,7 +170,10 @@ def generate_member(self, owner, supervisor):
             spec_name = 'Pickpocketer'
     else:  # Strength (drug dealer?)
         if tier == 4:
-            spec_name = 'Sniper'
+            if randint(0, 1):
+                spec_name = 'Hunter'
+            else:
+                spec_name = 'Sniper'
         elif tier == 3:
             spec_name = 'Interrogator'
         elif tier == 2:
