@@ -473,11 +473,11 @@
         var el = this.el;
         var settings = this.settings;
 
-        if (_isTouch) {
+        /*if (_isTouch) {
             el.addEventListener('touchstart', settings.events.touchStart, false);
             el.addEventListener('touchend', settings.events.inputEnd, false);
             el.addEventListener('touchmove', settings.events.touchMove, false);
-        }
+        }*/
 
         el.addEventListener('mousedown', settings.events.inputDown, false);
         el.addEventListener('mouseup', settings.events.inputEnd, false);
@@ -493,11 +493,11 @@
         var el = this.el;
         var settings = this.settings;
 
-        if (_isTouch) {
+        /*if (_isTouch) {
             el.removeEventListener('touchstart', settings.events.touchStart, false);
             el.removeEventListener('touchend', settings.events.inputEnd, false);
             el.removeEventListener('touchmove', settings.events.touchMove, false);
-        }
+        }*/
 
         el.removeEventListener('mousedown', settings.events.inputDown, false);
         el.removeEventListener('mouseup', settings.events.inputEnd, false);

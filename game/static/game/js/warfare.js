@@ -231,7 +231,7 @@ let members = {
             },
             levelSeparation: 20, // px between node levels
             siblingSeparation: 10, // px between sibling nodes
-            padding: 30
+            padding: 35
         };
 
         members.chartMembers = {
@@ -778,7 +778,6 @@ window.addEventListener('load', function() { // Once page loaded and parsed
 
     hamburger.addEventListener('click', function() { // Open/close sidebar
         if (animationFinished) {
-
             animationFinished = false;
             this.classList.toggle('is-active'); // Toggles between two hamburger icons
             let tabs = getByQuery('.sidebar');
@@ -798,14 +797,34 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         }
     });
 
-    let clickHn = function(el, fn) { return el.addEventListener('click', function(e) {
-        fn.apply(elem, [e]);
-    }, false); };
+    window.onerror = function(msg, url, linenumber) {
+        alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+        return true;
+    }
 
-    new VanillaKinetic(getByClass('dragscroll')[0], {
-        cursor: 'grab',
+    new VanillaKinetic(getByClass('chart')[0], {
+        cursor: '',
         slowdown: 0.1
     });
+
+    // Double-clicking on the edges will make the chart move
+    // Should be used if dragging doesn't work for some reason
+    getByClass('chart')[0].addEventListener('click', function(e) {
+        if (e.target.tagName == 'svg') { // Don't detect clicks on nodes
+            let rect = this.getBoundingClientRect();
+            let offsetX = e.clientX - rect.left;
+            let offsetY = e.clientY - rect.top;
+            if (offsetY <= 50) {
+                this.scrollBy(0, -100);
+            } else if (this.offsetHeight - 50 <= offsetY) {
+                this.scrollBy(0, 100);
+            } else if (offsetX <= 50) {
+                this.scrollBy(-100, 0);
+            } else if (this.offsetWidth - 50 <= offsetX) {
+                this.scrollBy(100, 0);
+            } 
+        }
+    }, false);
 
     window.onresize = function() {
         if (!visible) {

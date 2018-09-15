@@ -132,6 +132,10 @@ def generate_member(self, owner, supervisor):
     first_name = random_line(open('game/consumers/first_names.txt'))
     last_name = random_line(open('game/consumers/last_names.txt'))
 
+    # 'index' shows the type of the specialization
+    # 'tier' shows the specialization in that type (I to IV)
+    # 'spec_level' shows the level of the picked specialization
+
     if index == 0:  # Intelligence
         if tier == 4:
             if randint(0, 1):
@@ -168,7 +172,7 @@ def generate_member(self, owner, supervisor):
             spec_name = 'Lockpicker'
         else:
             spec_name = 'Pickpocketer'
-    else:  # Strength (drug dealer?)
+    else:  # Strength
         if tier == 4:
             if randint(0, 1):
                 spec_name = 'Hunter'
