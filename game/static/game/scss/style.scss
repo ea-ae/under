@@ -29,10 +29,6 @@ body {
     user-select: none;
 }
 
-.nodrag {
-    @include nodrag;
-}
-
 nav {
     @include nodrag;
     white-space: normal !important; // This is required due to firefox bug
@@ -49,10 +45,6 @@ nav {
     .hamburger {
         vertical-align: middle;
     }
-
-    /*.nav__money {
-        padding-left: 20px;
-    }*/
 
     .nav__logout {
         cursor: pointer;
@@ -80,8 +72,6 @@ nav {
     width: 100%;
     padding: 30px;
     overflow: auto;
-    // TODO: Not sure if I need this? If anything breaks this is why
-    // white-space: nowrap;
 }
 
 .sidebar {
@@ -446,7 +436,7 @@ nav {
     .tabs__contacts {
         .contacts {
             @include nodrag;
-            //min-width: 400px; //mobtodo
+            //min-width: 400px; //mobile todo
             padding: 10px;
             overflow-x: auto;
             white-space: nowrap; // Force all divs to stay on same row & overflow
@@ -576,46 +566,34 @@ nav {
             cursor: -moz-grab;
             cursor: -o-grab;
 
-            min-width: 190px;
+            // The active grabbing cursor doesn't work that well somewhy
+
             display: flex;
+            min-width: 190px;
             justify-content: center;
             align-items: center;
 
-            &:active { 
-                cursor: grabbing;
-                cursor: -moz-grabbing;
-                cursor: -webkit-grabbing;
-                cursor: -o-grabbing;
-            }
-
             #members__tree {
-                cursor: grab !important;
-                cursor: -webkit-grab !important;
-                cursor: -moz-grab !important;
-                cursor: -o-grab !important;
+                cursor: grab;
+                cursor: -webkit-grab;
+                cursor: -moz-grab;
+                cursor: -o-grab;
+                display: inline-block;
                 min-height: 250px;
                 max-height: 400px;
-                display: inline-block;
-
-                &:active { 
-                    cursor: grabbing !important;
-                    cursor: -moz-grabbing !important;
-                    cursor: -webkit-grabbing !important;
-                    cursor: -o-grabbing !important;
-                }
                 
                 box-sizing: border-box;
                 box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
-                background: rgb(254, 254, 254);
+                background-color: rgb(254, 254, 254);
                 border-radius: 2px;
                 font-size: 0 !important; // Removes the strange overflow in graph
                 // Should an 'overflow: hidden !important' be added here?
     
                 & .node {
+                    @include nodrag;
                     z-index: 2;
                     min-width: 180px;
                     padding: 6px 30px; // 6px 14px
-                    /*border: 1px solid rgb(40, 40, 40);*/
                     color: rgb(50, 50, 50);
                     background-color: white;
                     font-size: 1rem;
@@ -739,23 +717,28 @@ nav {
                     margin: 10px 5px 0 0;
                     padding: 13px 35px;
                     border-radius: 1px;
-                    color: $white;
                     font-size: 1.1rem;
                 }
 
                 .accept-recruit {
                     background-color: rgb(18, 97, 25);
+                    color: $white;
                 }
                 .reject-recruit {
                     background-color: rgb(114, 14, 14);
+                    color: $white;
                 }
                 .promote-recruit {
                     display: inline-block;
-                    background-color: rgb(92, 163, 0);
+                    background-color: rgb(252, 252, 252);
+                    color: rgb(170, 154, 7);
+                    border: 1px solid rgb(211, 190, 0);
                 }
                 .kick-recruit {
                     display: inline-block;
-                    background-color: rgb(179, 8, 8);
+                    background-color: rgb(252, 252, 252);
+                    color: rgb(170, 9, 9);
+                    border: 1px solid rgb(221, 16, 16);
                 }
 
                 .details__jobs {
@@ -776,12 +759,12 @@ nav {
                             text-align: center;
     
                             border: 1px solid rgb(230, 230, 230);
-                            background: rgb(252, 252, 252);
+                            background-color: rgb(252, 252, 252);
 
                             transition: all 0.3s;
 
                             &:hover {
-                                background: rgb(246, 246, 246);
+                                background-color: rgb(246, 246, 246);
                             }
                         }
                     }
@@ -957,38 +940,34 @@ nav {
     left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    //margin: 25% auto;
     height: 40px;
     text-align: center;
     font-size: 10px;
-}
-  
-.spinner > div {
-    z-index: 10;
-    background-color: rgb(70, 70, 70);
-    height: 100%;
-    width: 6px;
-    display: inline-block;
 
-    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    & > div {
+        z-index: 10;
+        background-color: rgb(70, 70, 70);
+        height: 100%;
+        width: 6px;
+        display: inline-block;
+
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    }
 }
-  
+
 .spinner .rect2 {
     -webkit-animation-delay: -1.1s;
     animation-delay: -1.1s;
 }
-
 .spinner .rect3 {
     -webkit-animation-delay: -1.0s;
     animation-delay: -1.0s;
 }
-
 .spinner .rect4 {
     -webkit-animation-delay: -0.9s;
     animation-delay: -0.9s;
 }
-
 .spinner .rect5 {
     -webkit-animation-delay: -0.8s;
     animation-delay: -0.8s;
