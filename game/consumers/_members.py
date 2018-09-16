@@ -217,7 +217,15 @@ def process_ticks(self):
     """
     Processes job ticks.
     """
-    db_members = self.cult.member_set.all()  # We are querying the db for game members every single time
+    # We are querying the database for game members every single time just in case
+    db_members = self.cult.member_set.only('id',
+                                           'owner_id',
+                                           'accepted',
+                                           'job',
+                                           'intelligence',
+                                           'social',
+                                           'stealth',
+                                           'strength')
 
     minutes = int((now() - self.cult.last_check).total_seconds() / 60)
 
@@ -285,7 +293,7 @@ def process_recruit(self, choice):
         self.process_ticks()
         if choice == 'accept':
             recruit.accepted = True
-            recruit.save()
+            recruit.save(update_fields=['accepted'])
             self.log('Accepted recruit.', 'info')
             self.members_data()  # Refresh page
         elif choice == 'reject':
@@ -417,4 +425,3 @@ def random_line(f):
             continue
         lines = line
     return lines.rstrip('\n')
-

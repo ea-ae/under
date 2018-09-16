@@ -19,7 +19,7 @@ gamedata = {
                             'conditional': False
                         }
                     ],
-                    'text': '<p>So, you\'re looking to start a cult? I\'ll help you get started. Don\'t worry about any payments; you\'ll return the favor when the time comes.</p><p>First of all, you\'ll need a building for your cult to operate in. I found you a quiet place in the corner of the city where nobody will bother you. Go and visit it right now and buy it an upgrade of your choice.</p><p><b>Objective:</b> Visit the headquarters using the sidebar and purchase an upgrade of your choice.</p>'
+                    'text': '<p>So, you\'re looking to start a cult? I\'ll help you get started. Don\'t worry about any payments; you\'ll return the favor when the time comes.</p><p>First of all, you\'ll need a building for your cult to operate in. I found you a quiet place in the corner of the city where nobody should bother you. Go and visit it right now and buy it an upgrade of your choice.</p><p><b>Objective:</b> Visit the headquarters using the sidebar and purchase an upgrade of your choice.</p>'
                 },
                 '1.0.1': {
                     'options': [
@@ -37,11 +37,11 @@ gamedata = {
                             'conditional': False
                         },
                         {
-                            'text': 'Tell me more about cultist stats, specializations, skills, jobs, and loyalty.',
+                            'text': 'Tell me more about cultist stats, specializations, skills, and jobs.',
                             'conditional': False
                         }
                     ],
-                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. That person is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making the new cultist work as a recruiter, since that person has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p>'
+                    'text': '<p>Now you need to find people to join your cult. Recruitment isn\'t an easy task, but I know a person was happy to join and help you. That person is already in the cult and you can see him in the \'Members\' tab.</p><p>You should give your new cultist a job. I would recommend making the new cultist work as a recruiter, since that person has high social skills and your cult needs more members. A recruiter\'s job is to find and recruit new members to your cult.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.1.1': {
                     'options': [
@@ -50,7 +50,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>There are four stats: intelligence, social, stealth, and strength. A cultist\'s specialization depends on their stats. Some specializations are rarer than others. For instance, it is harder to find a spy (tier 4 social skill) than a lockpicker (tier 2 stealth skill). You can research new learnable skills and teach them to your cultists.</p><p>All cultists can be assigned passive jobs, such as recruiting, stealing, or researching. Some jobs are only available to certain specializations (such as pickpocketing), and some jobs are unlocked by research. The higher a cultist\'s loyalty, the harder he will work. You also must pay your cultists daily wages whether they were assigned to a job or not.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
+                    'text': '<p>There are four stats: intelligence, social, stealth, and strength. The type of specialization your cultist will have will depend on the highest stat. A specialization\'s rarity depends on its tier. For instance, it is harder to find a spy (tier 4 social specialization) than a lockpicker (tier 2 stealth specialization). You can research new learnable skills and teach them to your cultists.</p><p>All cultists can be assigned passive jobs, such as recruiting, stealing, or researching. Some jobs are only available to certain specializations (such as pickpocketing), and some jobs are unlocked by research.</p><p><b>Objective:</b> Visit the \'Members\' tab and make your new cult member work as a recruiter.</p>'
                 },
                 '1.2.0': {
                     'options': [

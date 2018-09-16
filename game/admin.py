@@ -3,6 +3,7 @@ from .models import WarfareGame, WarfarePlayer, Cult, Member
 
 
 class CultAdmin(admin.ModelAdmin):
+    readonly_fields = ['id']
     list_display = ('name', 'owner', 'money', 'reputation')
 
     def owner(self, obj):

@@ -33,7 +33,7 @@ def create_cult(self, data):
             and data.get('cult_type', None) in {'chi', 'psi', 'omega'}):
         self.cult.name = ' '.join(data.get('cult_name', 'Script Kiddie Cult').split())  # Remove duplicate spaces
         self.cult.type = data['cult_type']
-        self.cult.save()
+        self.cult.save(update_fields=['name', 'type'])
         self.log('Cult created.', 'info')
         # Redirect the new user to the missions page
         self.send_json({

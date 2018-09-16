@@ -137,6 +137,9 @@ def option_check(self, contact_name, card, choice_index):
                 # Objective: Visit the headquarters using the sidebar and purchase an upgrade of your choice.
                 # Check if at least 1 upgrade has been bought
                 return len(json.loads(self.cult.headquarters)) >= 1
+        elif card == '1.1.0' or card == '1.1.1':
+            # Objective: Visit the 'Members' tab and make your new cult member work as a recruiter.
+            return False
         elif card == '1.2.0':
             return True
         elif card == '1.3.0':

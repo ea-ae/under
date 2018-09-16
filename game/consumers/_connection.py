@@ -2,7 +2,6 @@ from game.models import WarfareGame, WarfarePlayer, Cult
 from asgiref.sync import async_to_sync as ats
 from channels.exceptions import StopConsumer
 import json
-from warfare.settings.config import config
 
 
 def connect(self):
