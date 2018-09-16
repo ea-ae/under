@@ -326,6 +326,12 @@ let members = {
                         getByClass('accept-recruit')[0].style.display = 'none';
                         getByClass('reject-recruit')[0].style.display = 'none';
 
+                        getByClass('details__none')[0].style.display = 'block';
+                        getByClass('details__info')[0].style.display = 'none';
+                        getByClass('details__jobs')[0].style.display = 'none';
+                        getByClass('details__learn')[0].style.display = 'none';
+                        getByClass('details__manage')[0].style.display = 'none';
+
                         alerty.toasts('Recruit accepted!', {
                             bgColor: '#35444e',
                             fontColor: '#fefefe',
@@ -351,6 +357,12 @@ let members = {
                         notification.style.display = 'none';
                         getByClass('accept-recruit')[0].style.display = 'none';
                         getByClass('reject-recruit')[0].style.display = 'none';
+
+                        getByClass('details__none')[0].style.display = 'block';
+                        getByClass('details__info')[0].style.display = 'none';
+                        getByClass('details__jobs')[0].style.display = 'none';
+                        getByClass('details__learn')[0].style.display = 'none';
+                        getByClass('details__manage')[0].style.display = 'none';
 
                         alerty.toasts('Recruit rejected!', {
                             bgColor: '#35444e',
