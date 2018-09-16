@@ -205,8 +205,13 @@ def generate_member(self, owner, supervisor):
 
 
 def manage_member(self, data):
+    """
+    Manages cultists: promotes them, changes their jobs, or kicks them out of the cult.
+    """
     if data.get('command') == 'change_job':
         self.change_job(data.get('cultist'), data.get('job'))
+    elif data.get('command') == 'promote':
+        self.promote_member(data.get('cultist'))
     elif data.get('command') == 'kick_out':
         self.kick_member(data.get('cultist'))
     else:
@@ -333,6 +338,25 @@ def change_job(self, cultist_id, job_name):
 
         cultist.job = job_name
         cultist.save(update_fields=['job'])
+
+
+def promote_member(self, cultist_id):
+    """
+    Promotes a member and increases his wage by 50%.
+    """
+    if cultist_id is None:
+        self.log('Cultist ID is missing.')
+        return False
+    try:
+        cultist = Member.objects.get(owner=self.cult, id=cultist_id)
+    except Member.DoesNotExist:
+        self.log('Can\'t promote cultist with invalid ID.')
+    else:
+        # TODO: Once the inventory system is ready, make promotions require a promotion consumable.
+        # Right now you can promote an infinite amount of times in a row - that's not good!
+        cultist.wage = int(round(cultist.wage * 1.5))
+        cultist.loyalty += 10
+        cultist.save(update_fields=['wage', 'loyalty'])
 
 
 def kick_member(self, cultist_id):

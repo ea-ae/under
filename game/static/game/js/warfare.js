@@ -471,9 +471,32 @@ let members = {
         members.setTabData('jobs');
     },
     promoteMember: function(e) {
-        alerty.alert('This feature is not complete yet.', {
-            title: 'Oops!',
-            okLabel: 'OK'
+        alerty.confirm('Are you sure you want to promote ' + 
+            members.chartMembers[members.memberSelected].text.name + 
+            ' and increase their wage by 50%? This action is not reversable!', {
+            title: 'Confirmation',
+            okLabel: 'Yes',
+            cancelLabel: 'No'
+        }, function() {
+            socket.send(JSON.stringify({
+                type: 'manage_member',
+                command: 'promote',
+                cultist: members.chartMembers[members.memberSelected].HTMLclass
+            }));
+
+            members.chartMembers[members.memberSelected].data.wage =
+                Math.round(members.chartMembers[members.memberSelected].data.wage * 1.5);
+            members.chartMembers[members.memberSelected].data.loyalty += 10;
+            
+            alerty.toasts('Cultist promoted!', {
+                bgColor: '#35444e',
+                fontColor: '#fefefe',
+                time: 2500
+            });
+
+            deleteOverlays();
+        }, function () {
+            deleteOverlays();
         });
     },
     kickMember: function(e) {

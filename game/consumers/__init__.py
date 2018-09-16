@@ -27,6 +27,7 @@ class WarfareConsumer(JsonWebsocketConsumer):
                            process_ticks,
                            process_recruit,
                            change_job,
+                           promote_member,
                            kick_member)
     from ._headquarters import (headquarters_data,
                                 process_upgrade)
