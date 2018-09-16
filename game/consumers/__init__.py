@@ -10,12 +10,26 @@ class WarfareConsumer(JsonWebsocketConsumer):
     self.cult - currently selected cult
     """
 
-    from ._connection import connect, disconnect, multiple_connections, receive_json
+    from ._connection import (connect,
+                              disconnect,
+                              multiple_connections,
+                              receive_json)
     from ._page_data import page_data
-    from ._home import home_data, create_cult
-    from ._contacts import contacts_data, process_choice, option_check, set_card
-    from ._members import members_data, generate_member, process_ticks, process_recruit, change_job
-    from ._headquarters import headquarters_data, process_upgrade
+    from ._home import (home_data,
+                        create_cult)
+    from ._contacts import (contacts_data,
+                            process_choice,
+                            option_check,
+                            set_card)
+    from ._members import (members_data,
+                           generate_member,
+                           manage_member,
+                           process_ticks,
+                           process_recruit,
+                           change_job,
+                           kick_member)
+    from ._headquarters import (headquarters_data,
+                                process_upgrade)
 
     logger = logging.getLogger('warfare')
 

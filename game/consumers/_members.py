@@ -204,6 +204,15 @@ def generate_member(self, owner, supervisor):
     return member
 
 
+def manage_member(self, data):
+    if data.get('command') == 'change_job':
+        self.change_job(data.get('cultist'), data.get('job'))
+    elif data.get('command') == 'kick_out':
+        self.kick_member(data.get('cultist'))
+    else:
+        self.log('Unknown member management command.')
+
+
 def process_ticks(self):
     """
     Processes job ticks.
@@ -281,7 +290,7 @@ def process_recruit(self, choice):
             self.members_data()  # Refresh page
         elif choice == 'reject':
             if self.tutorial:
-                self.log('Member rejection tutorial-idiot protection.', 'info')
+                self.log('Member rejection blocked due to tutorial protection.', 'info')
                 self.send_json({
                     'type': 'tutorial_lock'
                 })
@@ -294,15 +303,13 @@ def change_job(self, cultist_id, job_name):
     """
     Called when the client wants to change a cultist's job.
     """
-    self.process_ticks()
-
     if cultist_id is None or job_name is None:
         self.log('Cultist ID or job name is missing.')
         return False
     try:
         cultist = Member.objects.get(owner=self.cult, id=cultist_id)
     except Member.DoesNotExist:
-        self.log('Invalid cultist ID.')
+        self.log('Invalid change job of cultist with invalid ID.')
     else:
         if job_name not in get_available_jobs():
             self.log('Incorrect job name given.')
@@ -320,10 +327,41 @@ def change_job(self, cultist_id, job_name):
         cultist.save(update_fields=['job'])
 
 
+def kick_member(self, cultist_id):
+    """
+    Kicks a cultist out of the cult.
+    """
+    if cultist_id is None:
+        self.log('Cultist ID is missing.')
+        return False
+    try:
+        cultist = Member.objects.get(owner=self.cult, id=cultist_id)
+    except Member.DoesNotExist:
+        self.log('Can\'t kick cultist with invalid ID.')
+    else:
+        if self.tutorial:
+            self.log('Member kicking blocked due to tutorial protection.', 'info')
+            self.send_json({
+                'type': 'tutorial_lock'
+            })
+            return False
+
+        # We have to change the supervisors of all cultists that were supervised by the cultist
+        cultist.member_set.update(supervisor=cultist.supervisor)
+        # We halve the amount of recruitment points earned, so that the progress % till next recruit is the same
+        # If we wouldn't do that, a new recruit would be found immediately if recruitment progress was at least 50%
+        self.cult.recruitment_points /= 2
+        # Now we can delete the cultist
+        cultist.delete()
+        # Refresh the page to get the updated members list
+        self.page_data('members')
+
+
 def get_available_jobs():
     """
     Returns all jobs unlocked by the cult.
     """
+    # Researching isn't done, so we just return a list
     return ['none', 'recruiting', 'researching', 'guarding', 'pickpocketing']
 
 

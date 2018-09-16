@@ -30,7 +30,7 @@ def process_upgrade(self, data):
             self.log('Incorrect HQ upgrade item.')
     elif data['command'] == 'delete':
         if self.tutorial:
-            self.log('HQ upgrade deletion tutorial-idiot protection.', 'info')
+            self.log('HQ upgrade deletion blocked due to tutorial protection.', 'info')
             self.send_json({
                 'type': 'tutorial_lock'
             })

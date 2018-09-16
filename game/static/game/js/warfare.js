@@ -375,18 +375,6 @@ let members = {
             chartNodes[i].addEventListener('click', members.selectMember);
         }
     },
-    selectJob: function(e) {
-        socket.send(JSON.stringify({
-            type: 'job_change',
-            cultist: members.chartMembers[members.memberSelected].HTMLclass,
-            job: this.innerHTML.toLowerCase()
-        }));
-
-        members.chartMembers[members.memberSelected].data.job = this.innerHTML.toLowerCase();
-        let node = getByClass( members.chartMembers[members.memberSelected].HTMLclass)[0];
-        node.children[2].innerHTML = 'Job: ' + this.innerHTML;
-        members.setTabData('jobs');
-    },
     selectMember: function(e) {
         getByClass('details__none')[0].style.display = 'none';
         getByClass('details__info')[0].style.display = 'none';
@@ -455,7 +443,7 @@ let members = {
                 let job = document.createElement('div');
                 job.innerHTML = jobList[i].capitalize();
                 jobListEl.appendChild(job);
-                job.addEventListener('click', members.selectJob);
+                job.addEventListener('click', members.changeJob);
             }
 
             getByClass('details__jobs')[0].style.display = 'block';
@@ -468,6 +456,19 @@ let members = {
         } else {
             console.error('Unknown member tab name.');
         }
+    },
+    changeJob: function(e) {
+        socket.send(JSON.stringify({
+            type: 'manage_member',
+            command: 'change_job',
+            cultist: members.chartMembers[members.memberSelected].HTMLclass,
+            job: this.innerHTML.toLowerCase()
+        }));
+
+        members.chartMembers[members.memberSelected].data.job = this.innerHTML.toLowerCase();
+        let node = getByClass( members.chartMembers[members.memberSelected].HTMLclass)[0];
+        node.children[2].innerHTML = 'Job: ' + this.innerHTML;
+        members.setTabData('jobs');
     },
     promoteMember: function(e) {
         alerty.alert('This feature is not complete yet.', {
@@ -483,10 +484,10 @@ let members = {
             okLabel: 'Yes',
             cancelLabel: 'No'
         }, function() {
-            socket.send(JSON.Stringify({
-                type: 'manage_recruit',
-                command: 'kick',
-                id: members.chartMembers[members.memberSelected].HTMLclass
+            socket.send(JSON.stringify({
+                type: 'manage_member',
+                command: 'kick_out',
+                cultist: members.chartMembers[members.memberSelected].HTMLclass
             }));
             
             alerty.toasts('Cultist kicked out!', {
@@ -796,11 +797,6 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             }, 360);
         }
     });
-
-    window.onerror = function(msg, url, linenumber) {
-        alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
-        return true;
-    }
 
     new VanillaKinetic(getByClass('chart')[0], {
         cursor: '',

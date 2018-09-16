@@ -73,15 +73,15 @@ def receive_json(self, content, **kwargs):
     """
     Called when the customer sends data to us.
     """
-    self.log('receive_json(): ' + str(content), 'DEBUG')
+    self.log('receive_json(): ' + str(content), 'debug')
     request_type = content.get('type')
     if request_type == 'page_data':  # Client requests data to load a tab
         self.page_data(content.get('page'))  # Send the requested page over to page_data()
     elif request_type == 'card_choice':  # User clicked on an option in a card
         self.process_choice({'contact': content.get('contact'),
                              'choice': content.get('choice')})
-    elif request_type == 'job_change':
-        self.change_job(content.get('cultist'), content.get('job'))
+    elif request_type == 'manage_member':
+        self.manage_member(content)
     elif request_type == 'recruit':
         self.process_recruit(content.get('choice'))
     elif request_type == 'hq_upgrade':

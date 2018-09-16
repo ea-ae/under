@@ -60,4 +60,4 @@ def page_data(self, page):
             'page': page
         })
     else:
-        self.log('Unknown tab "' + page + '" requested.')
+        self.log('Unknown tab requested.')
