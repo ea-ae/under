@@ -32,6 +32,8 @@ function setPage(data) { // Sets the data in the active tab
         contacts.contacts = data.contacts;
         // TODO: localStorage to remember last selected contact
         contacts.setActiveContact(contacts.selectedContact);
+    } else if (data.page == 'inventory') {
+        
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
             firstHQVisit = false;

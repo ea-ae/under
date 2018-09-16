@@ -340,7 +340,7 @@ nav {
 .tabs {
     & > div { // Selects every tab
         display: none;
-        margin-right: 30px;
+        // margin-right: 30px; // If the right margin thing breaks, bring this back
     }
 
     // 'Home' tab
@@ -559,6 +559,126 @@ nav {
         }
     }
 
+    .tabs__inventory {
+        .inventory-details {
+            display: block;
+            width: 50%;
+            margin: 20px auto 10px;
+            padding: 15px 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+            h1 {
+                margin-bottom: 8px;
+                font-size: 2rem;
+                color: rgb(15, 15, 15);
+            }
+
+            h2 {
+                margin-bottom: 17px;
+                font-size: 1.3rem;
+                color: rgb(75, 75, 75);
+            }
+
+            p {
+                margin-bottom: 10px;
+                font-size: 1.05rem;
+            }
+
+            .item-type {
+                display: inline-block;
+                max-width: 600px;
+                margin: 10px;
+                font-size: 1.075rem;
+                color: rgb(70, 70, 70);
+
+                p {
+                    margin-bottom: 1em;
+
+                    b {
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+
+        .inventory-flex {
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0;
+            padding: 5px;
+
+            .arrow-column {
+                flex: 0;
+            }
+
+            .inventory-column {
+                // change min-max-widths once we figure this out
+                max-height: 50vh;
+                overflow: auto;
+                padding: 15px 0;
+                font-size: 0;
+            }
+
+            .inventory-slot {
+                display: inline-flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+                height: 90px;
+                width: 165px;
+
+                margin: 7px 4px 2px;
+                padding: 0;
+                overflow-y: auto;
+
+                box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+                transition: all .2s cubic-bezier(.25, .8, .25, 1);
+
+                &:hover {
+                    box-shadow: 0 5px 12px rgba(0, 0, 0, .25), 0 3px 3px rgba(0, 0, 0, .22);
+                }
+
+                p {
+                    @include nodrag;
+                    flex: 0;
+                    padding: 7px 7px 0;
+                    text-align: center;
+
+                    &.title {
+                        color: rgb(25, 25, 25);
+                        font-size: 18px;
+                    }
+
+                    &.amount {
+                        margin-bottom: 10px;
+                        color: rgb(100, 100, 100);
+                        font-size: 15px;
+                    }
+                }
+            }
+
+            .arrow {
+                cursor: pointer;
+                display: inline-block;
+                padding: 10px;
+                border: solid $black;
+                border-width: 0 5px 5px 0;
+            }
+
+            .arrow--left {
+                transform: rotate(135deg);
+                -webkit-transform: rotate(135deg);
+            }
+            
+            .arrow--right {
+                float: right;
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+            }
+        }
+    }
+
     .tabs__members {
         .chart-wrapper {
             cursor: grab;
@@ -650,6 +770,12 @@ nav {
                     }
                 }
             }
+        }
+
+        .member-details__wrapper {
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 5px;
         }
 
         .member-details {
@@ -995,6 +1121,10 @@ nav {
 
     .container-box {
         display: block;
+    }
+
+    .tabs {
+        padding: 10px;
     }
 }
 

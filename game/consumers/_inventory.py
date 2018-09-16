@@ -26,14 +26,14 @@ def alter_item(self, item_name, item_amount):
     inventory = json.loads(self.cult.inventory)
     if item_name not in inventory:  # Item is not owned yet
         inventory[item_name] = {'amount': 0}
-        # inventory[item_name].update(item_data[item_name])
 
-    if inventory[item_name]['amount'] + item_amount < 0:
+    new_amount = inventory[item_name]['amount'] + item_amount
+    if new_amount < 0:
         return False
-    elif inventory[item_name]['amount'] + item_amount == 0:
+    elif new_amount == 0:
         del inventory[item_name]  # Having zero of an item means we don't need it in our inventory anymore
     else:
-        inventory[item_name]['amount'] += item_amount
+        inventory[item_name]['amount'] = new_amount
 
     self.cult.inventory = json.dumps(inventory)
     self.cult.save(update_fields=['inventory'])
