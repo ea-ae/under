@@ -16,10 +16,7 @@ def page_data(self, page):
     elif page == 'contacts':
         self.contacts_data()
     elif page == 'inventory':
-        self.send_json({
-            'type': 'page_data',
-            'page': page
-        })
+        self.inventory_data()
     elif page == 'members':
         self.members_data()
     elif page == 'research':

@@ -32,7 +32,7 @@ class Cult(models.Model):
         help_text='For example: [{"id": "anonymous", "card": "1.4.0"}, {"id": "assistant", "card": "1.0.1}]<br>\
                   Assistant added at anonymous "1.3.0". Mafioso added at assistant "1.1.2".'
     )
-    inventory = models.TextField(default='[]')
+    inventory = models.TextField(default='{}')
     research = models.TextField(default='[]')
     headquarters = models.TextField(
         default='[]',

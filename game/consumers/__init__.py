@@ -21,6 +21,8 @@ class WarfareConsumer(JsonWebsocketConsumer):
                             process_choice,
                             option_check,
                             set_card)
+    from ._inventory import (inventory_data,
+                             alter_item)
     from ._members import (members_data,
                            generate_member,
                            manage_member,
