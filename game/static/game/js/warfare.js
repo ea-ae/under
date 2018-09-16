@@ -231,7 +231,7 @@ let members = {
             },
             levelSeparation: 20, // px between node levels
             siblingSeparation: 10, // px between sibling nodes
-            padding: 35
+            padding: 10
         };
 
         members.chartMembers = {
@@ -840,18 +840,18 @@ window.addEventListener('load', function() { // Once page loaded and parsed
 
     // Double-clicking on the edges will make the chart move
     // Should be used if dragging doesn't work for some reason
-    getByClass('chart')[0].addEventListener('click', function(e) {
+    getByClass('chart')[0].addEventListener('mousedown', function(e) {
         if (e.target.tagName == 'svg') { // Don't detect clicks on nodes
             let rect = this.getBoundingClientRect();
             let offsetX = e.clientX - rect.left;
             let offsetY = e.clientY - rect.top;
-            if (offsetY <= 50) {
+            if (offsetY <= 15) {
                 this.scrollBy(0, -100);
-            } else if (this.offsetHeight - 50 <= offsetY) {
+            } else if (this.offsetHeight - 15 <= offsetY) {
                 this.scrollBy(0, 100);
-            } else if (offsetX <= 50) {
+            } else if (offsetX <= 15) {
                 this.scrollBy(-100, 0);
-            } else if (this.offsetWidth - 50 <= offsetX) {
+            } else if (this.offsetWidth - 15 <= offsetX) {
                 this.scrollBy(100, 0);
             } 
         }
