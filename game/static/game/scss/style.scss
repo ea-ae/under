@@ -560,42 +560,46 @@ nav {
     }
 
     .tabs__inventory {
-        .inventory-details {
-            display: block;
-            width: 50%;
-            margin: 20px auto 10px;
-            padding: 15px 20px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        .inventory-details__wrapper {
+            min-height: 150px;
 
-            h1 {
-                margin-bottom: 8px;
-                font-size: 2rem;
-                color: rgb(15, 15, 15);
-            }
-
-            h2 {
-                margin-bottom: 17px;
-                font-size: 1.3rem;
-                color: rgb(75, 75, 75);
-            }
-
-            p {
-                margin-bottom: 10px;
-                font-size: 1.05rem;
-            }
-
-            .item-type {
-                display: inline-block;
-                max-width: 600px;
-                margin: 10px;
-                font-size: 1.075rem;
-                color: rgb(70, 70, 70);
-
+            .inventory-details {
+                display: block;
+                width: 50%;
+                margin: 20px auto 10px;
+                padding: 15px 20px;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    
+                h1 {
+                    margin-bottom: 8px;
+                    font-size: 2rem;
+                    color: rgb(15, 15, 15);
+                }
+    
+                h2 {
+                    margin-bottom: 17px;
+                    font-size: 1.3rem;
+                    color: rgb(75, 75, 75);
+                }
+    
                 p {
-                    margin-bottom: 1em;
-
-                    b {
-                        font-weight: 500;
+                    margin-bottom: 10px;
+                    font-size: 1.05rem;
+                }
+    
+                .item-type {
+                    display: inline-block;
+                    max-width: 600px;
+                    margin: 10px;
+                    font-size: 1.075rem;
+                    color: rgb(70, 70, 70);
+    
+                    p {
+                        margin-bottom: 1em;
+    
+                        b {
+                            font-weight: 500;
+                        }
                     }
                 }
             }

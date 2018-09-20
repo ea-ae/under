@@ -33,9 +33,34 @@ function setPage(data) { // Sets the data in the active tab
         // TODO: localStorage to remember last selected contact
         contacts.setActiveContact(contacts.selectedContact);
     } else if (data.page == 'inventory') {
-        let inventorySlots = getByClass('inventory-slot');
-        for (let i = 0; i < inventorySlots.length; i++) {
-            inventorySlots[i].addEventListener('click', inventory.selectItem);
+        let inventoryColumn = getByClass('inventory-column')[0];
+        inventoryColumn.innerHTML = '';
+        for (let name in data.inventory) {
+            console.log('YOOO');
+            if (data.inventory.hasOwnProperty(name)) {
+                console.log('YEE');
+                // Create inventory slot element
+                let inventorySlot = document.createElement('div');
+                inventorySlot.classList.add('inventory-slot');
+
+                // Create and append title text
+                let title = document.createElement('p');
+                title.classList.add('title');
+                title.innerHTML = name.capitalize();
+                inventorySlot.appendChild(title);
+
+                // Create and append description text
+                let amount = document.createElement('p');
+                amount.classList.add('amount');
+                amount.innerHTML = data.inventory[name];
+                inventorySlot.appendChild(amount);
+
+                // Append the slot element
+                inventoryColumn.appendChild(inventorySlot);
+
+                // Add event listener
+                inventorySlot.addEventListener('click', inventory.selectItem);
+            }
         }
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
