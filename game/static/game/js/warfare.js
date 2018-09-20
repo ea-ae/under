@@ -33,7 +33,10 @@ function setPage(data) { // Sets the data in the active tab
         // TODO: localStorage to remember last selected contact
         contacts.setActiveContact(contacts.selectedContact);
     } else if (data.page == 'inventory') {
-        
+        let inventorySlots = getByClass('inventory-slot');
+        for (let i = 0; i < inventorySlots.length; i++) {
+            inventorySlots[i].addEventListener('click', inventory.selectItem);
+        }
     } else if (data.page == 'headquarters') {
         if (firstHQVisit) {
             firstHQVisit = false;
@@ -52,7 +55,6 @@ function setPage(data) { // Sets the data in the active tab
     // Some after-display code
     if (data.page == 'headquarters') {
         let wrapper = getByClass('headquarters__details__wrapper')[0];
-        console.log(wrapper.offsetHeight);
         wrapper.style.minHeight = wrapper.offsetHeight + 'px';
     } else if (data.page == 'members') {
         if (firstMembersVisit) {
@@ -206,6 +208,38 @@ let contacts = {
         },
     }
 };
+
+let inventory = {
+    selectedItem: null,
+    cached: {},
+    selectItem: function(e) {
+        let itemName = this.children[0].innerHTML.toLowerCase();
+        inventory.selectedItem = itemName;
+
+        if (itemName in inventory.cached) {
+            let item = inventory.cached[itemName];
+            inventory.setItemData(item.name, item.type, item.desc);
+        } else {
+            socket.send(JSON.stringify({
+                type: 'item_data',
+                item_name: inventory.selectedItem
+            }));
+        }
+    },
+    setItemData: function(name, type, desc) {
+        // Add item to cache
+        inventory.cached[name] = {name: name, type: type, desc: desc}
+        // We could also store the inventory cache in localStorage
+
+        // Make sure that this item is still selected
+        if (inventory.selectedItem == name) {
+            let inventoryDetails = getByClass('inventory-details')[0];
+            inventoryDetails.children[0].innerHTML = name.capitalize();
+            inventoryDetails.children[1].innerHTML = type.capitalize();
+            inventoryDetails.children[2].innerHTML = desc;
+        }
+    }
+}
 
 let members = {
     chartMembers: null,
@@ -770,6 +804,8 @@ window.addEventListener('load', function() { // Once page loaded and parsed
         let data = JSON.parse(message.data);
         if (data.type == 'page_data') {
             setPage(data); // We are sent data about a requested page
+        } else if (data.type == 'item_data') {
+            inventory.setItemData(data.item_data.name, data.item_data.type, data.item_data.desc);
         } else if (data.type == 'page_redirect') { // Server wants to change the active tab
             console.log(data.page);
             setActiveTab({target: getById('tabs-list__' + data.page)});

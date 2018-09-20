@@ -76,6 +76,8 @@ def receive_json(self, content, **kwargs):
     request_type = content.get('type')
     if request_type == 'page_data':  # Client requests data to load a tab
         self.page_data(content.get('page'))  # Send the requested page over to page_data()
+    elif request_type == 'item_data':  # Requested data about an item
+        self.get_item(content.get('item_name'))
     elif request_type == 'card_choice':  # User clicked on an option in a card
         self.process_choice({'contact': content.get('contact'),
                              'choice': content.get('choice')})

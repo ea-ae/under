@@ -614,9 +614,10 @@ nav {
 
             .inventory-column {
                 // change min-max-widths once we figure this out
+                min-height: 220px;
                 max-height: 50vh;
                 overflow: auto;
-                padding: 15px 0;
+                padding-bottom: 30px;
                 font-size: 0;
             }
 
