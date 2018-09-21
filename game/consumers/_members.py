@@ -143,7 +143,10 @@ def generate_member(self, owner, supervisor):
             else:
                 spec_name = 'Mastermind'
         elif tier == 3:
-            spec_name = 'Hacker'
+            if randint(0, 1):
+                spec_name = 'Shaman'
+            else:
+                spec_name = 'Hacker'
         elif tier == 2:
             spec_name = 'Forger'
         else:
@@ -155,7 +158,10 @@ def generate_member(self, owner, supervisor):
             else:
                 spec_name = 'Spy'
         elif tier == 3:
-            spec_name = 'Manager'
+            if randint(0, 1):
+                spec_name = 'Psychic'
+            else:
+                spec_name = 'Manager'
         elif tier == 2:
             spec_name = 'Social Engineer'
         else:
@@ -163,11 +169,14 @@ def generate_member(self, owner, supervisor):
     elif index == 2:  # Stealth
         if tier == 4:
             if randint(0, 1):
-                spec_name = 'Scavenger'
+                spec_name = 'Captor'
             else:
                 spec_name = 'Investigator'
         elif tier == 3:
-            spec_name = 'Disguiser'
+            if randint(0, 1):
+                spec_name = 'Scavenger'
+            else:
+                spec_name = 'Disguiser'
         elif tier == 2:
             spec_name = 'Lockpicker'
         else:
@@ -179,7 +188,10 @@ def generate_member(self, owner, supervisor):
             else:
                 spec_name = 'Sniper'
         elif tier == 3:
-            spec_name = 'Interrogator'
+            if randint(0, 1):
+                spec_name = 'Miner'
+            else:
+                spec_name = 'Interrogator'
         elif tier == 2:
             spec_name = 'Soldier'
         else:
