@@ -148,7 +148,7 @@ def generate_member(self, owner, supervisor):
             spec_name = 'Forger'
         else:
             spec_name = 'Technician'
-    elif index == 1:  # Social (pimp?)
+    elif index == 1:  # Social
         if tier == 4:
             if randint(0, 1):
                 spec_name = 'Exorcist'
@@ -305,7 +305,9 @@ def process_recruit(self, choice):
             if self.tutorial:
                 self.log('Member rejection blocked due to tutorial protection.', 'info')
                 self.send_json({
-                    'type': 'tutorial_lock'
+                    'type': 'popup',
+                    'title': 'Tutorial Lock',
+                    'text': 'You are not permitted to do this kind of action during the tutorial!'
                 })
                 return False
             recruit.delete()
@@ -352,11 +354,19 @@ def promote_member(self, cultist_id):
     except Member.DoesNotExist:
         self.log('Can\'t promote cultist with invalid ID.')
     else:
-        # TODO: Once the inventory system is ready, make promotions require a promotion consumable.
-        # Right now you can promote an infinite amount of times in a row - that's not good!
-        cultist.wage = int(round(cultist.wage * 1.5))
-        cultist.loyalty += 10
-        cultist.save(update_fields=['wage', 'loyalty'])
+        inventory = json.loads(self.cult.inventory)
+        if 'paperwork' in inventory:  # One paperwork is used up each time a cultist is promoted
+            self.alter_item('paperwork', -1)  # Remove one paperwork from player's inventory
+
+            cultist.wage = int(round(cultist.wage * 1.5))
+            cultist.loyalty += 10
+            cultist.save(update_fields=['wage', 'loyalty'])
+        else:
+            self.send_json({
+                'type': 'popup',
+                'title': 'Not Enough Paperwork!',
+                'text': 'You must have at least one paperwork to promote a cultist.'
+            })
 
 
 def kick_member(self, cultist_id):
@@ -374,7 +384,9 @@ def kick_member(self, cultist_id):
         if self.tutorial:
             self.log('Member kicking blocked due to tutorial protection.', 'info')
             self.send_json({
-                'type': 'tutorial_lock'
+                'type': 'popup',
+                'title': 'Tutorial Lock',
+                'text': 'You are not permitted to do this kind of action during the tutorial!'
             })
             return False
 

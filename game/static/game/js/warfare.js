@@ -36,9 +36,7 @@ function setPage(data) { // Sets the data in the active tab
         let inventoryColumn = getByClass('inventory-column')[0];
         inventoryColumn.innerHTML = '';
         for (let name in data.inventory) {
-            console.log('YOOO');
             if (data.inventory.hasOwnProperty(name)) {
-                console.log('YEE');
                 // Create inventory slot element
                 let inventorySlot = document.createElement('div');
                 inventorySlot.classList.add('inventory-slot');
@@ -46,7 +44,7 @@ function setPage(data) { // Sets the data in the active tab
                 // Create and append title text
                 let title = document.createElement('p');
                 title.classList.add('title');
-                title.innerHTML = name.capitalize();
+                title.innerHTML = name;
                 inventorySlot.appendChild(title);
 
                 // Create and append description text
@@ -122,7 +120,7 @@ function setActiveTab(event, checkIfSame=true) {
     }
 }
 
-function deleteOverlays() {
+function manageOverlay() {
     // There is a bug in Alerty that makes an overlays not delete themselves.
     // We can delete the alerty overlays by ourselves instead.
     let overlays = getByClass('alerty-overlay');
@@ -238,7 +236,7 @@ let inventory = {
     selectedItem: null,
     cached: {},
     selectItem: function(e) {
-        let itemName = this.children[0].innerHTML.toLowerCase();
+        let itemName = this.children[0].innerHTML;
         inventory.selectedItem = itemName;
 
         if (itemName in inventory.cached) {
@@ -253,13 +251,13 @@ let inventory = {
     },
     setItemData: function(name, type, desc) {
         // Add item to cache
-        inventory.cached[name] = {name: name, type: type, desc: desc}
+        inventory.cached[name] = {name: name, ktype: type, desc: desc}
         // We could also store the inventory cache in localStorage
 
         // Make sure that this item is still selected
         if (inventory.selectedItem == name) {
             let inventoryDetails = getByClass('inventory-details')[0];
-            inventoryDetails.children[0].innerHTML = name.capitalize();
+            inventoryDetails.children[0].innerHTML = name;
             inventoryDetails.children[1].innerHTML = type.capitalize();
             inventoryDetails.children[2].innerHTML = desc;
         }
@@ -341,7 +339,6 @@ let members = {
         });
         
         membersTree = new Treant(chart_config);
-        //membersTree.tree.reload();
 
         if (recruit !== null) {
             let notification = getByClass('recruit-notification')[0];
@@ -399,9 +396,9 @@ let members = {
                             time: 2500
                         });
 
-                        deleteOverlays();
+                        manageOverlay();
                     }, function() {
-                        deleteOverlays();
+                        manageOverlay();
                     });
                 });
                 getByClass('reject-recruit')[0].addEventListener('click', function() {
@@ -431,9 +428,9 @@ let members = {
                             time: 2500
                         });
 
-                        deleteOverlays();
+                        manageOverlay();
                     }, function() {
-                        deleteOverlays();
+                        manageOverlay();
                     });
                 });
             });
@@ -567,9 +564,9 @@ let members = {
                 time: 2500
             });
 
-            deleteOverlays();
+            manageOverlay();
         }, function () {
-            deleteOverlays();
+            manageOverlay();
         });
     },
     kickMember: function(e) {
@@ -592,9 +589,9 @@ let members = {
                 time: 2500
             });
 
-            deleteOverlays();
+            manageOverlay();
         }, function () {
-            deleteOverlays();
+            manageOverlay();
         });
     }
 };
@@ -660,9 +657,9 @@ let headquarters = {
                     time: 4000
                 });
 
-                deleteOverlays();
+                manageOverlay();
             }, function() {
-                deleteOverlays();
+                manageOverlay();
             });
         } else {
             let money = getByQuery('.tabs__headquarters .money').innerHTML.substring(10);
@@ -701,9 +698,9 @@ let headquarters = {
                     time: 4000
                 });
 
-                deleteOverlays();
+                manageOverlay();
             }, function() {
-                deleteOverlays();
+                manageOverlay();
             });
         }
     },
@@ -831,6 +828,16 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             setPage(data); // We are sent data about a requested page
         } else if (data.type == 'item_data') {
             inventory.setItemData(data.item_data.name, data.item_data.type, data.item_data.desc);
+        } else if (data.type == 'popup') {
+            alerty.alert(data.text, {
+                title: data.title,
+                okLabel: 'OK'
+            })
+            if (data.title == 'Not Enough Paperwork!') {
+                members.chartMembers[members.memberSelected].data.wage =
+                    Math.round(members.chartMembers[members.memberSelected].data.wage / 1.5);
+                members.chartMembers[members.memberSelected].data.loyalty -= 10;
+            }
         } else if (data.type == 'page_redirect') { // Server wants to change the active tab
             console.log(data.page);
             setActiveTab({target: getById('tabs-list__' + data.page)});
@@ -841,11 +848,6 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             alerty.alert('Your account has connected to the game from somewhere \
             else. Make sure you don\'t have the game open in another tab.', {
                 title: 'Connection closed',
-                okLabel: 'OK'
-            });
-        } else if (data.type == 'tutorial_lock') {
-            alerty.alert('You are not permitted to do this kind of action during the tutorial!', {
-                title: 'Tutorial Lock',
                 okLabel: 'OK'
             });
         }
@@ -869,9 +871,9 @@ window.addEventListener('load', function() { // Once page loaded and parsed
             cancelLabel: 'No'
         }, function() {
             window.location.replace('../logout');
-            deleteOverlays();
+            manageOverlay();
         }, function() {
-            deleteOverlays();
+            manageOverlay();
         });
     });
 

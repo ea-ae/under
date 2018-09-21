@@ -32,7 +32,9 @@ def process_upgrade(self, data):
         if self.tutorial:
             self.log('HQ upgrade deletion blocked due to tutorial protection.', 'info')
             self.send_json({
-                'type': 'tutorial_lock'
+                'type': 'popup',
+                'title': 'Tutorial Lock',
+                'text': 'You are not permitted to do this kind of action during the tutorial!'
             })
             return False
 

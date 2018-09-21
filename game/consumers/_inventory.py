@@ -5,13 +5,11 @@ def inventory_data(self):
     """
     Returns a list of items in the player's inventory.
     """
-    # Save this variable so that we can reuse it when getting item data
-    self.inventory = json.loads(self.cult.inventory)
 
     self.send_json({
         'type': 'page_data',
         'page': 'inventory',
-        'inventory': self.inventory
+        'inventory': json.loads(self.cult.inventory)
     })
 
 
@@ -19,15 +17,11 @@ def get_item(self, item_name):
     """
     Return data (type and description) about a requested item.
     """
-    try:
-        self.inventory
-    except NameError:
-        self.log('Inventory variable is missing; page data hasn\'t been asked for?', 'warning')
-        return False
+    inventory = json.loads(self.cult.inventory)
 
     if item_name is None or not isinstance(item_name, str):
         self.log('Requested item name is invalid.', 'warning')
-    elif item_name.lower() in self.inventory:  # Make sure that the user even has the requested item
+    elif item_name.lower() in inventory:  # Make sure that the user even has the requested item
         data = {
             'name': item_name.lower()
         }
@@ -76,15 +70,31 @@ def alter_item(self, item_name, item_amount):
 
 item_data = {
     'paperwork': {
-        'type': 'consumable',
+        'type': 'resource',
         'desc': 'Paperwork is used to give a cultist a promotion. Promotions increase a cultist\'s wage by 50% and loyalty by 10.'
     },
     'contract': {
-        'type': 'consumable',
-        'desc': 'In order to get a mission from Vincent, you have to use up a contract.'
+        'type': 'resource',
+        'desc': 'In order to get a mission from Vincent, you have to use up a contract. You earn contracts every day.'
     },
     'keycap': {
         'type': 'collectible',
         'desc': 'These collectible keycaps are given out to players who report bugs and vulnerabilities in the game.'
+    },
+    'black shard': {
+        'type': 'resource',
+        'desc': 'Black shards are mysterious crystals found only in the Underworld and are extremely important in alchemy.'
+    },
+    'red shard': {
+        'type': 'resource',
+        'desc': 'If you direct enough energy into black shards, then they will transform into red shards that are mainly used for upgrading hellgates.'
+    },
+    'crystal powder': {
+        'type': 'resource',
+        'desc': 'Crystal powder is used to transform black shards into other forms. The more shards you are transforming, the more powder you must use'
+    },
+    'power cell': {
+        'type': 'resource',
+        'desc': 'A power cell is spent every single time that a transformation or cleansing machine is activated.'
     }
 }
