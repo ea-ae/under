@@ -565,7 +565,8 @@ nav {
 
             .inventory-details {
                 display: block;
-                width: 50%;
+                min-width: 200px;
+                max-width: 1000px;
                 margin: 20px auto 10px;
                 padding: 15px 20px;
                 box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -627,12 +628,13 @@ nav {
             }
 
             .inventory-slot {
+                @include nodrag;
                 display: inline-flex;
                 flex-direction: column;
                 justify-content: space-between;
                 position: relative;
                 height: 90px;
-                width: 165px;
+                width: 155px;
 
                 margin: 7px 4px 2px;
                 padding: 0;
@@ -695,7 +697,17 @@ nav {
                 background-color: rgb(254, 254, 254);
                 border-radius: 2px;
                 font-size: 0 !important; // Removes the strange overflow in graph
-                overflow: hidden !important; // Override overflow that is probably set by treant
+
+                // I really want to set overflow to hidden, but it won't work on mobile
+
+                &::-webkit-scrollbar { // Hide horizontal scrollbars on Chrome
+                    display: none;
+                    height: 0;
+                    width: 0;
+                    background: transparent;
+                }
+
+
     
                 & .node {
                     @include nodrag;
