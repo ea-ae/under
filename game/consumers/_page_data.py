@@ -37,10 +37,7 @@ def page_data(self, page):
             'page': page
         })
     elif page == 'underworld':
-        self.send_json({
-            'type': 'page_data',
-            'page': page
-        })
+        self.underworld_data()
     elif page == 'settings':
         self.send_json({
             'type': 'page_data',

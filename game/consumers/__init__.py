@@ -34,6 +34,8 @@ class WarfareConsumer(JsonWebsocketConsumer):
                            kick_member)
     from ._headquarters import (headquarters_data,
                                 process_upgrade)
+    from ._underworld import (underworld_data,
+                              generate_map)
 
     logger = logging.getLogger('warfare')
 
