@@ -16,7 +16,8 @@ html {
 
 body {
     height: 100%;
-	background-color: rgb(253, 253, 251);
+    background-color: rgb(253, 253, 251);
+    transition: background-color 0.4s;
 }
 
 @mixin nodrag {
@@ -1056,6 +1057,52 @@ nav {
             }
         }
     }
+
+    .tabs__underworld {
+        // animation: pulse 5s ease-in-out 0 infinite alternate;
+        // animation-iteration-count: infinite;
+        height: 100%;
+
+        .underworld-box {
+            height: 100%;
+            padding: 2rem 1rem;
+
+            color: $white;
+            background: rgb(1, 3, 10);
+            border-radius: 3px;
+            -webkit-box-shadow: inset 0px 0px 33px 18px rgb(0, 0, 0);
+            -moz-box-shadow: inset 0px 0px 33px 18px rgb(0, 0, 0);
+            box-shadow: inset 0px 0px 33px 18px rgb(0, 0, 0);
+
+            .hellgate {
+                display: flex;
+
+                .hellgate__item {
+                    flex: auto;
+                    margin: 0 10px;
+                    text-align: center;
+                }
+            }
+
+            h1 {
+                padding: 1rem 0;
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            h2 {
+                padding-bottom: 2rem;
+                color: rgb(184, 184, 184);
+                font-size: 1.5rem;
+                text-align: center;
+            }
+        }
+    }
+}
+
+@keyframes pulse {
+    0% { background-color: #020205; }
+    100% { background-color: #03030f; }
 }
 
 // Source: tobiasahlin.com/spinkit/

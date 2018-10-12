@@ -10,7 +10,8 @@ String.prototype.capitalize = function() {
 function setPage(data) { // Sets the data in the active tab
     if (data.page != active) { // Make sure we're sent the correct page
         return false;
-    } 
+    }
+
     if (data.page == 'home') {
         if ('cult' in data) { // Whether this user already has a cult
             getByQuery('.tabs__home .stats').style.display = 'block';
@@ -72,7 +73,9 @@ function setPage(data) { // Sets the data in the active tab
         for (let i = 0; i < data.upgrades.length; i++) {
             getByClass('upgrade--' + data.upgrades[i])[0].classList.add('upgrade--owned');
         }
-    } 
+    }
+
+
     // Show the tab's div now that all the data is set
     getByClass('tabs__' + data.page)[0].style.display = 'block';
     // Some after-display code
@@ -251,7 +254,7 @@ let inventory = {
     },
     setItemData: function(name, type, desc) {
         // Add item to cache
-        inventory.cached[name] = {name: name, ktype: type, desc: desc}
+        inventory.cached[name] = {name: name, type: type, desc: desc}
         // We could also store the inventory cache in localStorage
 
         // Make sure that this item is still selected
