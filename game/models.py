@@ -85,3 +85,9 @@ class Member(models.Model):
     def __str__(self):
         return self.name
 
+
+class Underworld(models.Model):
+    seed = models.CharField(max_length=32)  # Seed of the map
+    x = models.IntegerField()
+    y = models.IntegerField()
+    

@@ -1,27 +1,70 @@
 import random
+from string import ascii_letters, digits
 from math import cos, sin, floor, sqrt, pi, ceil
 import json
 
 
 def underworld_data(self):
     self.generate_map()
+
+    generate_new_world = True  # Temporary!
+
+    if generate_new_world:
+        # Persistent seed:
+        # self.random = random.Random(config['SECRET_KEY'][:8] + str(self.cult.id))
+
+        # Create a new random seed every time we create an Underworld map
+        seed = ''.join(random.choice(ascii_letters + digits) for _ in range(32))
+        self.field = self.generate_map(seed)
+    else:
+        try:
+            self.field
+        except AttributeError:
+            # Retrieve the seed from database and generate map
+            seed_from_database = 123  # Temporary!
+            self.field = self.generate_map(seed_from_database)
+
     self.send_json({
         'type': 'page_data',
         'page': 'underworld'
     })
 
 
-def generate_map(self):
+# Map model not migrated yet
+
+
+def navigate_map(self, direction):
+    """
+    Accepts client navigation requests (north/east/south/west).
+    """
+    # Change X/Y location in database field
+    if direction == 'north':
+        pass
+    elif direction == 'east':
+        pass
+    elif direction == 'south':
+        pass
+    elif direction == 'west':
+        pass
+
+
+def generate_map(self, seed):
     """
     Generates a map of the Underworld based on a seed.
     """
+    # Create a new instance of Random() using a given seed
+    self.random = random.Random(seed)
+
     # Define map dimensions and settings
+    # Size should be at least 35x35
 
     height = 50
     width = 50
 
-    # We would use a seed if we wanted the map to be the same every single time
-    # self.random = random.Random(config['SECRET_KEY'][:8] + str(self.cult.id))
+    # Generate a random starting location somewhere in the middle of the map
+
+    x = random.randint(width - 10, width + 10)
+    y = random.randint(height - 10, height + 10)
 
     # Create a 2-dimensional list for the game map
 
@@ -29,7 +72,7 @@ def generate_map(self):
 
     # Create random points that will be the starting positions of biomes
 
-    points = poisson_disc_samples(width, height, 3, 5)
+    points = poisson_disc_samples(width, height, 3, 5, self.random)
     random.shuffle(points)
 
     for i in range(len(points)):
@@ -46,6 +89,11 @@ def generate_map(self):
     # Set the biomes
 
     field = set_biomes(field, points)
+
+    # TODO: Create/edit database model instance
+    # Save the seed and starting x/y location
+
+    return field
 
 
 def set_biomes(field, points):
