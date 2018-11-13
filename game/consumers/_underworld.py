@@ -12,7 +12,7 @@ def underworld_data(self):
     self.send_json({
         'type': 'page_data',
         'page': 'underworld',
-        'map': underworld['field'],
+        'map': underworld['map'],
         'seed': underworld['model'].seed
     })
 
@@ -28,13 +28,13 @@ def map_data(cult):
     except Underworld.DoesNotExist:  # Generate new map
         # Create a new random seed every time we create an Underworld map
         seed = ''.join(random.choice(ascii_letters + digits) for _ in range(32))
-        underworld_model = Underworld(owner=cult, seed=seed, x=field.x, y=field.y, time=0)
+        underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
         
-    field = generate_map(underworld_model.seed)
+    game_map = generate_map(underworld_model.seed)
     
     return {
         'model': underworld_model,
-        'field': field
+        'map': game_map
     }
 
 
@@ -200,27 +200,37 @@ biomes = {
         'fields': {
             'Empty Plains': {
                 'description': 'There is nothing of interest here.',
-                'hostility': 60,
+                'rarity': 1
+                'hostility': 50,
                 'shard_rate': 10,
                 'loot_rate': 1
             },
             'Mineral Plains': {
                 'description': 'You can see some shards growing around in this area.',
-                'hostility': 60,
+                'rarity': 0.5
+                'hostility': 50,
                 'shard_rate': 50,
                 'loot_rate': 1
             }
         }
     },
     'The Limbo': {
-        'description': 'You do not know where you\'re going. Stay there for too long, and the limbo will \
-        take you over and you will be wandering around aimlessly for eternity just like the others.',
+        'description': 'You do not know where you\'re going. Stay there for too long, and The Limbo will \
+        take you over and you\'ll be left wandering around aimlessly for eternity just like the others.',
         'fields': {
             'Walking Grounds': {
                 'description': 'Victims of The Limbo are walking aimlessly all around this place.',
+                'rarity': 1
                 'hostility': 20,
                 'shard_rate': 20,
                 'loot_rate': 5
+            },
+            'Crowded Walking Grounds': {
+                'description': 'Something is attracting victims of The Limbo to this place.',
+                'rarity': 0.3
+                'hostility': 40,
+                'shard_rate': 30,
+                'loot_rate': 10
             }
         }
     }
