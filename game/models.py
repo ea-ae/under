@@ -87,7 +87,8 @@ class Member(models.Model):
 
 
 class Underworld(models.Model):
+    owner = models.ForeignKey(Cult, on_delete=models.CASCADE)
     seed = models.CharField(max_length=32)  # Seed of the map
     x = models.IntegerField()
     y = models.IntegerField()
-    
+    time = models.IntegerField()  # The amount of moves that has been made
