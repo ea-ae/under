@@ -7,13 +7,13 @@ import json
 
 
 def underworld_data(self):
-    underworld = self.map_data(self.cult)
+    self.underworld, self.map = map_data(self.cult)
 
     self.send_json({
         'type': 'page_data',
         'page': 'underworld',
-        'map': underworld['map'],
-        'seed': underworld['model'].seed
+        'map': self.map,
+        'seed': self.underworld.seed
     })
 
 
@@ -30,27 +30,32 @@ def map_data(cult):
         seed = ''.join(random.choice(ascii_letters + digits) for _ in range(32))
         underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
         
-    game_map = generate_map(underworld_model.seed)
+    field = generate_map(underworld_model.seed)
     
-    return {
-        'model': underworld_model,
-        'map': game_map
-    }
+    return (underworld_model, field)
 
 
 def navigate_map(self, direction):
     """
-    Accepts client navigation requests (north/east/south/west).
+    Accepts client navigation requests (north/east/south/west) and returns data about new location.
     """
-    # Navigate on the map, changing the X/Y location data
-    if direction == 'north':
-        pass
-    elif direction == 'east':
-        pass
-    elif direction == 'south':
-        pass
-    elif direction == 'west':
-        pass
+    # Navigate on the map and return data about the new location.
+    if direction == 'north' and self.underworld.y < len(self.map) - 1:
+        self.underworld.y += 1
+    elif direction == 'east' and self.underworld.y < len(self.map[0]) - 1:
+        self.underworld.x += 1
+    elif direction == 'south' and self.underworld.y > 0:
+        self.underworld.y -= 1
+    elif direction == 'west' and self.underworld.x > 0:
+        self.underworld.x -= 1
+    else:
+        self.log('Invalid direction provided.', 'warning')
+        return False
+
+    self.underworld.time += 1  # Increase time
+    self.underworld.save()  # Save new location to db
+    
+    return self.map[self.underworld.y][self.underworld.x]
 
 
 def generate_map(seed):
@@ -59,17 +64,15 @@ def generate_map(seed):
     """
     # Create a new instance of Random() using a given seed
     random = random.Random(seed)
-
-    # Define map dimensions and settings
-    # Size should be at least 35x35
-
-    height = 50
-    width = 50
-
     # Generate a random starting location somewhere in the middle of the map
 
     x = random.randint(width - 10, width + 10)
     y = random.randint(height - 10, height + 10)
+
+    # Define map dimensions and settings
+    # Size should be at least 35x35
+    height = 50
+    width = 50
 
     # Create a 2-dimensional list for the game map
 
