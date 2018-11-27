@@ -203,14 +203,14 @@ biomes = {
         'fields': {
             'Empty Plains': {
                 'description': 'There is nothing of interest here.',
-                'rarity': 1
+                'rarity': 1,
                 'hostility': 50,
                 'shard_rate': 10,
                 'loot_rate': 1
             },
             'Mineral Plains': {
                 'description': 'You can see some shards growing around in this area.',
-                'rarity': 0.5
+                'rarity': 0.5,
                 'hostility': 50,
                 'shard_rate': 50,
                 'loot_rate': 1
@@ -223,14 +223,14 @@ biomes = {
         'fields': {
             'Walking Grounds': {
                 'description': 'Victims of The Limbo are walking aimlessly all around this place.',
-                'rarity': 1
+                'rarity': 1,
                 'hostility': 20,
                 'shard_rate': 20,
                 'loot_rate': 5
             },
             'Crowded Walking Grounds': {
                 'description': 'Something is attracting victims of The Limbo to this place.',
-                'rarity': 0.3
+                'rarity': 0.3,
                 'hostility': 40,
                 'shard_rate': 30,
                 'loot_rate': 10
