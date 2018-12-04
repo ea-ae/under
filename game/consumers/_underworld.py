@@ -1,4 +1,5 @@
 from game.models import Underworld
+from ._utils import weighted_choice
 
 import random
 from string import ascii_letters, digits
@@ -127,6 +128,10 @@ def generate_map(seed):
                         shortest_dist = distance
                         # Set the biome that will be chosen if a shorter distance isn't found
                         current_biome = point[2]
+                # Select random field in biome, taking rarity into account
+                # biome_fields = list(biomes[current_biome]['fields'].keys())
+                # biome_weights = [field['rarity'] for biome_field in biome_fields]
+
                 # Set this cell's field from available fields in the biome
                 field[row][cell] = rnd.choice(list(biomes[current_biome]['fields'].keys()))
 
@@ -194,51 +199,72 @@ def generate_map(seed):
 
 
 # Biome data (might be moved to an ignored _data.py in the future)
-# TODO: Be able to set field rarity
 
 biomes = {
     'The Obsidian Plains': {  # Biomes have different fields in them that will be randomly picked from
         'description': 'You are out in the open, and they know where you are.',
+        'difficulty': 'Easy',
         'fields': {
             'Empty Plains': {
                 'description': 'There is nothing of interest here.',
-                'rarity': 1,
+                'rarity': 100,
                 'hostility': 50,
                 'shard_rate': 10,
-                'loot_rate': 1
+                'loot_rate': 10
             },
             'Mineral Plains': {
                 'description': 'You can see some shards growing around in this area.',
-                'rarity': 0.5,
+                'rarity': 40,
                 'hostility': 50,
                 'shard_rate': 50,
-                'loot_rate': 1
+                'loot_rate': 10
             }
         }
     },
     'The Limbo': {
         'description': 'You do not know where you\'re going. Stay there for too long, and The Limbo will \
         take you over and you\'ll be left wandering around aimlessly for eternity just like the others.',
+        'difficulty': 'Easy',
         'fields': {
             'Walking Grounds': {
-                'description': 'Victims of The Limbo are walking aimlessly all around this place.',
-                'rarity': 1,
+                'description': 'Victims of The Limbo are walking aimlessly all around this place. Do not bother them, and they will not bother you.',
+                'rarity': 100,
                 'hostility': 20,
                 'shard_rate': 20,
-                'loot_rate': 5
+                'loot_rate': 15
             },
             'Crowded Walking Grounds': {
-                'description': 'Something is attracting victims of The Limbo to this place.',
-                'rarity': 0.3,
+                'description': 'Something is attracting victims of The Limbo to this place. You should be cautious around here.',
+                'rarity': 30,
                 'hostility': 40,
                 'shard_rate': 30,
                 'loot_rate': 10
             },
             'Empty Walking Grounds': {
                 'description': 'There is almost nobody here.',
-                'rarity': 0.1,
+                'rarity': 10,
                 'hostility': 5,
                 'shard_rate': 30,
+                'loot_rate': 10
+            }
+        }
+    },
+    'Living Mountains': {
+        'description': 'The mountains are alive. Stay cautious and watch your step.',
+        'difficulty': 'Easy',
+        'fields': {
+            'Sleeping Mountains': {
+                'description': 'These mountains are probably asleep, it should be safe to pass.',
+                'rarity': 100,
+                'hostility': 10,
+                'shard_rate': 50,
+                'loot_rate': 10
+            },
+            'Moving Mountains': {
+                'description': 'These mountains are awake, going near them is extremely dangerous.',
+                'rarity': 75,
+                'hostility': 90,
+                'shard_rate': 50,
                 'loot_rate': 10
             }
         }

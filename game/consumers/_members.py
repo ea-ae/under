@@ -1,5 +1,5 @@
 from game.models import Member
-
+from ._utils import wrand, weighted_choice
 
 import json
 from random import random, randint, randrange, shuffle
@@ -437,31 +437,6 @@ def tier_picker(x):
     # Tier 1 [42.38%]
     else:
         return 1
-
-
-def wrand(maximum, weight):
-    """
-    Returns a weighted random number.
-    """
-    # r = random() * (maximum / weight) + random() * (maximum / weight)
-    r = 0
-    for i in range(weight):
-        r += random() * (maximum / weight)
-    return int(round(r))
-
-    # return int(minimum + (maximum - minimum) * pow(random.random(), power))
-
-
-def weighted_choice(weights):
-    """
-    Select weighted choice.
-    """
-    rnd = random() * sum(weights)
-    for i, w in enumerate(weights):
-        rnd -= w
-        if rnd < 0:
-            return i
-
 
 def random_line(f):
     """
