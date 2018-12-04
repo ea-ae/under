@@ -82,11 +82,15 @@ gamedata = {
                 '1.4.1': {
                     'options': [
                         {
-                            'text': 'I got you the money.',
+                            'text': 'I will pay for it myself.',
                             'conditional': True
+                        },
+                        {
+                            'text': 'Okay, you can pay for the portal.',
+                            'conditional': False
                         }
                     ],
-                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. Believe me, it\'s much worse than whatever you\'ve heard about it.</p><p>You have to create a special portal to access it. The problem is that almost nobody knows how to build these portals - so I\'m quite lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $50,000 and everything else will be taken care of. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about some topics.</p><p><b>Objective:</b> Pay $50,000.</p>'
+                    'text': '<p>I believe you\'re ready now. Ready to venture into the Underworld. Believe me, it\'s much worse than whatever you\'ve heard about it.</p><p>You have to create a special portal to access it. The problem is that almost nobody knows how to build these portals - so I\'m quite lucky to know someone who does.</p><p>He said that in order to build it he\'ll require $10,000 and everything else will be taken care of. If you want, I can pay for it myself, but in return you will have to bring me one thing from there once you find it. Oh, and by the way, you can always check out the \'Wiki\' tab if anything is confusing or you want to learn more about some topics.</p><p><b>Objective:</b> Pay $10,000 or accept help.</p>'
                 },
                 '1.4.2': {
                     'options': [
@@ -95,7 +99,7 @@ gamedata = {
                             'conditional': True
                         }
                     ],
-                    'text': '<p>This part is not done yet. You are not supposed to get here.</p>'
+                    'text': '<p>This part is not done yet.</p>'
                 },
                 '1.4.3': {
                     'options': [],

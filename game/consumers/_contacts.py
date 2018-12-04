@@ -107,7 +107,10 @@ def process_choice(self, data):
                         self.set_card(db_contacts, i, '1.4.1')
                         self.tutorial = False
                     elif db_contact['card'] == '1.4.1':
-                        self.set_card(db_contacts, i, '1.4.2')
+                        if data['choice'] == 0:  # Pay $10,000
+                            self.set_card(db_contacts, i, '1.5.0')
+                        elif data['choice'] == 1:  # Accept help
+                            self.set_card(db_contacts, i, '1.4.2')
                 elif db_contact['id'] == 'assistant':
                     if db_contact['card'] == '1.0.0':
                         self.set_card(db_contacts, i, '1.0.1')
@@ -146,6 +149,9 @@ def option_check(self, contact_name, card, choice_index):
             contacts = json.loads(self.cult.contacts)
             # Check if the assistant's card is not '1.0.0'
             return contacts[1]['card'] != '1.0.0'
+        elif card == '1.4.1':
+            # Pay $10,000
+            return False
     elif contact_name == 'assistant':
         pass
     return False

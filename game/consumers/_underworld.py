@@ -32,7 +32,7 @@ def map_data(cult):
         field = generate_map(seed)
         underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
     
-    return (underworld_model, field)
+    return underworld_model, field
 
 
 def navigate_map(self, direction):
@@ -62,52 +62,7 @@ def generate_map(seed):
     """
     Generates a map of the Underworld based on a seed.
     """
-    # Create a new instance of Random() using a given seed
-    rnd = random.Random(seed)
-    # Generate a random starting location somewhere in the middle of the map
-
-    x = rnd.randint(width - 10, width + 10)
-    y = rnd.randint(height - 10, height + 10)
-
-    # Define map dimensions and settings
-    # Size should be at least 35x35
-    height = 50
-    width = 50
-
-    # Create a 2-dimensional list for the game map
-
-    field = [['_'] * width for _ in range(height)]
-
-    # Create random points that will be the starting positions of biomes
-
-    points = poisson_disc_samples(width, height, 3, 5, r)
-    rnd.shuffle(points)
-
-    for i in range(len(points)):
-        biome = '_'
-
-        biome = rnd.choice(list(biomes.keys()))  # Set a random biome
-
-        points[i][0] = int(round(points[i][0])) - 1  # x
-        points[i][1] = int(round(points[i][1])) - 1  # y
-        points[i].append(biome)
-
-        field[points[i][1]][points[i][0]] = 'X'  # not needed
-
-    # Set the biomes
-
-    field = set_biomes(field, points, rnd)
-
-    # TODO: Create/edit database model instance
-    # Save the seed and starting x/y location
-
-    return ({
-        'field': field,
-        'x': x,
-        'y': y
-    })
-
-    def set_biomes(field, points, rnd=random):
+    def set_biomes(field, points):
         for row in range(len(field)):
             # For every cell, we find the closest point
             for cell in range(len(field[row])):
@@ -137,7 +92,7 @@ def generate_map(seed):
 
         return field
 
-    def poisson_disc_samples(width, height, r, k=5, rnd=random):
+    def poisson_disc_samples(width, height, r, k=5):
         """
         "Two-dimensional Poisson Disc Sampling using Robert Bridson's algorithm."
         Modified version of https://github.com/emulbreh/bridson.
@@ -196,6 +151,52 @@ def generate_map(seed):
                 queue.append(p)
                 grid[grid_x + grid_y * grid_width] = p
         return [p for p in grid if p is not None]
+
+    # Map settings
+    height = 50
+    width = 50
+    # Create a new instance of Random() using a given seed
+    rnd = random.Random(seed)
+    # Generate a random starting location somewhere in the middle of the map
+
+    x = rnd.randint(width - 10, width + 10)
+    y = rnd.randint(height - 10, height + 10)
+
+    # Define map dimensions and settings
+    # Size should be at least 35x35
+    height = 50
+    width = 50
+
+    # Create a 2-dimensional list for the game map
+
+    field = [['_'] * width for _ in range(height)]
+
+    # Create random points that will be the starting positions of biomes
+
+    points = poisson_disc_samples(width, height, 3, 5)
+    rnd.shuffle(points)
+
+    for i in range(len(points)):
+        biome = rnd.choice(list(biomes.keys()))  # Set a random biome
+
+        points[i][0] = int(round(points[i][0])) - 1  # x
+        points[i][1] = int(round(points[i][1])) - 1  # y
+        points[i].append(biome)
+
+        field[points[i][1]][points[i][0]] = 'X'  # not needed
+
+    # Set the biomes
+
+    field = set_biomes(field, points)
+
+    # TODO: Create/edit database model instance
+    # Save the seed and starting x/y location
+
+    return ({
+        'field': field,
+        'x': x,
+        'y': y
+    })
 
 
 # Biome data (might be moved to an ignored _data.py in the future)
