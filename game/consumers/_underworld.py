@@ -7,12 +7,12 @@ import json
 
 
 def underworld_data(self):
-    self.underworld, self.map = map_data(self.cult)
+    self.underworld, self.field = map_data(self.cult)
 
     self.send_json({
         'type': 'page_data',
         'page': 'underworld',
-        'map': self.map,
+        'field': self.field,
         'seed': self.underworld.seed
     })
 
@@ -21,16 +21,15 @@ def map_data(cult):
     """
     Returns a cult's Underworld model and map data.
     """
-    generate_new_world = True  # Temporary!
 
     try:  # Map already exists
         underworld_model = Underworld.objects.get(owner=cult)
+        field = generate_map(underworld_model.seed)
     except Underworld.DoesNotExist:  # Generate new map
         # Create a new random seed every time we create an Underworld map
         seed = ''.join(random.choice(ascii_letters + digits) for _ in range(32))
+        field = generate_map(seed)
         underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
-        
-    field = generate_map(underworld_model.seed)
     
     return (underworld_model, field)
 
@@ -63,11 +62,11 @@ def generate_map(seed):
     Generates a map of the Underworld based on a seed.
     """
     # Create a new instance of Random() using a given seed
-    random = random.Random(seed)
+    rnd = random.Random(seed)
     # Generate a random starting location somewhere in the middle of the map
 
-    x = random.randint(width - 10, width + 10)
-    y = random.randint(height - 10, height + 10)
+    x = rnd.randint(width - 10, width + 10)
+    y = rnd.randint(height - 10, height + 10)
 
     # Define map dimensions and settings
     # Size should be at least 35x35
@@ -80,34 +79,34 @@ def generate_map(seed):
 
     # Create random points that will be the starting positions of biomes
 
-    points = poisson_disc_samples(width, height, 3, 5, random)
-    random.shuffle(points)
+    points = poisson_disc_samples(width, height, 3, 5, r)
+    rnd.shuffle(points)
 
     for i in range(len(points)):
         biome = '_'
 
-        biome = random.choice(list(biomes.keys()))  # Set a random biome
+        biome = rnd.choice(list(biomes.keys()))  # Set a random biome
 
         points[i][0] = int(round(points[i][0])) - 1  # x
         points[i][1] = int(round(points[i][1])) - 1  # y
         points[i].append(biome)
 
-        field[points[i][1]][points[i][0]] = 'X'
+        field[points[i][1]][points[i][0]] = 'X'  # not needed
 
     # Set the biomes
 
-    field = set_biomes(field, points)
+    field = set_biomes(field, points, rnd)
 
     # TODO: Create/edit database model instance
     # Save the seed and starting x/y location
 
-    return {
+    return ({
         'field': field,
         'x': x,
         'y': y
-    }
+    })
 
-    def set_biomes(field, points):
+    def set_biomes(field, points, rnd=random):
         for row in range(len(field)):
             # For every cell, we find the closest point
             for cell in range(len(field[row])):
@@ -129,7 +128,7 @@ def generate_map(seed):
                         # Set the biome that will be chosen if a shorter distance isn't found
                         current_biome = point[2]
                 # Set this cell's field from available fields in the biome
-                field[row][cell] = random.choice(list(biomes[current_biome]['fields'].keys()))
+                field[row][cell] = rnd.choice(list(biomes[current_biome]['fields'].keys()))
 
         return field
 
@@ -232,6 +231,13 @@ biomes = {
                 'description': 'Something is attracting victims of The Limbo to this place.',
                 'rarity': 0.3,
                 'hostility': 40,
+                'shard_rate': 30,
+                'loot_rate': 10
+            },
+            'Empty Walking Grounds': {
+                'description': 'There is almost nobody here.',
+                'rarity': 0.1,
+                'hostility': 5,
                 'shard_rate': 30,
                 'loot_rate': 10
             }
