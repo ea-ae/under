@@ -10,7 +10,6 @@ def wrand(maximum, weight):
     for i in range(weight):
         r += random() * (maximum / weight)
     return int(round(r))
-
     # return int(minimum + (maximum - minimum) * pow(random.random(), power))
 
 

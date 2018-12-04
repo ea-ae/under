@@ -83,12 +83,18 @@ def generate_map(seed):
                         shortest_dist = distance
                         # Set the biome that will be chosen if a shorter distance isn't found
                         current_biome = point[2]
-                # Select random field in biome, taking rarity into account
-                # biome_fields = list(biomes[current_biome]['fields'].keys())
-                # biome_weights = [field['rarity'] for biome_field in biome_fields]
 
-                # Set this cell's field from available fields in the biome
-                field[row][cell] = rnd.choice(list(biomes[current_biome]['fields'].keys()))
+                # Select random field in biome, taking rarity into account
+
+                # Get names/data of all fields in the chosen biome
+                biome_fields = biomes[current_biome]['fields'].items()
+                # Extract field names and their rarities (weights)
+                field_data = [(name, data['rarity']) for name, data in biome_fields]
+                # Choose a random field using the weights
+                field_index = weighted_choice([field_weight[1] for field_weight in field_data])
+                # Set the cell's field
+                field[row][cell] = field_data[field_index]
+                print(field_data)
 
         return field
 
@@ -183,7 +189,7 @@ def generate_map(seed):
         points[i][1] = int(round(points[i][1])) - 1  # y
         points[i].append(biome)
 
-        field[points[i][1]][points[i][0]] = 'X'  # not needed
+        field[points[i][1]][points[i][0]] = 'X'  # not needed?
 
     # Set the biomes
 
@@ -230,14 +236,14 @@ biomes = {
             'Walking Grounds': {
                 'description': 'Victims of The Limbo are walking aimlessly all around this place. Do not bother them, and they will not bother you.',
                 'rarity': 100,
-                'hostility': 20,
+                'hostility': 15,
                 'shard_rate': 20,
                 'loot_rate': 15
             },
             'Crowded Walking Grounds': {
                 'description': 'Something is attracting victims of The Limbo to this place. You should be cautious around here.',
                 'rarity': 30,
-                'hostility': 40,
+                'hostility': 30,
                 'shard_rate': 30,
                 'loot_rate': 10
             },
