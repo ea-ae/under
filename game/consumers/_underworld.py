@@ -93,8 +93,7 @@ def generate_map(seed):
                 # Choose a random field using the weights
                 field_index = weighted_choice([field_weight[1] for field_weight in field_data])
                 # Set the cell's field
-                field[row][cell] = field_data[field_index]
-                print(field_data)
+                field[row][cell] = field_data[field_index][0]
 
         return field
 
@@ -158,20 +157,20 @@ def generate_map(seed):
                 grid[grid_x + grid_y * grid_width] = p
         return [p for p in grid if p is not None]
 
-    # Map settings
+    # Define map dimensions and settings
+    # Size should be at least 35x35
+
     height = 50
     width = 50
+
     # Create a new instance of Random() using a given seed
+
     rnd = random.Random(seed)
+
     # Generate a random starting location somewhere in the middle of the map
 
     x = rnd.randint(width - 10, width + 10)
     y = rnd.randint(height - 10, height + 10)
-
-    # Define map dimensions and settings
-    # Size should be at least 35x35
-    height = 50
-    width = 50
 
     # Create a 2-dimensional list for the game map
 
