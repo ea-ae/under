@@ -9,20 +9,19 @@ import json
 
 def underworld_data(self):
     self.underworld, self.field = map_data(self.cult)
+    print('Seed used: ' + seed)
 
     self.send_json({
         'type': 'page_data',
         'page': 'underworld',
-        'field': self.field,
-        'seed': self.underworld.seed
+        'field': self.field  # sending the whole field only for debugging purposes
     })
 
 
 def map_data(cult):
     """
-    Returns a cult's Underworld model and map data.
+    Returns a cult's Underworld model and map data (or create a new one).
     """
-
     try:  # Map already exists
         underworld_model = Underworld.objects.get(owner=cult)
         field = generate_map(underworld_model.seed)
@@ -31,6 +30,7 @@ def map_data(cult):
         seed = ''.join(random.choice(ascii_letters + digits) for _ in range(32))
         field = generate_map(seed)
         underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
+        underworld_model.save()
     
     return underworld_model, field
 
@@ -55,7 +55,10 @@ def navigate_map(self, direction):
     self.underworld.time += 1  # Increase time
     self.underworld.save()  # Save new location to db
     
-    return self.map[self.underworld.y][self.underworld.x]
+    self.send_json({
+        'type': 'underworld_data',
+        'location': self.field[self.underworld.y][self.underworld.x]
+    })
 
 
 def generate_map(seed):
@@ -84,7 +87,7 @@ def generate_map(seed):
                         # Set the biome that will be chosen if a shorter distance isn't found
                         current_biome = point[2]
 
-                # Select random field in biome, taking rarity into account
+                # Select a random field in the biome, taking rarity into account
 
                 # Get names/data of all fields in the chosen biome
                 biome_fields = biomes[current_biome]['fields'].items()
@@ -194,9 +197,6 @@ def generate_map(seed):
 
     field = set_biomes(field, points)
 
-    # TODO: Create/edit database model instance
-    # Save the seed and starting x/y location
-
     return ({
         'field': field,
         'x': x,
@@ -204,7 +204,9 @@ def generate_map(seed):
     })
 
 
-# Biome data (might be moved to an ignored _data.py in the future)
+# These variables might be moved to an ignored _data.py file later on
+
+# Biome data
 
 biomes = {
     'The Obsidian Plains': {  # Biomes have different fields in them that will be randomly picked from
