@@ -276,7 +276,7 @@ biomes = {
         }
     },
     'The Prison': {
-        'description': 'Screams of captured souls can be heard from inside. Proceed with extreme caution.',
+        'description': 'Screams of captured souls can be heard from inside.',
         'difficulty': 'hard',
         'fields': {
             'Catacombs': {
@@ -288,6 +288,7 @@ biomes = {
             },
             'Prison Block': {
                 'description': 'Captured creatures are held and tortured in here. The place is full of guards.',
+                'rarity': 100,
                 'hostility': 75,
                 'shard_rate': 0,
                 'loot_rate': 30

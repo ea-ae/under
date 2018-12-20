@@ -91,7 +91,7 @@ item_data = {
     },
     'crystal powder': {
         'type': 'resource',
-        'desc': 'Crystal powder is used to transform black shards into other forms. The more shards you are transforming, the more powder you must use'
+        'desc': 'Crystal powder is used to transform black shards into other forms. The more shards you are transforming, the more powder you must use.'
     },
     'power cell': {
         'type': 'resource',
