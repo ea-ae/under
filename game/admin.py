@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import WarfareGame, WarfarePlayer, Cult, Member
+from .models import WarfareGame, WarfarePlayer, Cult, Member, Underworld
+
+
+class UnderworldAdmin(admin.ModelAdmin):
+    list_display = ('seed', 'owner_name', 'x', 'y', 'time')
+
+    def owner_name(self, obj):
+        return obj.owner.owner.user.username
 
 
 class CultAdmin(admin.ModelAdmin):
@@ -42,5 +49,6 @@ class MemberAdmin(admin.ModelAdmin):
 
 admin.site.register(WarfareGame)
 admin.site.register(WarfarePlayer)
+admin.site.register(Underworld, UnderworldAdmin)
 admin.site.register(Cult, CultAdmin)
 admin.site.register(Member, MemberAdmin)

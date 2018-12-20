@@ -81,7 +81,6 @@ class Member(models.Model):
         help_text='For example: ["recruitmentstrategies", "silentwalking"]'
     )
 
-
     def __str__(self):
         return self.name
 
@@ -92,3 +91,6 @@ class Underworld(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     time = models.IntegerField()  # The amount of moves that has been made
+
+    def __str__(self):
+        return self.seed

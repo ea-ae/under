@@ -9,7 +9,6 @@ import json
 
 def underworld_data(self):
     self.underworld, self.field = map_data(self.cult)
-    print('Seed used: ' + seed)
 
     self.send_json({
         'type': 'page_data',
@@ -31,6 +30,8 @@ def map_data(cult):
         field = generate_map(seed)
         underworld_model = Underworld(owner=cult, seed=seed, x=field['x'], y=field['y'], time=0)
         underworld_model.save()
+
+    print('### ########################### Seed used: ' + underworld_model.seed)
     
     return underworld_model, field
 
