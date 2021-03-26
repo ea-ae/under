@@ -1,12 +1,12 @@
 # Under
 
-Under is a text-based browser game about leading a cult.
+Under is a text-based browser game centered around leading a cult.
 
 ## Features
 
 ### Missions
 
-Dialogue options, objectives, important choices. Talk to various people who will trade, ask for help, or give out contracts.
+Dialogue options, objectives, game-changing choices. Talk to various people who will trade, ask for help, or give out contracts.
 
 ![Missions](https://i.imgur.com/XG8y2LQ.png)
 
@@ -19,16 +19,10 @@ All of your cultists have different stats, specializations, tiers, and jobs.
 ### Anonymity
 
 Cultists know only the identities of the people they recruit and have recruited. Some of
-your members might be snitches, spies, or secret informants. If a traitor finds out
-your identity, it won't end well for you.
+your members might be snitches, spies, or secret informants. If a traitor discovers your 
+true identity, it won't end well for you.
 
 ![Anonymity](https://i.imgur.com/gHUIExy.png)
-
-### Crimes
-
-A part of the game is similar to the many mafia/gang games out there. You can make
-your cultists perform crimes, but there's a risk they'll get arrested or killed. The choices
-you make and the specializations of your cultists play a big role in how a crime will turn out.
 
 ### The Underworld
 
@@ -38,13 +32,8 @@ and venture deeper into the Underworld as you become more powerful.
 
 ### PVP
 
-Another cult might find you. They could attack your headquarters or plant a spy in your cult and try to discover your identity. But it is possible to avoid this by being careful and staying low profile.
-
-### Societies
-
-Join one of the nine societies and serve the dark gods. Appease them and you'll be rewarded;
-make them angry, and misfortune shall fall upon you. Fight other societies for influence and
-raise in the ranks.
+Other cults are a threat. They could attack your headquarters or plant a spy in your cult and attempt to discover your identity. 
+One must be careful and stay low profile.
 
 ## Setup
 
@@ -56,7 +45,7 @@ You will also need to run a Redis server.
 
 ### Configuration
 
-Go into the `python manage.py shell` and create a new game model with the name 'alpha':
+Go into the `python manage.py shell` and create a new game model named 'alpha':
 ```python
 from game.models import WarfareGame
 game = WarfareGame(name='alpha')
@@ -78,4 +67,4 @@ config = {
 
 ### Testing
 
-Django testing is done with `python manage.py test`. To test the consumers, use `pytest --ds=warfare.settings`.
+Run tests with `python manage.py test`. To test the consumers, use `pytest --ds=warfare.settings`.
