@@ -1,39 +1,26 @@
 # Under
 
-Under is a text-based browser game centered around leading a cult.
+Under is a text-based multiplayer browser game / PBBG centered around managing a cult. Project's primary purpose wasn't the creation of a proper & finished game, but learning-through-doing.
 
 ## Features
 
 ### Missions
 
-Dialogue options, objectives, game-changing choices. Talk to various people who will trade, ask for help, or give out contracts.
+Dialogue options, objectives, and game-changing choices.
 
 ![Missions](https://i.imgur.com/XG8y2LQ.png)
 
 ### Members
 
-All of your cultists have different stats, specializations, tiers, and jobs.
+Member recruitment tree system with stats, specializations, tiers, and jobs.
 
 ![Members](https://i.imgur.com/9XaKHMW.png)
 
-### Anonymity
-
-Cultists know only the identities of the people they recruit and have recruited. Some of
-your members might be snitches, spies, or secret informants. If a traitor discovers your 
-true identity, it won't end well for you.
-
 ![Anonymity](https://i.imgur.com/gHUIExy.png)
 
-### The Underworld
+### Registration
 
-Make your cultists explore the Underworld and find various artifacts that you can
-use or sell. Fight, hide, and capture various creatures. Explore different areas
-and venture deeper into the Underworld as you become more powerful.
-
-### PVP
-
-Other cults are a threat. They could attack your headquarters or plant a spy in your cult and attempt to discover your identity. 
-One must be careful and stay low profile.
+Fully functioning registration/login system ([mp4](https://i.imgur.com/semSmyj.mp4)).
 
 ## Setup
 
