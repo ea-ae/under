@@ -209,13 +209,13 @@ def generate_map(seed):
 biomes = {
     'The Obsidian Plains': {  # Biomes have different fields in them that will be randomly picked from
         'description': 'You are out in the open, and they know where you are.',
-        'difficulty': 'Easy',
+        'difficulty': 'easy',
         'fields': {
             'Empty Plains': {
                 'description': 'There is nothing of interest here.',
                 'rarity': 100,
                 'hostility': 50,
-                'shard_rate': 10,
+                'shard_rate': 20,
                 'loot_rate': 10
             },
             'Mineral Plains': {
@@ -230,48 +230,67 @@ biomes = {
     'The Limbo': {
         'description': 'You do not know where you\'re going. Stay there for too long, and The Limbo will \
         take you over and you\'ll be left wandering around aimlessly for eternity just like the others.',
-        'difficulty': 'Easy',
+        'difficulty': 'easy',
         'fields': {
             'Walking Grounds': {
                 'description': 'Victims of The Limbo are walking aimlessly all around this place. Do not bother them, and they will not bother you.',
                 'rarity': 100,
                 'hostility': 15,
                 'shard_rate': 20,
-                'loot_rate': 15
+                'loot_rate': 10
             },
             'Crowded Walking Grounds': {
                 'description': 'Something is attracting victims of The Limbo to this place. You should be cautious around here.',
                 'rarity': 30,
-                'hostility': 30,
-                'shard_rate': 30,
-                'loot_rate': 10
+                'hostility': 40,
+                'shard_rate': 10,
+                'loot_rate': 15
             },
             'Empty Walking Grounds': {
                 'description': 'There is almost nobody here.',
                 'rarity': 10,
                 'hostility': 5,
-                'shard_rate': 30,
+                'shard_rate': 20,
                 'loot_rate': 10
             }
         }
     },
-    'Living Mountains': {
+    'The Living Mountains': {
         'description': 'The mountains are alive. Stay cautious and watch your step.',
-        'difficulty': 'Easy',
+        'difficulty': 'easy',
         'fields': {
             'Sleeping Mountains': {
                 'description': 'These mountains are probably asleep, it should be safe to pass.',
                 'rarity': 100,
                 'hostility': 10,
-                'shard_rate': 50,
+                'shard_rate': 40,
                 'loot_rate': 10
             },
             'Moving Mountains': {
                 'description': 'These mountains are awake, going near them is extremely dangerous.',
                 'rarity': 75,
                 'hostility': 90,
-                'shard_rate': 50,
+                'shard_rate': 40,
                 'loot_rate': 10
+            }
+        }
+    },
+    'The Prison': {
+        'description': 'Screams of captured souls can be heard from inside. Proceed with extreme caution.',
+        'difficulty': 'hard',
+        'fields': {
+            'Catacombs': {
+                'description': 'A labyrinth of dark corridors. Going in without a latern would not be wise.',
+                'rarity': 100,
+                'hostility': 50,
+                'shard_rate': 0,
+                'loot_rate': 30
+            },
+            'Prison Block': {
+                'description': 'Captured creatures are held and tortured in here. The place is full of guards.',
+                'hostility': 75,
+                'shard_rate': 0,
+                'loot_rate': 30
             }
         }
     }
