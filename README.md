@@ -2,26 +2,6 @@
 
 Under is a text-based multiplayer browser game / PBBG centered around managing a cult. Project's primary purpose wasn't the creation of a proper & finished game, but learning-through-doing.
 
-## Features
-
-### Missions
-
-Dialogue options, objectives, and game-changing choices.
-
-![Missions](https://i.imgur.com/XG8y2LQ.png)
-
-### Members
-
-Member recruitment tree system with stats, specializations, tiers, and jobs.
-
-![Members](https://i.imgur.com/9XaKHMW.png)
-
-![Anonymity](https://i.imgur.com/gHUIExy.png)
-
-### Registration
-
-Fully functioning registration/login system ([mp4](https://i.imgur.com/semSmyj.mp4)).
-
 ## Setup
 
 ### Packages and Requirements
@@ -55,3 +35,27 @@ config = {
 ### Testing
 
 Run tests with `python manage.py test`. To test the consumers, use `pytest --ds=warfare.settings`.
+
+## Features
+
+### Missions
+
+Dialogue options, objectives, and game-changing choices.
+
+![Missions](https://i.imgur.com/XG8y2LQ.png)
+
+### Members
+
+Member recruitment tree system with stats, specializations, tiers, and jobs.
+
+![Members](https://i.imgur.com/9XaKHMW.png)
+
+![Anonymity](https://i.imgur.com/gHUIExy.png)
+
+### Registration
+
+Fully functioning registration/login system ([mp4](https://i.imgur.com/semSmyj.mp4)).
+
+### About
+
+Created as a personal learn-by-doing project in 2018.
