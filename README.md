@@ -56,6 +56,8 @@ Member recruitment tree system with stats, specializations, tiers, and jobs.
 
 Fully functioning registration/login system ([mp4](https://i.imgur.com/semSmyj.mp4)).
 
+![Login](https://i.imgur.com/ZkejRfK.png)
+
 ### About
 
 Created as a personal learn-by-doing project in 2018.
